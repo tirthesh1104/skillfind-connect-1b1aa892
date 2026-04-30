@@ -52,44 +52,175 @@ export type Database = {
           },
         ]
       }
+      disputes: {
+        Row: {
+          admin_resolution: string | null
+          against_user: string
+          agreement_id: string | null
+          amount_agreed: number
+          amount_claimed: number
+          created_at: string
+          description: string | null
+          evidence_url: string | null
+          id: string
+          raised_by: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admin_resolution?: string | null
+          against_user: string
+          agreement_id?: string | null
+          amount_agreed?: number
+          amount_claimed?: number
+          created_at?: string
+          description?: string | null
+          evidence_url?: string | null
+          id?: string
+          raised_by: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_resolution?: string | null
+          against_user?: string
+          agreement_id?: string | null
+          amount_agreed?: number
+          amount_claimed?: number
+          created_at?: string
+          description?: string | null
+          evidence_url?: string | null
+          id?: string
+          raised_by?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disputes_agreement_id_fkey"
+            columns: ["agreement_id"]
+            isOneToOne: false
+            referencedRelation: "wage_agreements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      insurance_claims: {
+        Row: {
+          admin_note: string | null
+          claim_amount: number
+          created_at: string
+          description: string | null
+          evidence_url: string | null
+          id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_note?: string | null
+          claim_amount: number
+          created_at?: string
+          description?: string | null
+          evidence_url?: string | null
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_note?: string | null
+          claim_amount?: number
+          created_at?: string
+          description?: string | null
+          evidence_url?: string | null
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      insurance_pool: {
+        Row: {
+          created_at: string
+          id: string
+          is_opted_in: boolean
+          total_contributed: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_opted_in?: boolean
+          total_contributed?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_opted_in?: boolean
+          total_contributed?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       jobs: {
         Row: {
           contractor_id: string
           created_at: string
           description: string | null
+          duration_days: number | null
           id: string
+          is_urgent: boolean
           location: string
+          pin_code: string | null
           price_offered: number
           required_skill: string
+          start_date: string | null
           status: Database["public"]["Enums"]["job_status"]
           title: string
           updated_at: string
+          wage_per_day: number | null
           work_type: string
         }
         Insert: {
           contractor_id: string
           created_at?: string
           description?: string | null
+          duration_days?: number | null
           id?: string
+          is_urgent?: boolean
           location: string
+          pin_code?: string | null
           price_offered?: number
           required_skill: string
+          start_date?: string | null
           status?: Database["public"]["Enums"]["job_status"]
           title: string
           updated_at?: string
+          wage_per_day?: number | null
           work_type: string
         }
         Update: {
           contractor_id?: string
           created_at?: string
           description?: string | null
+          duration_days?: number | null
           id?: string
+          is_urgent?: boolean
           location?: string
+          pin_code?: string | null
           price_offered?: number
           required_skill?: string
+          start_date?: string | null
           status?: Database["public"]["Enums"]["job_status"]
           title?: string
           updated_at?: string
+          wage_per_day?: number | null
           work_type?: string
         }
         Relationships: [
@@ -148,26 +279,35 @@ export type Database = {
       }
       notifications: {
         Row: {
+          body: string | null
           created_at: string
           id: string
           is_read: boolean
+          link: string | null
           message: string
+          title: string | null
           type: Database["public"]["Enums"]["notification_type"]
           user_id: string
         }
         Insert: {
+          body?: string | null
           created_at?: string
           id?: string
           is_read?: boolean
+          link?: string | null
           message: string
+          title?: string | null
           type?: Database["public"]["Enums"]["notification_type"]
           user_id: string
         }
         Update: {
+          body?: string | null
           created_at?: string
           id?: string
           is_read?: boolean
+          link?: string | null
           message?: string
+          title?: string | null
           type?: Database["public"]["Enums"]["notification_type"]
           user_id?: string
         }
@@ -186,30 +326,86 @@ export type Database = {
           created_at: string
           full_name: string
           id: string
+          is_available: boolean
           location: string | null
           phone: string | null
+          pin_code: string | null
           profile_image_url: string | null
+          rating_avg: number
+          rating_count: number
           updated_at: string
+          work_passport_token: string | null
         }
         Insert: {
           created_at?: string
           full_name: string
           id: string
+          is_available?: boolean
           location?: string | null
           phone?: string | null
+          pin_code?: string | null
           profile_image_url?: string | null
+          rating_avg?: number
+          rating_count?: number
           updated_at?: string
+          work_passport_token?: string | null
         }
         Update: {
           created_at?: string
           full_name?: string
           id?: string
+          is_available?: boolean
           location?: string | null
           phone?: string | null
+          pin_code?: string | null
           profile_image_url?: string | null
+          rating_avg?: number
+          rating_count?: number
           updated_at?: string
+          work_passport_token?: string | null
         }
         Relationships: []
+      }
+      ratings: {
+        Row: {
+          comment: string | null
+          created_at: string
+          given_by: string
+          given_to: string
+          id: string
+          job_id: string | null
+          score: number
+          skill_verified: boolean
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          given_by: string
+          given_to: string
+          id?: string
+          job_id?: string | null
+          score: number
+          skill_verified?: boolean
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          given_by?: string
+          given_to?: string
+          id?: string
+          job_id?: string | null
+          score?: number
+          skill_verified?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ratings_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       requests: {
         Row: {
@@ -289,6 +485,62 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      wage_agreements: {
+        Row: {
+          agreed_duration_days: number | null
+          agreed_start_date: string | null
+          agreed_wage: number
+          contractor_confirmed: boolean
+          contractor_id: string
+          created_at: string
+          id: string
+          is_disputed: boolean
+          job_id: string | null
+          labour_confirmed: boolean
+          labour_id: string
+          payment_status: string
+          updated_at: string
+        }
+        Insert: {
+          agreed_duration_days?: number | null
+          agreed_start_date?: string | null
+          agreed_wage: number
+          contractor_confirmed?: boolean
+          contractor_id: string
+          created_at?: string
+          id?: string
+          is_disputed?: boolean
+          job_id?: string | null
+          labour_confirmed?: boolean
+          labour_id: string
+          payment_status?: string
+          updated_at?: string
+        }
+        Update: {
+          agreed_duration_days?: number | null
+          agreed_start_date?: string | null
+          agreed_wage?: number
+          contractor_confirmed?: boolean
+          contractor_id?: string
+          created_at?: string
+          id?: string
+          is_disputed?: boolean
+          job_id?: string | null
+          labour_confirmed?: boolean
+          labour_id?: string
+          payment_status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wage_agreements_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
