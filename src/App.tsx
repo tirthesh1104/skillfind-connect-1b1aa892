@@ -10,6 +10,7 @@ import { AppLayout } from "@/components/AppLayout";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import AdminVerify from "./pages/AdminVerify";
 
 import ContractorHome from "./pages/contractor/ContractorHome";
 import FindLabour from "./pages/contractor/FindLabour";
@@ -44,6 +45,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/admin/verify" element={<AdminVerify />} />
 
             {/* Contractor */}
             <Route path="/contractor" element={<RoleLayout roles={["contractor"]}><ContractorHome /></RoleLayout>} />
