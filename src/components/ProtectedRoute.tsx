@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth, AppRole } from "@/contexts/AuthContext";
 import { Loader2 } from "lucide-react";
+import { isAdminVerified } from "@/pages/AdminVerify";
 
 interface Props {
   children: ReactNode;
@@ -25,6 +26,11 @@ export const ProtectedRoute = ({ children, allowedRoles }: Props) => {
   if (allowedRoles && role && !allowedRoles.includes(role)) {
     const dest = role === "admin" ? "/admin" : role === "contractor" ? "/contractor" : "/labour";
     return <Navigate to={dest} replace />;
+  }
+
+  // Admin code-gate: must verify per session before reaching admin pages
+  if (role === "admin" && !isAdminVerified()) {
+    return <Navigate to="/admin/verify" replace />;
   }
 
   return <>{children}</>;
