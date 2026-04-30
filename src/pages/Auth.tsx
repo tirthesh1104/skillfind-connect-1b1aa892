@@ -46,7 +46,7 @@ const Auth = () => {
   const routeForRole = async (uid: string) => {
     const { data } = await supabase.from("user_roles").select("role").eq("user_id", uid).maybeSingle();
     const r = data?.role;
-    navigate(r === "admin" ? "/admin" : r === "contractor" ? "/contractor" : "/labour", { replace: true });
+    navigate(r === "admin" ? "/admin/verify" : r === "contractor" ? "/contractor" : "/labour", { replace: true });
   };
 
   const onLogin = async (values: LoginForm) => {
