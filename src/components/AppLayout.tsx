@@ -8,7 +8,7 @@ import { NotificationBell } from "@/components/NotificationBell";
 import { InitialsAvatar } from "@/components/InitialsAvatar";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
-  UserCircle, Search, ListChecks, Shield, FileText
+  UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -34,9 +34,11 @@ const NAV: Record<string, NavItem[]> = {
   ],
   admin: [
     { to: "/admin", label: "Overview", icon: Shield, end: true },
+    { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
     { to: "/admin/users", label: "Users", icon: Users },
     { to: "/admin/jobs", label: "Jobs", icon: Briefcase },
     { to: "/admin/requests", label: "Requests", icon: FileText },
+    { to: "/admin/disputes", label: "Disputes", icon: AlertTriangle },
   ],
 };
 
