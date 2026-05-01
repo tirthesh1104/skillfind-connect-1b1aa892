@@ -26,6 +26,8 @@ import AdminHome from "./pages/admin/AdminHome";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminJobs from "./pages/admin/AdminJobs";
 import AdminRequests from "./pages/admin/AdminRequests";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminDisputes from "./pages/admin/AdminDisputes";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +66,8 @@ const App = () => (
             <Route path="/admin/users" element={<RoleLayout roles={["admin"]}><AdminUsers /></RoleLayout>} />
             <Route path="/admin/jobs" element={<RoleLayout roles={["admin"]}><AdminJobs /></RoleLayout>} />
             <Route path="/admin/requests" element={<RoleLayout roles={["admin"]}><AdminRequests /></RoleLayout>} />
+            <Route path="/admin/analytics" element={<RoleLayout roles={["admin"]}><AdminAnalytics /></RoleLayout>} />
+            <Route path="/admin/disputes" element={<RoleLayout roles={["admin"]}><AdminDisputes /></RoleLayout>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
