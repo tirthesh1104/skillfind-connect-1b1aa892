@@ -18,17 +18,20 @@ const AdminDisputes = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase
+    const { data: disputes } = await supabase
       .from("disputes")
-      .select("*, raiser:profiles!disputes_raised_by_fkey(full_name), against:profiles!disputes_against_user_fkey(full_name)")
+      .select("*")
       .order("created_at", { ascending: false });
-    // fallback: relations may not be defined; try simpler select
-    if (!data) {
-      const r2 = await supabase.from("disputes").select("*").order("created_at", { ascending: false });
-      setRows(r2.data ?? []);
-    } else {
-      setRows(data);
-    }
+    const ids = Array.from(new Set((disputes ?? []).flatMap((d: any) => [d.raised_by, d.against_user])));
+    const { data: profiles } = ids.length
+      ? await supabase.from("profiles").select("id, full_name").in("id", ids)
+      : { data: [] as any[] };
+    const nameMap = new Map((profiles ?? []).map((p: any) => [p.id, p.full_name]));
+    setRows((disputes ?? []).map((d: any) => ({
+      ...d,
+      raiser: { full_name: nameMap.get(d.raised_by) },
+      against: { full_name: nameMap.get(d.against_user) },
+    })));
     setLoading(false);
   };
 
