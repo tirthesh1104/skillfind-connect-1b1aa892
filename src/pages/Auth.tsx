@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { Eye, EyeOff, HardHat, Loader2 } from "lucide-react";
 import { SKILL_OPTIONS } from "@/lib/labour";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const loginSchema = z.object({
   email: z.string().trim().email("Invalid email").max(255),

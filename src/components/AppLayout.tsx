@@ -137,6 +137,7 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
             <span className="font-semibold">Labour Connector</span>
           </div>
           <div className="ml-auto flex items-center gap-2">
+            <ThemeToggle />
             <NotificationBell />
           </div>
         </header>
