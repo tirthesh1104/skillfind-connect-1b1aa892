@@ -3,89 +3,133 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* Labour Connector — warm charcoal + saffron amber */
-    --background: 30 11% 5%;            /* #0F0E0C */
-    --foreground: 40 25% 93%;            /* #F2EFE8 */
+  /* Light (default) — Claude.ai-inspired warm cloud aesthetic */
+  :root, .light {
+    --background: 40 33% 97%;            /* #FAF7F2 warm cloud */
+    --foreground: 30 10% 14%;            /* #262320 ink */
 
-    --card: 36 12% 9%;                   /* #1A1915 */
-    --card-foreground: 40 25% 93%;
+    --card: 40 30% 99%;
+    --card-foreground: 30 10% 14%;
 
-    --popover: 36 12% 9%;
-    --popover-foreground: 40 25% 93%;
+    --popover: 40 30% 99%;
+    --popover-foreground: 30 10% 14%;
 
-    --primary: 27 79% 57%;               /* #E8873A */
-    --primary-foreground: 30 11% 5%;
-    --primary-glow: 27 79% 57%;
+    --primary: 18 60% 45%;               /* claude clay */
+    --primary-foreground: 40 33% 97%;
+    --primary-glow: 18 60% 55%;
 
-    --secondary: 35 9% 16%;              /* #2E2C27 */
-    --secondary-foreground: 40 25% 93%;
+    --secondary: 36 22% 92%;
+    --secondary-foreground: 30 10% 14%;
 
-    --muted: 35 9% 14%;
-    --muted-foreground: 36 7% 59%;       /* #9E9A90 */
+    --muted: 36 22% 93%;
+    --muted-foreground: 30 6% 42%;
 
-    --accent: 27 79% 57%;                /* #E8873A */
-    --accent-foreground: 30 11% 5%;
-    --accent-strong: 17 78% 45%;         /* #C9531A */
+    --accent: 18 60% 45%;
+    --accent-foreground: 40 33% 97%;
+    --accent-strong: 17 70% 38%;
 
-    --destructive: 5 78% 57%;            /* #E84A3A */
-    --destructive-foreground: 40 25% 93%;
+    --destructive: 5 70% 48%;
+    --destructive-foreground: 40 33% 97%;
 
-    --success: 150 47% 49%;              /* #4CAF82 */
-    --success-foreground: 30 11% 5%;
+    --success: 150 47% 38%;
+    --success-foreground: 40 33% 97%;
 
-    --warning: 47 79% 57%;               /* #E8C23A */
-    --warning-foreground: 30 11% 5%;
+    --warning: 38 80% 50%;
+    --warning-foreground: 30 10% 14%;
 
-    --info: 211 78% 57%;                 /* #3A8FE8 */
-    --info-foreground: 30 11% 5%;
+    --info: 211 60% 45%;
+    --info-foreground: 40 33% 97%;
 
-    --border: 35 9% 16%;                 /* #2E2C27 */
-    --input: 35 9% 16%;
-    --ring: 27 79% 57%;
+    --border: 36 16% 86%;
+    --input: 36 16% 86%;
+    --ring: 18 60% 45%;
 
     --radius: 0.75rem;
 
-    --gradient-primary: linear-gradient(135deg, hsl(27 79% 57%), hsl(17 78% 45%));
-    --gradient-amber: linear-gradient(180deg, hsl(27 79% 57% / 0.18), hsl(27 79% 57% / 0));
-    --gradient-card: linear-gradient(135deg, hsl(36 12% 11% / 0.9), hsl(36 12% 8% / 0.7));
+    --gradient-primary: linear-gradient(135deg, hsl(18 60% 45%), hsl(17 70% 38%));
+    --gradient-amber: linear-gradient(180deg, hsl(18 60% 45% / 0.12), transparent);
+    --gradient-card: linear-gradient(135deg, hsl(40 30% 99% / 0.9), hsl(40 30% 96% / 0.7));
+    --gradient-mesh: radial-gradient(at 20% 0%, hsl(18 60% 45% / 0.08) 0px, transparent 40%), radial-gradient(at 90% 100%, hsl(36 30% 80% / 0.5) 0px, transparent 45%);
 
-    --shadow-glow: 0 0 36px hsl(27 79% 57% / 0.28);
-    --shadow-elegant: 0 24px 60px -24px hsl(30 11% 2% / 0.7);
-    --shadow-card: 0 10px 30px -16px hsl(30 11% 2% / 0.55);
+    --shadow-glow: 0 0 36px hsl(18 60% 45% / 0.18);
+    --shadow-elegant: 0 24px 60px -24px hsl(30 10% 30% / 0.25);
+    --shadow-card: 0 10px 30px -16px hsl(30 10% 30% / 0.18);
 
     --transition-smooth: all 0.18s ease;
 
+    --sidebar-background: 40 30% 96%;
+    --sidebar-foreground: 30 10% 18%;
+    --sidebar-primary: 18 60% 45%;
+    --sidebar-primary-foreground: 40 33% 97%;
+    --sidebar-accent: 36 22% 92%;
+    --sidebar-accent-foreground: 30 10% 14%;
+    --sidebar-border: 36 16% 86%;
+    --sidebar-ring: 18 60% 45%;
+  }
+
+  .dark {
+    --background: 30 11% 5%;
+    --foreground: 40 25% 93%;
+    --card: 36 12% 9%;
+    --card-foreground: 40 25% 93%;
+    --popover: 36 12% 9%;
+    --popover-foreground: 40 25% 93%;
+    --primary: 27 79% 57%;
+    --primary-foreground: 30 11% 5%;
+    --primary-glow: 27 79% 57%;
+    --secondary: 35 9% 16%;
+    --secondary-foreground: 40 25% 93%;
+    --muted: 35 9% 14%;
+    --muted-foreground: 36 7% 65%;
+    --accent: 27 79% 57%;
+    --accent-foreground: 30 11% 5%;
+    --accent-strong: 17 78% 45%;
+    --destructive: 5 78% 57%;
+    --destructive-foreground: 40 25% 93%;
+    --success: 150 47% 49%;
+    --success-foreground: 30 11% 5%;
+    --warning: 47 79% 57%;
+    --warning-foreground: 30 11% 5%;
+    --info: 211 78% 57%;
+    --info-foreground: 30 11% 5%;
+    --border: 35 9% 18%;
+    --input: 35 9% 18%;
+    --ring: 27 79% 57%;
+    --gradient-primary: linear-gradient(135deg, hsl(27 79% 57%), hsl(17 78% 45%));
+    --gradient-amber: linear-gradient(180deg, hsl(27 79% 57% / 0.18), transparent);
+    --gradient-card: linear-gradient(135deg, hsl(36 12% 11% / 0.9), hsl(36 12% 8% / 0.7));
+    --gradient-mesh: radial-gradient(at 20% 0%, hsl(27 79% 57% / 0.12) 0px, transparent 40%), radial-gradient(at 90% 100%, hsl(17 78% 45% / 0.12) 0px, transparent 45%);
+    --shadow-glow: 0 0 36px hsl(27 79% 57% / 0.28);
+    --shadow-elegant: 0 24px 60px -24px hsl(30 11% 2% / 0.7);
+    --shadow-card: 0 10px 30px -16px hsl(30 11% 2% / 0.55);
     --sidebar-background: 30 11% 4%;
     --sidebar-foreground: 40 25% 90%;
     --sidebar-primary: 27 79% 57%;
     --sidebar-primary-foreground: 30 11% 5%;
     --sidebar-accent: 36 12% 11%;
     --sidebar-accent-foreground: 40 25% 93%;
-    --sidebar-border: 35 9% 16%;
+    --sidebar-border: 35 9% 18%;
     --sidebar-ring: 27 79% 57%;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+  * { @apply border-border; }
   html, body, #root {
-    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    font-family: "Times New Roman", Times, Georgia, serif;
   }
   body {
     @apply bg-background text-foreground antialiased;
-    background-image:
-      radial-gradient(at 20% 0%, hsl(27 79% 57% / 0.10) 0px, transparent 40%),
-      radial-gradient(at 90% 100%, hsl(17 78% 45% / 0.10) 0px, transparent 45%);
+    background-image: var(--gradient-mesh);
     background-attachment: fixed;
   }
   h1, h2, h3, .font-display {
-    font-family: 'Syne', sans-serif;
-    letter-spacing: -0.02em;
+    font-family: "Times New Roman", Times, Georgia, serif;
+    letter-spacing: -0.01em;
+    font-weight: 700;
   }
-  code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
+  code, pre, .font-mono { font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; }
+
 
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-track { background: transparent; }
