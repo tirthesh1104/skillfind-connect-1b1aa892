@@ -1,18 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Lock, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ThemeToggle";
-
-const VALID_CODES = ["55", "56"];
-const STORAGE_KEY = "lc_admin_verified";
-
-export const isAdminVerified = () => {
-  try { return sessionStorage.getItem(STORAGE_KEY) === "1"; } catch { return false; }
-};
 
 const AdminVerify = () => {
   const { user, role, loading, signOut } = useAuth();
@@ -23,30 +17,35 @@ const AdminVerify = () => {
 
   useEffect(() => {
     if (loading) return;
-    if (!user) navigate("/auth", { replace: true });
-    else if (role && role !== "admin") {
+    if (!user) { navigate("/auth", { replace: true }); return; }
+    if (role && role !== "admin") {
       navigate(role === "contractor" ? "/contractor" : "/labour", { replace: true });
-    } else if (isAdminVerified()) {
-      navigate("/admin", { replace: true });
+      return;
     }
+    // If already verified server-side, skip
+    supabase.from("admin_verifications").select("verified_until").eq("user_id", user.id).maybeSingle()
+      .then(({ data }) => {
+        if (data?.verified_until && new Date(data.verified_until) > new Date()) {
+          navigate("/admin", { replace: true });
+        }
+      });
   }, [user, role, loading, navigate]);
 
   const onVerify = async () => {
     setVerifying(true);
-    await new Promise((r) => setTimeout(r, 200));
-    const trimmed = key.trim();
-    // Accept canonical short codes OR any 55-character key beginning with "55"
-    const ok = VALID_CODES.includes(trimmed) || (trimmed.length === 55 && trimmed.startsWith("55"));
-    if (ok) {
-      sessionStorage.setItem(STORAGE_KEY, "1");
-      toast.success("Access granted");
-      navigate("/admin", { replace: true });
+    const { data, error } = await supabase.functions.invoke("verify-admin-key", {
+      body: { key: key.trim() },
+    });
+    setVerifying(false);
+
+    if (error || !data?.ok) {
+      setShake(true); setTimeout(() => setShake(false), 400);
+      setKey("");
+      toast.error("Invalid Key");
       return;
     }
-    setShake(true); setTimeout(() => setShake(false), 400);
-    setKey("");
-    setVerifying(false);
-    toast.error("Invalid Key");
+    toast.success("Access granted");
+    navigate("/admin", { replace: true });
   };
 
   if (loading) {
@@ -64,11 +63,12 @@ const AdminVerify = () => {
         </div>
         <h1 className="mt-6 text-center text-3xl font-bold">Admin Access Key</h1>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          Enter your 55-digit access key to unlock the Admin Dashboard.
+          Enter your admin access key to unlock the dashboard.
         </p>
 
         <div className="mt-8">
           <Input
+            type="password"
             value={key}
             onChange={(e) => setKey(e.target.value)}
             placeholder="Paste or type your access key"
@@ -76,14 +76,9 @@ const AdminVerify = () => {
             onKeyDown={(e) => { if (e.key === "Enter") onVerify(); }}
             autoFocus
           />
-          <p className="mt-2 text-center text-xs text-muted-foreground">{key.length} / 55 characters</p>
         </div>
 
-        <Button
-          onClick={onVerify}
-          disabled={!key || verifying}
-          className="mt-6 w-full h-11"
-        >
+        <Button onClick={onVerify} disabled={!key || verifying} className="mt-6 w-full h-11">
           {verifying ? <Loader2 className="h-4 w-4 animate-spin" /> : "Unlock Dashboard"}
         </Button>
 

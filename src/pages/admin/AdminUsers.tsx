@@ -20,11 +20,14 @@ const AdminUsers = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("profiles")
-      .select("id, full_name, phone, location, created_at, user_roles!inner(role)")
-      .order("created_at", { ascending: false });
-    setRows(data ?? []);
+    const [{ data: profs }, { data: roles }] = await Promise.all([
+      supabase.rpc("admin_list_profiles"),
+      supabase.from("user_roles").select("user_id, role"),
+    ]);
+    const roleMap: Record<string, string> = {};
+    (roles ?? []).forEach((r: any) => { roleMap[r.user_id] = r.role; });
+    const merged = (profs ?? []).map((p: any) => ({ ...p, user_roles: { role: roleMap[p.id] } }));
+    setRows(merged);
     setLoading(false);
   };
 
