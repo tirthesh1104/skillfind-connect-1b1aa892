@@ -588,6 +588,29 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      admin_list_profiles: {
+        Args: never
+        Returns: {
+          created_at: string
+          full_name: string
+          id: string
+          is_available: boolean
+          location: string | null
+          phone: string | null
+          pin_code: string | null
+          profile_image_url: string | null
+          rating_avg: number
+          rating_count: number
+          updated_at: string
+          work_passport_token: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "profiles"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       get_my_profile: {
         Args: never
         Returns: {
