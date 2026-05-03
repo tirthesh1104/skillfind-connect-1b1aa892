@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { Eye, EyeOff, HardHat, Loader2 } from "lucide-react";
 import { SKILL_OPTIONS } from "@/lib/labour";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const loginSchema = z.object({
   email: z.string().trim().email("Invalid email").max(255),
@@ -23,7 +24,7 @@ const registerSchema = z.object({
   email: z.string().trim().email("Invalid email").max(255),
   password: z.string().min(6, "Min 6 characters").max(72),
   phone: z.string().trim().min(6, "Phone required").max(20),
-  role: z.enum(["contractor", "labour"]),
+  role: z.enum(["contractor", "labour", "admin"]),
   company_name: z.string().trim().max(100).optional(),
   skill: z.string().trim().max(50).optional(),
 });
@@ -88,7 +89,7 @@ const Auth = () => {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-4">
-      {/* Animated mesh background */}
+      <div className="absolute right-4 top-4 z-10"><ThemeToggle /></div>
       <div className="absolute inset-0 -z-10 bg-gradient-mesh opacity-80" />
       <div className="absolute -left-32 top-20 -z-10 h-96 w-96 rounded-full bg-primary/30 blur-3xl" />
       <div className="absolute -right-32 bottom-20 -z-10 h-96 w-96 rounded-full bg-accent/20 blur-3xl" />
@@ -164,11 +165,12 @@ const Auth = () => {
                   </div>
                   <div className="col-span-2">
                     <Label>Role</Label>
-                    <Select value={watchedRole} onValueChange={(v) => registerForm.setValue("role", v as "contractor" | "labour")}>
+                    <Select value={watchedRole} onValueChange={(v) => registerForm.setValue("role", v as "contractor" | "labour" | "admin")}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="contractor">Contractor (Thekedar)</SelectItem>
                         <SelectItem value="labour">Labour (Majdoor)</SelectItem>
+                        <SelectItem value="admin">Admin (requires access key)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

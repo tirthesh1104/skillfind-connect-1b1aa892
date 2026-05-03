@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { NotificationBell } from "@/components/NotificationBell";
 import { InitialsAvatar } from "@/components/InitialsAvatar";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle
@@ -136,6 +137,7 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
             <span className="font-semibold">Labour Connector</span>
           </div>
           <div className="ml-auto flex items-center gap-2">
+            <ThemeToggle />
             <NotificationBell />
           </div>
         </header>
