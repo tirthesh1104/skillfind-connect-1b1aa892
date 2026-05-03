@@ -47,7 +47,7 @@ const AdminHome = () => {
   useEffect(() => {
     (async () => {
       const [p, r, c, l, j, rq, ag, ds, rt, ins] = await Promise.all([
-        supabase.from("profiles").select("*").order("created_at", { ascending: false }),
+        supabase.rpc("admin_list_profiles").then((r) => ({ data: r.data ?? [] })),
         supabase.from("user_roles").select("user_id, role"),
         supabase.from("contractor_profiles").select("*"),
         supabase.from("labour_profiles").select("*"),

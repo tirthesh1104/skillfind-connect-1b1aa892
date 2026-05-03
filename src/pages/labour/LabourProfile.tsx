@@ -25,7 +25,7 @@ const LabourProfile = () => {
     if (!user) return;
     (async () => {
       const [{ data: profile }, { data: lp }] = await Promise.all([
-        supabase.from("profiles").select("*").eq("id", user.id).maybeSingle(),
+        supabase.rpc("get_my_profile").then((r) => ({ data: r.data as any })),
         supabase.from("labour_profiles").select("*").eq("user_id", user.id).maybeSingle(),
       ]);
       setForm({
