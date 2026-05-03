@@ -89,7 +89,7 @@ const Auth = () => {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-4">
-      {/* Animated mesh background */}
+      <div className="absolute right-4 top-4 z-10"><ThemeToggle /></div>
       <div className="absolute inset-0 -z-10 bg-gradient-mesh opacity-80" />
       <div className="absolute -left-32 top-20 -z-10 h-96 w-96 rounded-full bg-primary/30 blur-3xl" />
       <div className="absolute -right-32 bottom-20 -z-10 h-96 w-96 rounded-full bg-accent/20 blur-3xl" />
