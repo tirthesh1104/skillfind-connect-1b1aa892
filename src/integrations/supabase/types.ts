@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_verifications: {
+        Row: {
+          created_at: string
+          user_id: string
+          verified_until: string
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+          verified_until: string
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
+          verified_until?: string
+        }
+        Relationships: []
+      }
       contractor_profiles: {
         Row: {
           company_name: string
@@ -547,6 +565,52 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_get_profile: {
+        Args: { _user_id: string }
+        Returns: {
+          created_at: string
+          full_name: string
+          id: string
+          is_available: boolean
+          location: string | null
+          phone: string | null
+          pin_code: string | null
+          profile_image_url: string | null
+          rating_avg: number
+          rating_count: number
+          updated_at: string
+          work_passport_token: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "profiles"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      get_my_profile: {
+        Args: never
+        Returns: {
+          created_at: string
+          full_name: string
+          id: string
+          is_available: boolean
+          location: string | null
+          phone: string | null
+          pin_code: string | null
+          profile_image_url: string | null
+          rating_avg: number
+          rating_count: number
+          updated_at: string
+          work_passport_token: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "profiles"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
