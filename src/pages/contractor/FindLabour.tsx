@@ -12,7 +12,7 @@ import { InitialsAvatar } from "@/components/InitialsAvatar";
 import { EmptyState } from "@/components/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SKILL_OPTIONS, skillBadgeClass } from "@/lib/labour";
-import { Search, MapPin, Phone, Send, Users } from "lucide-react";
+import { Search, MapPin, Send, Users } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -24,7 +24,7 @@ interface Labour {
   experience_years: number;
   is_available: boolean;
   bio: string | null;
-  profile: { full_name: string; phone: string | null; location: string | null; profile_image_url: string | null };
+  profile: { full_name: string; location: string | null; profile_image_url: string | null };
 }
 
 const FindLabour = () => {
@@ -51,7 +51,7 @@ const FindLabour = () => {
     }
     const { data } = await supabase
       .from("labour_profiles")
-      .select("id, user_id, skill, price_per_day, experience_years, is_available, bio, profile:profiles!inner(full_name, phone, location, profile_image_url)")
+      .select("id, user_id, skill, price_per_day, experience_years, is_available, bio, profile:profiles!inner(full_name, location, profile_image_url)")
       .order("created_at", { ascending: false });
     setLabours((data ?? []) as any);
     setLoading(false);
@@ -195,7 +195,7 @@ const FindLabour = () => {
                 <div className="rounded-lg bg-secondary/50 p-3"><p className="text-xs text-muted-foreground">Price/Day</p><p className="font-semibold">Rs. {selected.price_per_day}</p></div>
                 <div className="rounded-lg bg-secondary/50 p-3"><p className="text-xs text-muted-foreground">Experience</p><p className="font-semibold">{selected.experience_years} years</p></div>
                 {selected.profile.location && <div className="col-span-2 rounded-lg bg-secondary/50 p-3"><p className="flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="h-3 w-3" />Location</p><p className="font-semibold">{selected.profile.location}</p></div>}
-                {selected.profile.phone && <div className="col-span-2 rounded-lg bg-secondary/50 p-3"><p className="flex items-center gap-1 text-xs text-muted-foreground"><Phone className="h-3 w-3" />Phone</p><p className="font-semibold">{selected.profile.phone}</p></div>}
+                {/* Phone hidden — contact happens after request is accepted */}
               </div>
               {selected.bio && <p className="text-sm text-muted-foreground">{selected.bio}</p>}
               <Button className="w-full bg-gradient-primary" disabled={requestedIds.has(selected.id) || !selected.is_available} onClick={() => sendRequest(selected)}>
