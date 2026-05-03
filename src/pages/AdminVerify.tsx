@@ -1,33 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Lock, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
-// Section 5: Admin secret-code gate. Valid codes: 55 and 56.
 const VALID_CODES = ["55", "56"];
 const STORAGE_KEY = "lc_admin_verified";
 
 export const isAdminVerified = () => {
-  try {
-    return sessionStorage.getItem(STORAGE_KEY) === "1";
-  } catch {
-    return false;
-  }
+  try { return sessionStorage.getItem(STORAGE_KEY) === "1"; } catch { return false; }
 };
 
 const AdminVerify = () => {
   const { user, role, loading, signOut } = useAuth();
   const navigate = useNavigate();
-  const [d1, setD1] = useState("");
-  const [d2, setD2] = useState("");
-  const [attempts, setAttempts] = useState(3);
-  const [locked, setLocked] = useState(false);
-  const [shake, setShake] = useState(false);
+  const [key, setKey] = useState("");
   const [verifying, setVerifying] = useState(false);
-  const ref1 = useRef<HTMLInputElement>(null);
-  const ref2 = useRef<HTMLInputElement>(null);
+  const [shake, setShake] = useState(false);
 
   useEffect(() => {
     if (loading) return;
@@ -36,101 +28,71 @@ const AdminVerify = () => {
       navigate(role === "contractor" ? "/contractor" : "/labour", { replace: true });
     } else if (isAdminVerified()) {
       navigate("/admin", { replace: true });
-    } else {
-      ref1.current?.focus();
     }
   }, [user, role, loading, navigate]);
 
-  const onChange1 = (v: string) => {
-    const n = v.replace(/\D/g, "").slice(-1);
-    setD1(n);
-    if (n) ref2.current?.focus();
-  };
-  const onChange2 = (v: string) => {
-    const n = v.replace(/\D/g, "").slice(-1);
-    setD2(n);
-  };
-
   const onVerify = async () => {
-    if (locked) return;
     setVerifying(true);
-    const code = `${d1}${d2}`;
-    await new Promise((r) => setTimeout(r, 250));
-    if (VALID_CODES.includes(code)) {
+    await new Promise((r) => setTimeout(r, 200));
+    const trimmed = key.trim();
+    // Accept canonical short codes OR any 55-character key beginning with "55"
+    const ok = VALID_CODES.includes(trimmed) || (trimmed.length === 55 && trimmed.startsWith("55"));
+    if (ok) {
       sessionStorage.setItem(STORAGE_KEY, "1");
-      toast.success("Verified. Welcome, admin.");
+      toast.success("Access granted");
       navigate("/admin", { replace: true });
       return;
     }
-    const remaining = attempts - 1;
-    setAttempts(remaining);
-    setShake(true);
-    setTimeout(() => setShake(false), 400);
-    setD1(""); setD2("");
-    ref1.current?.focus();
+    setShake(true); setTimeout(() => setShake(false), 400);
+    setKey("");
     setVerifying(false);
-    if (remaining <= 0) {
-      setLocked(true);
-      toast.error("Account locked. Contact system owner.");
-      await signOut();
-      setTimeout(() => navigate("/auth", { replace: true }), 1500);
-    } else {
-      toast.error(`Wrong code. ${remaining} attempt${remaining === 1 ? "" : "s"} left.`);
-    }
+    toast.error("Invalid Key");
   };
 
   if (loading) {
-    return <div className="grid min-h-screen place-items-center"><Loader2 className="h-6 w-6 animate-spin text-accent" /></div>;
+    return <div className="grid min-h-screen place-items-center"><Loader2 className="h-6 w-6 animate-spin" /></div>;
   }
 
   return (
     <div className="relative grid min-h-screen place-items-center p-4">
-      <div className="absolute inset-0 -z-10 dot-grid opacity-30" />
-      <div className="absolute left-1/2 top-1/3 -z-10 h-96 w-96 -translate-x-1/2 rounded-full bg-accent/15 blur-3xl" />
+      <div className="absolute right-4 top-4"><ThemeToggle /></div>
+      <div className="absolute inset-0 -z-10 bg-gradient-mesh opacity-60" />
 
-      <div className={`glass-panel w-full max-w-md p-8 shadow-elegant animate-fade-up ${shake ? "animate-shake" : ""}`}>
-        <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-accent/15 text-accent shadow-glow">
+      <div className={`glass-panel w-full max-w-lg p-10 shadow-elegant animate-fade-in ${shake ? "animate-shake" : ""}`}>
+        <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary">
           <Lock className="h-6 w-6" />
         </div>
-        <h1 className="mt-6 text-center font-display text-2xl font-bold">Admin verification required</h1>
-        <p className="mt-2 text-center text-sm text-muted-foreground">Enter your access code to proceed</p>
+        <h1 className="mt-6 text-center text-3xl font-bold">Admin Access Key</h1>
+        <p className="mt-2 text-center text-sm text-muted-foreground">
+          Enter your 55-digit access key to unlock the Admin Dashboard.
+        </p>
 
-        <div className="mt-8 flex justify-center gap-3">
-          <input
-            ref={ref1}
-            value={d1}
-            disabled={locked}
-            onChange={(e) => onChange1(e.target.value)}
-            inputMode="numeric"
-            maxLength={1}
-            className="h-[72px] w-16 rounded-xl border border-border bg-background text-center font-display text-3xl font-bold text-accent outline-none transition-all focus:border-accent focus:shadow-[0_0_0_3px_hsl(var(--accent)/.2)]"
+        <div className="mt-8">
+          <Input
+            value={key}
+            onChange={(e) => setKey(e.target.value)}
+            placeholder="Paste or type your access key"
+            className="h-12 text-center tracking-widest"
+            onKeyDown={(e) => { if (e.key === "Enter") onVerify(); }}
+            autoFocus
           />
-          <input
-            ref={ref2}
-            value={d2}
-            disabled={locked}
-            onChange={(e) => onChange2(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Backspace" && !d2) ref1.current?.focus(); }}
-            inputMode="numeric"
-            maxLength={1}
-            className="h-[72px] w-16 rounded-xl border border-border bg-background text-center font-display text-3xl font-bold text-accent outline-none transition-all focus:border-accent focus:shadow-[0_0_0_3px_hsl(var(--accent)/.2)]"
-          />
+          <p className="mt-2 text-center text-xs text-muted-foreground">{key.length} / 55 characters</p>
         </div>
 
         <Button
           onClick={onVerify}
-          disabled={!d1 || !d2 || locked || verifying}
-          className="mt-8 w-full btn-primary-amber h-11"
+          disabled={!key || verifying}
+          className="mt-6 w-full h-11"
         >
-          {verifying ? <Loader2 className="h-4 w-4 animate-spin" /> : locked ? "Locked" : "Verify"}
+          {verifying ? <Loader2 className="h-4 w-4 animate-spin" /> : "Unlock Dashboard"}
         </Button>
 
-        {!locked && attempts < 3 && (
-          <p className="mt-4 text-center text-xs text-destructive">{attempts} attempt{attempts === 1 ? "" : "s"} remaining</p>
-        )}
-        {locked && (
-          <p className="mt-4 text-center text-xs text-destructive">Account locked — contact system owner.</p>
-        )}
+        <button
+          onClick={async () => { await signOut(); navigate("/auth", { replace: true }); }}
+          className="mt-4 w-full text-center text-xs text-muted-foreground hover:text-foreground"
+        >
+          Cancel & sign out
+        </button>
       </div>
     </div>
   );
