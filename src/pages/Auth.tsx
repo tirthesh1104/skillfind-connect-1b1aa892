@@ -24,7 +24,7 @@ const registerSchema = z.object({
   email: z.string().trim().email("Invalid email").max(255),
   password: z.string().min(6, "Min 6 characters").max(72),
   phone: z.string().trim().min(6, "Phone required").max(20),
-  role: z.enum(["contractor", "labour"]),
+  role: z.enum(["admin", "contractor", "labour"]),
   company_name: z.string().trim().max(100).optional(),
   skill: z.string().trim().max(50).optional(),
 });
@@ -165,14 +165,17 @@ const Auth = () => {
                   </div>
                   <div className="col-span-2">
                     <Label>Role</Label>
-                    <Select value={watchedRole} onValueChange={(v) => registerForm.setValue("role", v as "contractor" | "labour")}>
+                    <Select value={watchedRole} onValueChange={(v) => registerForm.setValue("role", v as "admin" | "contractor" | "labour")}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="contractor">Contractor (Thekedar)</SelectItem>
                         <SelectItem value="labour">Labour (Majdoor)</SelectItem>
+                        <SelectItem value="admin">Admin</SelectItem>
                       </SelectContent>
                     </Select>
-                    <p className="mt-1 text-xs text-muted-foreground">Admin access is granted manually — sign in then enter your access key.</p>
+                    {watchedRole === "admin" && (
+                      <p className="mt-1 text-xs text-muted-foreground">After login, enter the Admin access key to unlock the dashboard.</p>
+                    )}
                   </div>
                   {watchedRole === "contractor" && (
                     <div className="col-span-2">
