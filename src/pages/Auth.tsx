@@ -165,14 +165,17 @@ const Auth = () => {
                   </div>
                   <div className="col-span-2">
                     <Label>Role</Label>
-                    <Select value={watchedRole} onValueChange={(v) => registerForm.setValue("role", v as "contractor" | "labour")}>
+                    <Select value={watchedRole} onValueChange={(v) => registerForm.setValue("role", v as "admin" | "contractor" | "labour")}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="contractor">Contractor (Thekedar)</SelectItem>
                         <SelectItem value="labour">Labour (Majdoor)</SelectItem>
+                        <SelectItem value="admin">Admin</SelectItem>
                       </SelectContent>
                     </Select>
-                    <p className="mt-1 text-xs text-muted-foreground">Admin access is granted manually — sign in then enter your access key.</p>
+                    {watchedRole === "admin" && (
+                      <p className="mt-1 text-xs text-muted-foreground">After login, enter the Admin access key to unlock the dashboard.</p>
+                    )}
                   </div>
                   {watchedRole === "contractor" && (
                     <div className="col-span-2">
