@@ -24,7 +24,7 @@ const registerSchema = z.object({
   email: z.string().trim().email("Invalid email").max(255),
   password: z.string().min(6, "Min 6 characters").max(72),
   phone: z.string().trim().min(6, "Phone required").max(20),
-  role: z.enum(["contractor", "labour"]),
+  role: z.enum(["admin", "contractor", "labour"]),
   company_name: z.string().trim().max(100).optional(),
   skill: z.string().trim().max(50).optional(),
 });
