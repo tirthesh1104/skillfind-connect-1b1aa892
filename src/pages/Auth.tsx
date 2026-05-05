@@ -25,6 +25,7 @@ const registerSchema = z.object({
   password: z.string().min(6, "Min 6 characters").max(72),
   phone: z.string().trim().min(6, "Phone required").max(20),
   role: z.enum(["admin", "contractor", "labour"]),
+  admin_key: z.string().trim().max(20).optional(),
   company_name: z.string().trim().max(100).optional(),
   skill: z.string().trim().max(50).optional(),
 });
@@ -40,7 +41,7 @@ const Auth = () => {
   const loginForm = useForm<LoginForm>({ resolver: zodResolver(loginSchema), defaultValues: { email: "", password: "" } });
   const registerForm = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { full_name: "", email: "", password: "", phone: "", role: "labour", skill: "Plumber" },
+    defaultValues: { full_name: "", email: "", password: "", phone: "", role: "labour", admin_key: "", skill: "Plumber" },
   });
   const watchedRole = registerForm.watch("role");
 
@@ -63,6 +64,11 @@ const Auth = () => {
   };
 
   const onRegister = async (values: RegisterForm) => {
+    if (values.role === "admin" && !values.admin_key?.trim()) {
+      toast.error("Access Key required");
+      return;
+    }
+
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({
       email: values.email,
@@ -78,12 +84,30 @@ const Auth = () => {
         },
       },
     });
-    setLoading(false);
     if (error) {
+      setLoading(false);
       toast.error(error.message);
       return;
     }
+
+    if (values.role === "admin") {
+      const { data: verified, error: verifyError } = await supabase.functions.invoke("verify-admin-key", {
+        body: { key: values.admin_key?.trim(), registration: true },
+      });
+      if (verifyError || !verified?.ok) {
+        await supabase.auth.signOut();
+        setLoading(false);
+        toast.error("Invalid Access Key");
+        return;
+      }
+    }
+
+    setLoading(false);
     toast.success("Account created!");
+    if (values.role === "admin") {
+      window.location.assign("/admin");
+      return;
+    }
     if (data.user) await routeForRole(data.user.id);
   };
 
