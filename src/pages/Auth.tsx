@@ -198,7 +198,10 @@ const Auth = () => {
                       </SelectContent>
                     </Select>
                     {watchedRole === "admin" && (
-                      <p className="mt-1 text-xs text-muted-foreground">After login, enter the Admin access key to unlock the dashboard.</p>
+                      <div className="mt-3">
+                        <Label htmlFor="admin-key">Access Key</Label>
+                        <Input id="admin-key" type="password" placeholder="Enter access key" {...registerForm.register("admin_key")} />
+                      </div>
                     )}
                   </div>
                   {watchedRole === "contractor" && (
