@@ -35,9 +35,11 @@ Deno.serve(async (req) => {
 
     const body = await req.json().catch(() => ({}));
     const submitted = String(body?.key ?? "").trim();
+    const registrationAttempt = Boolean(body?.registration);
 
     // Constant-time-ish compare
     if (!expected || submitted.length !== expected.length || submitted !== expected) {
+      if (registrationAttempt) await admin.auth.admin.deleteUser(userId);
       return new Response(JSON.stringify({ error: "Invalid Key" }), {
         status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
