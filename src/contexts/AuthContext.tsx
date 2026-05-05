@@ -22,6 +22,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   const fetchRole = async (uid: string) => {
+    const { data: rpcRole, error: rpcError } = await supabase.rpc("get_user_role", { _user_id: uid });
+    if (!rpcError && rpcRole) {
+      setRole(rpcRole as AppRole);
+      return;
+    }
+
     const { data } = await supabase
       .from("user_roles")
       .select("role")
@@ -33,13 +39,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Set up listener BEFORE getSession (auth best practice)
     const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setLoading(true);
       setSession(newSession);
       setUser(newSession?.user ?? null);
       if (newSession?.user) {
         // Defer Supabase calls to avoid deadlocks
-        setTimeout(() => fetchRole(newSession.user.id), 0);
+        setTimeout(() => fetchRole(newSession.user.id).finally(() => setLoading(false)), 0);
       } else {
         setRole(null);
+        setLoading(false);
       }
     });
 
