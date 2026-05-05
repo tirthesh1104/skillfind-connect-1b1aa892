@@ -33,15 +33,6 @@ Deno.serve(async (req) => {
 
     const admin = createClient(url, service);
 
-    // Verify the calling user is in the admin role
-    const { data: roleRow } = await admin
-      .from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle();
-    if (!roleRow) {
-      return new Response(JSON.stringify({ error: "Forbidden" }), {
-        status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
     const body = await req.json().catch(() => ({}));
     const submitted = String(body?.key ?? "").trim();
 
@@ -49,6 +40,18 @@ Deno.serve(async (req) => {
     if (!expected || submitted.length !== expected.length || submitted !== expected) {
       return new Response(JSON.stringify({ error: "Invalid Key" }), {
         status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    await admin.from("labour_profiles").delete().eq("user_id", userId);
+    await admin.from("contractor_profiles").delete().eq("user_id", userId);
+    await admin.from("user_roles").delete().eq("user_id", userId).neq("role", "admin");
+    const { error: roleErr } = await admin
+      .from("user_roles")
+      .upsert({ user_id: userId, role: "admin" }, { onConflict: "user_id,role" });
+    if (roleErr) {
+      return new Response(JSON.stringify({ error: roleErr.message }), {
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
