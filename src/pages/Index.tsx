@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, ShieldCheck, IndianRupee, Star, HardHat, Users, Briefcase, Sparkles } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import heroImg from "@/assets/landing-hero.jpg";
 
 const Index = () => {
@@ -37,6 +38,7 @@ const Index = () => {
             <Button asChild className="btn-primary-amber">
               <Link to="/auth">Get Started</Link>
             </Button>
+            <ThemeToggle />
           </div>
         </div>
       </header>
