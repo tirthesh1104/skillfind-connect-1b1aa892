@@ -38,13 +38,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // Set up listener BEFORE getSession (auth best practice)
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event, newSession) => {
       setLoading(true);
       setSession(newSession);
       setUser(newSession?.user ?? null);
       if (newSession?.user) {
+        const uid = newSession.user.id;
+        // On every fresh sign-in, clear any prior admin verification so the access key must be re-entered
+        if (event === "SIGNED_IN") {
+          setTimeout(() => {
+            supabase.from("admin_verifications").delete().eq("user_id", uid).then(() => {});
+          }, 0);
+        }
         // Defer Supabase calls to avoid deadlocks
-        setTimeout(() => fetchRole(newSession.user.id).finally(() => setLoading(false)), 0);
+        setTimeout(() => fetchRole(uid).finally(() => setLoading(false)), 0);
       } else {
         setRole(null);
         setLoading(false);
