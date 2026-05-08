@@ -91,7 +91,9 @@ const AdminUsers = () => {
                       <TableCell>{r.location ?? "—"}</TableCell>
                       <TableCell>{format(new Date(r.created_at), "PP")}</TableCell>
                       <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" className="text-destructive" onClick={() => setConfirmDel(r)}><Trash2 className="h-3 w-3" /></Button>
+                        <Button variant="destructive" size="sm" onClick={() => setConfirmDel(r)}>
+                          <Trash2 className="mr-1 h-3 w-3" /> Delete
+                        </Button>
                       </TableCell>
                     </TableRow>
                   );
