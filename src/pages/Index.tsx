@@ -12,8 +12,8 @@ const Index = () => {
 
   useEffect(() => {
     if (loading || !user) return;
-    if (role === "admin") navigate("/admin/verify", { replace: true });
-    else if (role === "contractor") navigate("/contractor", { replace: true });
+    // Admins should see the landing page first, then proceed via Login → Access Key.
+    if (role === "contractor") navigate("/contractor", { replace: true });
     else if (role === "labour") navigate("/labour", { replace: true });
   }, [user, role, loading, navigate]);
 
