@@ -38,6 +38,7 @@ const Index = () => {
             <Button asChild className="btn-primary-amber">
               <Link to="/auth">Get Started</Link>
             </Button>
+            <ThemeToggle />
           </div>
         </div>
       </header>
