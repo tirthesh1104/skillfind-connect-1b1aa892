@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SKILL_OPTIONS } from "@/lib/labour";
+import { DocumentVault } from "@/components/DocumentVault";
 import { toast } from "sonner";
 import { Save } from "lucide-react";
 
