@@ -11,6 +11,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import AdminVerify from "./pages/AdminVerify";
+import Messages from "./pages/Messages";
 
 import ContractorHome from "./pages/contractor/ContractorHome";
 import FindLabour from "./pages/contractor/FindLabour";
@@ -68,6 +69,9 @@ const App = () => (
             <Route path="/admin/requests" element={<RoleLayout roles={["admin"]}><AdminRequests /></RoleLayout>} />
             <Route path="/admin/analytics" element={<RoleLayout roles={["admin"]}><AdminAnalytics /></RoleLayout>} />
             <Route path="/admin/disputes" element={<RoleLayout roles={["admin"]}><AdminDisputes /></RoleLayout>} />
+
+            {/* Messages (all roles) */}
+            <Route path="/messages" element={<RoleLayout roles={["admin","contractor","labour"]}><Messages /></RoleLayout>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>

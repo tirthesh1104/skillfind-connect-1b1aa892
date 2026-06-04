@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SKILL_OPTIONS } from "@/lib/labour";
+import { DocumentVault } from "@/components/DocumentVault";
 import { toast } from "sonner";
 import { Save } from "lucide-react";
 
@@ -86,8 +87,10 @@ const LabourProfile = () => {
         <div className="md:col-span-2"><Label>Bio</Label><Textarea rows={3} value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} /></div>
         <div className="md:col-span-2">
           <Button className="bg-gradient-primary" onClick={save} disabled={saving}><Save className="mr-2 h-4 w-4" />{saving ? "Saving..." : "Save Changes"}</Button>
-        </div>
       </div>
+
+      <DocumentVault />
+    </div>
     </div>
   );
 };

@@ -9,7 +9,7 @@ import { InitialsAvatar } from "@/components/InitialsAvatar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
-  UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle
+  UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -26,12 +26,14 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/contractor/find-labour", label: "Find Labour", icon: Search },
     { to: "/contractor/jobs", label: "My Jobs", icon: Briefcase },
     { to: "/contractor/requests", label: "Requests", icon: Inbox },
+    { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   labour: [
     { to: "/labour", label: "Dashboard", icon: LayoutDashboard, end: true },
     { to: "/labour/profile", label: "My Profile", icon: UserCircle },
     { to: "/labour/find-jobs", label: "Find Jobs", icon: Search },
     { to: "/labour/applications", label: "Applications", icon: ListChecks },
+    { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   admin: [
     { to: "/admin", label: "Overview", icon: Shield, end: true },
@@ -40,6 +42,7 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/admin/jobs", label: "Jobs", icon: Briefcase },
     { to: "/admin/requests", label: "Requests", icon: FileText },
     { to: "/admin/disputes", label: "Disputes", icon: AlertTriangle },
+    { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
 };
 
