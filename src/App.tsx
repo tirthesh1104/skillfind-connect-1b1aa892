@@ -76,6 +76,12 @@ const App = () => (
             {/* Messages (all roles) */}
             <Route path="/messages" element={<RoleLayout roles={["admin","contractor","labour"]}><Messages /></RoleLayout>} />
 
+            {/* Payment flow */}
+            <Route path="/my-payment-details" element={<RoleLayout roles={["labour"]}><MyPaymentDetails /></RoleLayout>} />
+            <Route path="/my-receipts" element={<RoleLayout roles={["labour","contractor"]}><MyReceipts /></RoleLayout>} />
+            <Route path="/pay-labour" element={<RoleLayout roles={["contractor","admin"]}><PayLabour /></RoleLayout>} />
+            <Route path="/admin/payments" element={<RoleLayout roles={["admin"]}><MyReceipts /></RoleLayout>} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
