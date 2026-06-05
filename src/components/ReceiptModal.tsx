@@ -40,12 +40,12 @@ export const ReceiptModal = ({ open, onOpenChange, receipt }: {
   };
 
   const handleSendToLabour = async () => {
-    const { error } = await supabase.from("notifications").insert({
+    const { error } = await supabase.from("notifications").insert([{
       user_id: receipt.labour_id,
       title: "🧾 Payment Receipt",
       message: `Your payment receipt is ready. ₹${receipt.amount} received on ${new Date(receipt.created_at).toLocaleDateString()}`,
-      type: "payment",
-    });
+      type: "system" as const,
+    }]);
     if (error) return toast.error(error.message);
     toast.success(`✅ Receipt sent to ${receipt.labour_name}`);
   };
