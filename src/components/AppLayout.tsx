@@ -27,6 +27,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/contractor/find-labour", label: "Find Labour", icon: Search },
     { to: "/contractor/jobs", label: "My Jobs", icon: Briefcase },
     { to: "/contractor/requests", label: "Requests", icon: Inbox },
+    { to: "/pay-labour", label: "Pay Labour", icon: Wallet },
+    { to: "/my-receipts", label: "Receipts", icon: Receipt },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   labour: [
@@ -34,6 +36,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/labour/profile", label: "My Profile", icon: UserCircle },
     { to: "/labour/find-jobs", label: "Find Jobs", icon: Search },
     { to: "/labour/applications", label: "Applications", icon: ListChecks },
+    { to: "/my-payment-details", label: "Payment Details", icon: CreditCard },
+    { to: "/my-receipts", label: "My Receipts", icon: Receipt },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   admin: [
@@ -43,6 +47,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/admin/jobs", label: "Jobs", icon: Briefcase },
     { to: "/admin/requests", label: "Requests", icon: FileText },
     { to: "/admin/disputes", label: "Disputes", icon: AlertTriangle },
+    { to: "/pay-labour", label: "Pay Labour", icon: Wallet },
+    { to: "/admin/payments", label: "All Payments", icon: Receipt },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
 };
