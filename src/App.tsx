@@ -17,6 +17,9 @@ import ContractorHome from "./pages/contractor/ContractorHome";
 import FindLabour from "./pages/contractor/FindLabour";
 import ContractorJobs from "./pages/contractor/ContractorJobs";
 import ContractorRequests from "./pages/contractor/ContractorRequests";
+import PayLabour from "./pages/PayLabour";
+import MyReceipts from "./pages/MyReceipts";
+import MyPaymentDetails from "./pages/labour/MyPaymentDetails";
 
 import LabourHome from "./pages/labour/LabourHome";
 import LabourProfile from "./pages/labour/LabourProfile";
