@@ -278,6 +278,51 @@ export type Database = {
           },
         ]
       }
+      labour_payments: {
+        Row: {
+          advance_paid: number
+          amount_due: number
+          contractor_id: string
+          created_at: string
+          daily_rate: number
+          days_worked: number
+          id: string
+          job_id: string | null
+          labour_id: string
+          skill: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          advance_paid?: number
+          amount_due?: number
+          contractor_id: string
+          created_at?: string
+          daily_rate?: number
+          days_worked?: number
+          id?: string
+          job_id?: string | null
+          labour_id: string
+          skill?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          advance_paid?: number
+          amount_due?: number
+          contractor_id?: string
+          created_at?: string
+          daily_rate?: number
+          days_worked?: number
+          id?: string
+          job_id?: string | null
+          labour_id?: string
+          skill?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       labour_profiles: {
         Row: {
           bio: string | null
@@ -393,47 +438,168 @@ export type Database = {
           },
         ]
       }
+      payment_history: {
+        Row: {
+          amount: number
+          contractor_id: string
+          created_at: string
+          id: string
+          labour_id: string
+          labour_payment_id: string | null
+          note: string | null
+          payment_method: string
+          payment_reference: string | null
+        }
+        Insert: {
+          amount: number
+          contractor_id: string
+          created_at?: string
+          id?: string
+          labour_id: string
+          labour_payment_id?: string | null
+          note?: string | null
+          payment_method?: string
+          payment_reference?: string | null
+        }
+        Update: {
+          amount?: number
+          contractor_id?: string
+          created_at?: string
+          id?: string
+          labour_id?: string
+          labour_payment_id?: string | null
+          note?: string | null
+          payment_method?: string
+          payment_reference?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_history_labour_payment_id_fkey"
+            columns: ["labour_payment_id"]
+            isOneToOne: false
+            referencedRelation: "labour_payments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_receipts: {
+        Row: {
+          amount: number
+          contractor_id: string
+          contractor_name: string | null
+          created_at: string
+          days_worked: number | null
+          id: string
+          labour_id: string
+          labour_name: string | null
+          payment_history_id: string | null
+          payment_method: string
+          payment_reference: string | null
+          receipt_number: string
+          skill: string | null
+          upi_id: string | null
+        }
+        Insert: {
+          amount: number
+          contractor_id: string
+          contractor_name?: string | null
+          created_at?: string
+          days_worked?: number | null
+          id?: string
+          labour_id: string
+          labour_name?: string | null
+          payment_history_id?: string | null
+          payment_method?: string
+          payment_reference?: string | null
+          receipt_number: string
+          skill?: string | null
+          upi_id?: string | null
+        }
+        Update: {
+          amount?: number
+          contractor_id?: string
+          contractor_name?: string | null
+          created_at?: string
+          days_worked?: number | null
+          id?: string
+          labour_id?: string
+          labour_name?: string | null
+          payment_history_id?: string | null
+          payment_method?: string
+          payment_reference?: string | null
+          receipt_number?: string
+          skill?: string | null
+          upi_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_receipts_payment_history_id_fkey"
+            columns: ["payment_history_id"]
+            isOneToOne: false
+            referencedRelation: "payment_history"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
+          account_holder_name: string | null
+          account_number: string | null
+          bank_name: string | null
           created_at: string
           full_name: string
           id: string
+          ifsc_code: string | null
           is_available: boolean
           location: string | null
+          payment_details_updated_at: string | null
           phone: string | null
           pin_code: string | null
           profile_image_url: string | null
           rating_avg: number
           rating_count: number
           updated_at: string
+          upi_id: string | null
           work_passport_token: string | null
         }
         Insert: {
+          account_holder_name?: string | null
+          account_number?: string | null
+          bank_name?: string | null
           created_at?: string
           full_name: string
           id: string
+          ifsc_code?: string | null
           is_available?: boolean
           location?: string | null
+          payment_details_updated_at?: string | null
           phone?: string | null
           pin_code?: string | null
           profile_image_url?: string | null
           rating_avg?: number
           rating_count?: number
           updated_at?: string
+          upi_id?: string | null
           work_passport_token?: string | null
         }
         Update: {
+          account_holder_name?: string | null
+          account_number?: string | null
+          bank_name?: string | null
           created_at?: string
           full_name?: string
           id?: string
+          ifsc_code?: string | null
           is_available?: boolean
           location?: string | null
+          payment_details_updated_at?: string | null
           phone?: string | null
           pin_code?: string | null
           profile_image_url?: string | null
           rating_avg?: number
           rating_count?: number
           updated_at?: string
+          upi_id?: string | null
           work_passport_token?: string | null
         }
         Relationships: []
@@ -622,17 +788,23 @@ export type Database = {
       admin_get_profile: {
         Args: { _user_id: string }
         Returns: {
+          account_holder_name: string | null
+          account_number: string | null
+          bank_name: string | null
           created_at: string
           full_name: string
           id: string
+          ifsc_code: string | null
           is_available: boolean
           location: string | null
+          payment_details_updated_at: string | null
           phone: string | null
           pin_code: string | null
           profile_image_url: string | null
           rating_avg: number
           rating_count: number
           updated_at: string
+          upi_id: string | null
           work_passport_token: string | null
         }
         SetofOptions: {
@@ -645,17 +817,23 @@ export type Database = {
       admin_list_profiles: {
         Args: never
         Returns: {
+          account_holder_name: string | null
+          account_number: string | null
+          bank_name: string | null
           created_at: string
           full_name: string
           id: string
+          ifsc_code: string | null
           is_available: boolean
           location: string | null
+          payment_details_updated_at: string | null
           phone: string | null
           pin_code: string | null
           profile_image_url: string | null
           rating_avg: number
           rating_count: number
           updated_at: string
+          upi_id: string | null
           work_passport_token: string | null
         }[]
         SetofOptions: {
@@ -668,17 +846,23 @@ export type Database = {
       get_my_profile: {
         Args: never
         Returns: {
+          account_holder_name: string | null
+          account_number: string | null
+          bank_name: string | null
           created_at: string
           full_name: string
           id: string
+          ifsc_code: string | null
           is_available: boolean
           location: string | null
+          payment_details_updated_at: string | null
           phone: string | null
           pin_code: string | null
           profile_image_url: string | null
           rating_avg: number
           rating_count: number
           updated_at: string
+          upi_id: string | null
           work_passport_token: string | null
         }
         SetofOptions: {

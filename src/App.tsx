@@ -17,6 +17,9 @@ import ContractorHome from "./pages/contractor/ContractorHome";
 import FindLabour from "./pages/contractor/FindLabour";
 import ContractorJobs from "./pages/contractor/ContractorJobs";
 import ContractorRequests from "./pages/contractor/ContractorRequests";
+import PayLabour from "./pages/PayLabour";
+import MyReceipts from "./pages/MyReceipts";
+import MyPaymentDetails from "./pages/labour/MyPaymentDetails";
 
 import LabourHome from "./pages/labour/LabourHome";
 import LabourProfile from "./pages/labour/LabourProfile";
@@ -72,6 +75,12 @@ const App = () => (
 
             {/* Messages (all roles) */}
             <Route path="/messages" element={<RoleLayout roles={["admin","contractor","labour"]}><Messages /></RoleLayout>} />
+
+            {/* Payment flow */}
+            <Route path="/my-payment-details" element={<RoleLayout roles={["labour"]}><MyPaymentDetails /></RoleLayout>} />
+            <Route path="/my-receipts" element={<RoleLayout roles={["labour","contractor"]}><MyReceipts /></RoleLayout>} />
+            <Route path="/pay-labour" element={<RoleLayout roles={["contractor","admin"]}><PayLabour /></RoleLayout>} />
+            <Route path="/admin/payments" element={<RoleLayout roles={["admin"]}><MyReceipts /></RoleLayout>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
