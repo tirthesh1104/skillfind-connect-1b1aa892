@@ -9,7 +9,8 @@ import { InitialsAvatar } from "@/components/InitialsAvatar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
-  UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle
+  UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
+  Wallet, Receipt, CreditCard
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
