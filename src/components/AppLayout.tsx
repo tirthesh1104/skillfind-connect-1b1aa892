@@ -10,7 +10,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
-  Wallet, Receipt, CreditCard
+  Wallet, Receipt, CreditCard, IdCard
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -37,6 +37,7 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/labour/find-jobs", label: "Find Jobs", icon: Search },
     { to: "/labour/applications", label: "Applications", icon: ListChecks },
     { to: "/my-payment-details", label: "Payment Details", icon: CreditCard },
+    { to: "/my-id-card", label: "My ID Card", icon: IdCard },
     { to: "/my-receipts", label: "My Receipts", icon: Receipt },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],

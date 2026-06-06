@@ -543,19 +543,28 @@ export type Database = {
       }
       profiles: {
         Row: {
+          aadhaar_last4: string | null
           account_holder_name: string | null
           account_number: string | null
+          address: string | null
+          bank_branch: string | null
           bank_name: string | null
           created_at: string
+          date_of_birth: string | null
+          eshram_number: string | null
           full_name: string
           id: string
+          id_card_generated_at: string | null
+          id_card_number: string | null
           ifsc_code: string | null
           is_available: boolean
           location: string | null
           payment_details_updated_at: string | null
           phone: string | null
           pin_code: string | null
+          profile_complete: boolean
           profile_image_url: string | null
+          profile_photo_url: string | null
           rating_avg: number
           rating_count: number
           updated_at: string
@@ -563,19 +572,28 @@ export type Database = {
           work_passport_token: string | null
         }
         Insert: {
+          aadhaar_last4?: string | null
           account_holder_name?: string | null
           account_number?: string | null
+          address?: string | null
+          bank_branch?: string | null
           bank_name?: string | null
           created_at?: string
+          date_of_birth?: string | null
+          eshram_number?: string | null
           full_name: string
           id: string
+          id_card_generated_at?: string | null
+          id_card_number?: string | null
           ifsc_code?: string | null
           is_available?: boolean
           location?: string | null
           payment_details_updated_at?: string | null
           phone?: string | null
           pin_code?: string | null
+          profile_complete?: boolean
           profile_image_url?: string | null
+          profile_photo_url?: string | null
           rating_avg?: number
           rating_count?: number
           updated_at?: string
@@ -583,19 +601,28 @@ export type Database = {
           work_passport_token?: string | null
         }
         Update: {
+          aadhaar_last4?: string | null
           account_holder_name?: string | null
           account_number?: string | null
+          address?: string | null
+          bank_branch?: string | null
           bank_name?: string | null
           created_at?: string
+          date_of_birth?: string | null
+          eshram_number?: string | null
           full_name?: string
           id?: string
+          id_card_generated_at?: string | null
+          id_card_number?: string | null
           ifsc_code?: string | null
           is_available?: boolean
           location?: string | null
           payment_details_updated_at?: string | null
           phone?: string | null
           pin_code?: string | null
+          profile_complete?: boolean
           profile_image_url?: string | null
+          profile_photo_url?: string | null
           rating_avg?: number
           rating_count?: number
           updated_at?: string
@@ -788,19 +815,28 @@ export type Database = {
       admin_get_profile: {
         Args: { _user_id: string }
         Returns: {
+          aadhaar_last4: string | null
           account_holder_name: string | null
           account_number: string | null
+          address: string | null
+          bank_branch: string | null
           bank_name: string | null
           created_at: string
+          date_of_birth: string | null
+          eshram_number: string | null
           full_name: string
           id: string
+          id_card_generated_at: string | null
+          id_card_number: string | null
           ifsc_code: string | null
           is_available: boolean
           location: string | null
           payment_details_updated_at: string | null
           phone: string | null
           pin_code: string | null
+          profile_complete: boolean
           profile_image_url: string | null
+          profile_photo_url: string | null
           rating_avg: number
           rating_count: number
           updated_at: string
@@ -817,19 +853,28 @@ export type Database = {
       admin_list_profiles: {
         Args: never
         Returns: {
+          aadhaar_last4: string | null
           account_holder_name: string | null
           account_number: string | null
+          address: string | null
+          bank_branch: string | null
           bank_name: string | null
           created_at: string
+          date_of_birth: string | null
+          eshram_number: string | null
           full_name: string
           id: string
+          id_card_generated_at: string | null
+          id_card_number: string | null
           ifsc_code: string | null
           is_available: boolean
           location: string | null
           payment_details_updated_at: string | null
           phone: string | null
           pin_code: string | null
+          profile_complete: boolean
           profile_image_url: string | null
+          profile_photo_url: string | null
           rating_avg: number
           rating_count: number
           updated_at: string
@@ -846,19 +891,28 @@ export type Database = {
       get_my_profile: {
         Args: never
         Returns: {
+          aadhaar_last4: string | null
           account_holder_name: string | null
           account_number: string | null
+          address: string | null
+          bank_branch: string | null
           bank_name: string | null
           created_at: string
+          date_of_birth: string | null
+          eshram_number: string | null
           full_name: string
           id: string
+          id_card_generated_at: string | null
+          id_card_number: string | null
           ifsc_code: string | null
           is_available: boolean
           location: string | null
           payment_details_updated_at: string | null
           phone: string | null
           pin_code: string | null
+          profile_complete: boolean
           profile_image_url: string | null
+          profile_photo_url: string | null
           rating_avg: number
           rating_count: number
           updated_at: string
@@ -871,6 +925,29 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      get_public_worker: {
+        Args: { _user_id: string }
+        Returns: {
+          created_at: string
+          full_name: string
+          id: string
+          id_card_number: string
+          location: string
+          phone: string
+          profile_photo_url: string
+          rating_avg: number
+          rating_count: number
+          upi_id: string
+        }[]
+      }
+      get_public_worker_skill: {
+        Args: { _user_id: string }
+        Returns: {
+          experience_years: number
+          price_per_day: number
+          skill: string
+        }[]
       }
       get_user_role: {
         Args: { _user_id: string }

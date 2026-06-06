@@ -7,8 +7,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Wallet, IndianRupee } from "lucide-react";
+import { Wallet, IndianRupee, IdCard as IdCardIcon } from "lucide-react";
 import { PaymentModal, PaymentTarget } from "@/components/PaymentModal";
+import { IdCardModal } from "@/components/IdCardModal";
+import { IdCardData } from "@/components/IdCard";
 import { EmptyState } from "@/components/EmptyState";
 
 interface Row {
@@ -22,6 +24,7 @@ interface Row {
   status: string;
   labour_name: string;
   upi_id: string | null;
+  _profile?: any;
 }
 
 const PayLabour = () => {
@@ -32,6 +35,8 @@ const PayLabour = () => {
   const [contractorName, setContractorName] = useState("");
   const [target, setTarget] = useState<PaymentTarget | null>(null);
   const [open, setOpen] = useState(false);
+  const [idCard, setIdCard] = useState<IdCardData | null>(null);
+  const [idOpen, setIdOpen] = useState(false);
 
   const load = useCallback(async () => {
     if (!user) return;
@@ -44,15 +49,19 @@ const PayLabour = () => {
     const { data: lp } = await q;
     const labourIds = [...new Set((lp ?? []).map((r) => r.labour_id))];
     const { data: profs } = labourIds.length
-      ? await supabase.from("profiles").select("id, full_name, upi_id").in("id", labourIds)
+      ? await supabase.from("profiles").select("id, full_name, upi_id, phone, profile_photo_url, bank_name, account_number, ifsc_code, id_card_number, id_card_generated_at, rating_avg, aadhaar_last4").in("id", labourIds)
       : { data: [] as any[] };
     const profMap = new Map((profs ?? []).map((p) => [p.id, p]));
 
-    setRows((lp ?? []).map((r) => ({
-      ...r,
-      labour_name: profMap.get(r.labour_id)?.full_name ?? "Worker",
-      upi_id: profMap.get(r.labour_id)?.upi_id ?? null,
-    })));
+    setRows((lp ?? []).map((r) => {
+      const p: any = profMap.get(r.labour_id);
+      return {
+        ...r,
+        labour_name: p?.full_name ?? "Worker",
+        upi_id: p?.upi_id ?? null,
+        _profile: p,
+      };
+    }));
 
     const { data: me } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle();
     setContractorName(me?.full_name ?? "Contractor");
@@ -104,6 +113,7 @@ const PayLabour = () => {
                   <TableHead>Amount</TableHead>
                   <TableHead>Payment Method</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>🪪 ID Card</TableHead>
                   <TableHead className="text-right">Action</TableHead>
                 </TableRow></TableHeader>
                 <TableBody>
@@ -125,6 +135,31 @@ const PayLabour = () => {
                         </TableCell>
                         <TableCell>
                           <Badge variant={r.status === "Paid" ? "default" : "secondary"}>{r.status}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          {r._profile?.id_card_number ? (
+                            <Button size="sm" variant="outline" onClick={() => {
+                              const p = r._profile;
+                              setIdCard({
+                                id_card_number: p.id_card_number,
+                                full_name: p.full_name,
+                                skill: r.skill,
+                                phone: p.phone,
+                                upi_id: p.upi_id,
+                                rating_avg: p.rating_avg,
+                                profile_photo_url: p.profile_photo_url,
+                                bank_name: p.bank_name,
+                                account_number: p.account_number,
+                                ifsc_code: p.ifsc_code,
+                                id_card_generated_at: p.id_card_generated_at,
+                                verified: !!p.aadhaar_last4,
+                                worker_user_id: r.labour_id,
+                              });
+                              setIdOpen(true);
+                            }}><IdCardIcon className="mr-1 h-3 w-3" />View ID</Button>
+                          ) : (
+                            <span className="text-xs text-muted-foreground">—</span>
+                          )}
                         </TableCell>
                         <TableCell className="text-right">
                           {ready && unpaid ? (
@@ -175,6 +210,11 @@ const PayLabour = () => {
       </Card>
 
       <PaymentModal open={open} onOpenChange={setOpen} target={target} onPaid={load} />
+      <IdCardModal open={idOpen} onOpenChange={setIdOpen} data={idCard} onPay={() => {
+        setIdOpen(false);
+        const row = rows.find(r => r.labour_id === idCard?.worker_user_id);
+        if (row) openPay(row);
+      }} />
     </div>
   );
 };
