@@ -113,6 +113,7 @@ const PayLabour = () => {
                   <TableHead>Amount</TableHead>
                   <TableHead>Payment Method</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>🪪 ID Card</TableHead>
                   <TableHead className="text-right">Action</TableHead>
                 </TableRow></TableHeader>
                 <TableBody>
@@ -134,6 +135,31 @@ const PayLabour = () => {
                         </TableCell>
                         <TableCell>
                           <Badge variant={r.status === "Paid" ? "default" : "secondary"}>{r.status}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          {r._profile?.id_card_number ? (
+                            <Button size="sm" variant="outline" onClick={() => {
+                              const p = r._profile;
+                              setIdCard({
+                                id_card_number: p.id_card_number,
+                                full_name: p.full_name,
+                                skill: r.skill,
+                                phone: p.phone,
+                                upi_id: p.upi_id,
+                                rating_avg: p.rating_avg,
+                                profile_photo_url: p.profile_photo_url,
+                                bank_name: p.bank_name,
+                                account_number: p.account_number,
+                                ifsc_code: p.ifsc_code,
+                                id_card_generated_at: p.id_card_generated_at,
+                                verified: !!p.aadhaar_last4,
+                                worker_user_id: r.labour_id,
+                              });
+                              setIdOpen(true);
+                            }}><IdCardIcon className="mr-1 h-3 w-3" />View ID</Button>
+                          ) : (
+                            <span className="text-xs text-muted-foreground">—</span>
+                          )}
                         </TableCell>
                         <TableCell className="text-right">
                           {ready && unpaid ? (
