@@ -20,6 +20,8 @@ import ContractorRequests from "./pages/contractor/ContractorRequests";
 import PayLabour from "./pages/PayLabour";
 import MyReceipts from "./pages/MyReceipts";
 import MyPaymentDetails from "./pages/labour/MyPaymentDetails";
+import MyIdCard from "./pages/labour/MyIdCard";
+import PublicWorker from "./pages/PublicWorker";
 
 import LabourHome from "./pages/labour/LabourHome";
 import LabourProfile from "./pages/labour/LabourProfile";
@@ -81,6 +83,10 @@ const App = () => (
             <Route path="/my-receipts" element={<RoleLayout roles={["labour","contractor"]}><MyReceipts /></RoleLayout>} />
             <Route path="/pay-labour" element={<RoleLayout roles={["contractor","admin"]}><PayLabour /></RoleLayout>} />
             <Route path="/admin/payments" element={<RoleLayout roles={["admin"]}><MyReceipts /></RoleLayout>} />
+            <Route path="/my-id-card" element={<RoleLayout roles={["labour"]}><MyIdCard /></RoleLayout>} />
+
+            {/* Public worker profile (QR scan target) */}
+            <Route path="/worker/:id" element={<PublicWorker />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
