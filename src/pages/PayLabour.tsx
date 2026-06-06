@@ -210,6 +210,11 @@ const PayLabour = () => {
       </Card>
 
       <PaymentModal open={open} onOpenChange={setOpen} target={target} onPaid={load} />
+      <IdCardModal open={idOpen} onOpenChange={setIdOpen} data={idCard} onPay={() => {
+        setIdOpen(false);
+        const row = rows.find(r => r.labour_id === idCard?.worker_user_id);
+        if (row) openPay(row);
+      }} />
     </div>
   );
 };
