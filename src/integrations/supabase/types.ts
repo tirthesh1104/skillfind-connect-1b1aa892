@@ -286,9 +286,11 @@ export type Database = {
           created_at: string
           daily_rate: number
           days_worked: number
+          expected_payment_date: string | null
           id: string
           job_id: string | null
           labour_id: string
+          payment_promise_note: string | null
           skill: string | null
           status: string
           updated_at: string
@@ -300,9 +302,11 @@ export type Database = {
           created_at?: string
           daily_rate?: number
           days_worked?: number
+          expected_payment_date?: string | null
           id?: string
           job_id?: string | null
           labour_id: string
+          payment_promise_note?: string | null
           skill?: string | null
           status?: string
           updated_at?: string
@@ -314,9 +318,11 @@ export type Database = {
           created_at?: string
           daily_rate?: number
           days_worked?: number
+          expected_payment_date?: string | null
           id?: string
           job_id?: string | null
           labour_id?: string
+          payment_promise_note?: string | null
           skill?: string | null
           status?: string
           updated_at?: string
@@ -482,6 +488,66 @@ export type Database = {
           },
         ]
       }
+      payment_proofs: {
+        Row: {
+          amount: number | null
+          confirmed_at: string | null
+          confirmed_by_labour: boolean
+          contractor_id: string
+          created_at: string
+          id: string
+          labour_id: string
+          labour_payment_id: string | null
+          note: string | null
+          payment_history_id: string | null
+          proof_type: string
+          proof_url: string
+        }
+        Insert: {
+          amount?: number | null
+          confirmed_at?: string | null
+          confirmed_by_labour?: boolean
+          contractor_id: string
+          created_at?: string
+          id?: string
+          labour_id: string
+          labour_payment_id?: string | null
+          note?: string | null
+          payment_history_id?: string | null
+          proof_type?: string
+          proof_url: string
+        }
+        Update: {
+          amount?: number | null
+          confirmed_at?: string | null
+          confirmed_by_labour?: boolean
+          contractor_id?: string
+          created_at?: string
+          id?: string
+          labour_id?: string
+          labour_payment_id?: string | null
+          note?: string | null
+          payment_history_id?: string | null
+          proof_type?: string
+          proof_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_proofs_labour_payment_id_fkey"
+            columns: ["labour_payment_id"]
+            isOneToOne: false
+            referencedRelation: "labour_payments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_proofs_payment_history_id_fkey"
+            columns: ["payment_history_id"]
+            isOneToOne: false
+            referencedRelation: "payment_history"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payment_receipts: {
         Row: {
           amount: number
@@ -560,6 +626,7 @@ export type Database = {
           is_available: boolean
           location: string | null
           payment_details_updated_at: string | null
+          payment_frequency: string
           phone: string | null
           pin_code: string | null
           profile_complete: boolean
@@ -569,6 +636,7 @@ export type Database = {
           rating_count: number
           updated_at: string
           upi_id: string | null
+          upi_verified: boolean
           work_passport_token: string | null
         }
         Insert: {
@@ -589,6 +657,7 @@ export type Database = {
           is_available?: boolean
           location?: string | null
           payment_details_updated_at?: string | null
+          payment_frequency?: string
           phone?: string | null
           pin_code?: string | null
           profile_complete?: boolean
@@ -598,6 +667,7 @@ export type Database = {
           rating_count?: number
           updated_at?: string
           upi_id?: string | null
+          upi_verified?: boolean
           work_passport_token?: string | null
         }
         Update: {
@@ -618,6 +688,7 @@ export type Database = {
           is_available?: boolean
           location?: string | null
           payment_details_updated_at?: string | null
+          payment_frequency?: string
           phone?: string | null
           pin_code?: string | null
           profile_complete?: boolean
@@ -627,6 +698,7 @@ export type Database = {
           rating_count?: number
           updated_at?: string
           upi_id?: string | null
+          upi_verified?: boolean
           work_passport_token?: string | null
         }
         Relationships: []
@@ -832,6 +904,7 @@ export type Database = {
           is_available: boolean
           location: string | null
           payment_details_updated_at: string | null
+          payment_frequency: string
           phone: string | null
           pin_code: string | null
           profile_complete: boolean
@@ -841,6 +914,7 @@ export type Database = {
           rating_count: number
           updated_at: string
           upi_id: string | null
+          upi_verified: boolean
           work_passport_token: string | null
         }
         SetofOptions: {
@@ -870,6 +944,7 @@ export type Database = {
           is_available: boolean
           location: string | null
           payment_details_updated_at: string | null
+          payment_frequency: string
           phone: string | null
           pin_code: string | null
           profile_complete: boolean
@@ -879,6 +954,7 @@ export type Database = {
           rating_count: number
           updated_at: string
           upi_id: string | null
+          upi_verified: boolean
           work_passport_token: string | null
         }[]
         SetofOptions: {
@@ -908,6 +984,7 @@ export type Database = {
           is_available: boolean
           location: string | null
           payment_details_updated_at: string | null
+          payment_frequency: string
           phone: string | null
           pin_code: string | null
           profile_complete: boolean
@@ -917,6 +994,7 @@ export type Database = {
           rating_count: number
           updated_at: string
           upi_id: string | null
+          upi_verified: boolean
           work_passport_token: string | null
         }
         SetofOptions: {
