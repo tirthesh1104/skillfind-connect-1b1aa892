@@ -39,6 +39,7 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/my-payment-details", label: "Payment Details", icon: CreditCard },
     { to: "/my-id-card", label: "My ID Card", icon: IdCard },
     { to: "/my-receipts", label: "My Receipts", icon: Receipt },
+    { to: "/my-payslips", label: "Payslips", icon: FileText },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   admin: [
