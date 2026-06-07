@@ -72,7 +72,6 @@ const MyReceipts = () => {
     toast.success("✅ Payment confirmed received"); load();
   };
 
-  const proofFor = (rId: string) => proofs.find(p => p.payment_history_id && rows.some(r => r.payment_history_id === rId));
   const proofByHistoryId = (phId: string) => proofs.find(p => p.payment_history_id === phId);
 
   const expectedBadge = (iso?: string | null) => {
