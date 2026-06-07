@@ -27,6 +27,7 @@ const MyPaymentDetails = () => {
     skill: "", experience_years: "", price_per_day: "",
     // Payment
     upi_id: "", account_holder_name: "", bank_name: "", account_number: "", ifsc_code: "", bank_branch: "",
+    payment_frequency: "Monthly",
     // Identity
     aadhaar_last4: "", eshram_number: "",
   });
@@ -35,7 +36,7 @@ const MyPaymentDetails = () => {
     if (!user) return;
     (async () => {
       const { data: p } = await supabase.from("profiles")
-        .select("full_name, phone, date_of_birth, address, profile_photo_url, upi_id, account_holder_name, bank_name, account_number, ifsc_code, bank_branch, aadhaar_last4, eshram_number, profile_complete")
+        .select("full_name, phone, date_of_birth, address, profile_photo_url, upi_id, account_holder_name, bank_name, account_number, ifsc_code, bank_branch, aadhaar_last4, eshram_number, profile_complete, payment_frequency")
         .eq("id", user.id).maybeSingle();
       const { data: lp } = await supabase.from("labour_profiles")
         .select("skill, experience_years, price_per_day").eq("user_id", user.id).maybeSingle();
@@ -54,6 +55,7 @@ const MyPaymentDetails = () => {
         account_number: p?.account_number ?? "",
         ifsc_code: p?.ifsc_code ?? "",
         bank_branch: p?.bank_branch ?? "",
+        payment_frequency: (p as any)?.payment_frequency ?? "Monthly",
         aadhaar_last4: p?.aadhaar_last4 ?? "",
         eshram_number: p?.eshram_number ?? "",
       });
@@ -90,6 +92,8 @@ const MyPaymentDetails = () => {
       address: form.address,
       profile_photo_url: form.profile_photo_url || null,
       upi_id: form.upi_id,
+      upi_verified: upiValid,
+      payment_frequency: form.payment_frequency,
       account_holder_name: form.account_holder_name,
       bank_name: form.bank_name,
       account_number: form.account_number,
@@ -206,6 +210,16 @@ const MyPaymentDetails = () => {
             <Field label="Account Number"><Input value={form.account_number} onChange={(e) => setForm({ ...form, account_number: e.target.value })} /></Field>
             <Field label="IFSC Code"><Input value={form.ifsc_code} onChange={(e) => setForm({ ...form, ifsc_code: e.target.value })} /></Field>
             <Field label="Bank Branch"><Input value={form.bank_branch} onChange={(e) => setForm({ ...form, bank_branch: e.target.value })} /></Field>
+            <Field label="💰 Preferred Payment Frequency" full>
+              <Select value={form.payment_frequency} onValueChange={(v) => setForm({ ...form, payment_frequency: v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Daily">Daily</SelectItem>
+                  <SelectItem value="Weekly">Weekly</SelectItem>
+                  <SelectItem value="Monthly">Monthly</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
           </Section>
 
           <Section title="🪪 Identity">
