@@ -54,8 +54,7 @@ export const RoleChatbot = ({ role }: { role: "worker" | "contractor" | "admin" 
         if (lp) ctx.skill_profile = lp;
         const { data: pays } = await supabase.from("labour_payments").select("status, amount, expected_payment_date").eq("labour_id", user.id).order("created_at", { ascending: false }).limit(5);
         ctx.recent_payments = pays ?? [];
-        const { data: apps } = await supabase.from("requests").select("status").eq("initiated_by", user.id);
-        ctx.applications_count = apps?.length ?? 0;
+        // (applications count omitted — schema-specific join)
       } else if (role === "contractor") {
         const { data: jobs } = await supabase.from("jobs").select("id, title, status").eq("contractor_id", user.id);
         ctx.posted_jobs = jobs?.length ?? 0;
