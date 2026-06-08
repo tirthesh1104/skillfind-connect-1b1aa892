@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { NotificationBell } from "@/components/NotificationBell";
 import { InitialsAvatar } from "@/components/InitialsAvatar";
+import { RoleChatbot } from "@/components/RoleChatbot";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
@@ -156,6 +157,10 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
 
         <main className="flex-1 p-4 md:p-6 lg:p-8 animate-fade-in">{children}</main>
       </div>
+
+      {role === "labour" && <RoleChatbot role="worker" />}
+      {role === "contractor" && <RoleChatbot role="contractor" />}
+      {role === "admin" && <RoleChatbot role="admin" />}
     </div>
   );
 };
