@@ -103,7 +103,7 @@ const ClientHome = () => {
     supabase
       .from("messages")
       .select("*")
-      .eq("from_user", user.id)
+      .eq("sender_id", user.id)
       .order("created_at", { ascending: false })
       .limit(50)
       .then(({ data }) => setMyRequests(data || []));
@@ -113,10 +113,10 @@ const ClientHome = () => {
     if (!user || !contactTarget || !message.trim()) return;
     setSending(true);
     const { error } = await supabase.from("messages").insert({
-      from_user: user.id,
-      to_user: contactTarget.id,
-      body: message.trim(),
-    } as any);
+      sender_id: user.id,
+      receiver_id: contactTarget.id,
+      message: message.trim(),
+    });
     setSending(false);
     if (error) {
       toast.error(error.message);
@@ -222,7 +222,7 @@ const ClientHome = () => {
           {myRequests.length === 0 && <p className="text-sm text-muted-foreground">No messages sent yet.</p>}
           {myRequests.map((m) => (
             <Card key={m.id} className="p-3">
-              <p className="text-sm">{m.body}</p>
+              <p className="text-sm">{m.message}</p>
               <p className="mt-1 text-xs text-muted-foreground">{new Date(m.created_at).toLocaleString()}</p>
             </Card>
           ))}
