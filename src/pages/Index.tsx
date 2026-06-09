@@ -4,17 +4,22 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, ShieldCheck, IndianRupee, Star, HardHat, Users, Briefcase, Sparkles } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useWelcomeVoice } from "@/hooks/useWelcomeVoice";
 import heroImg from "@/assets/landing-hero.jpg";
 
 const Index = () => {
   const { user, role, loading } = useAuth();
   const navigate = useNavigate();
+  const { t, lang } = useLanguage();
+  useWelcomeVoice(lang);
 
   useEffect(() => {
     if (loading || !user) return;
-    // Admins should see the landing page first, then proceed via Login → Access Key.
     if (role === "contractor") navigate("/contractor", { replace: true });
     else if (role === "labour") navigate("/labour", { replace: true });
+    else if (role === "client") navigate("/client", { replace: true });
   }, [user, role, loading, navigate]);
 
   return (
@@ -33,15 +38,37 @@ const Index = () => {
           </nav>
           <div className="flex items-center gap-2">
             <Button asChild variant="ghost" className="text-foreground">
-              <Link to="/auth">Login</Link>
+              <Link to="/auth">{t("nav.login")}</Link>
             </Button>
             <Button asChild className="btn-primary-amber">
-              <Link to="/auth">Get Started</Link>
+              <Link to="/auth">{t("nav.getStarted")}</Link>
             </Button>
+            <LanguageSwitcher />
             <ThemeToggle />
           </div>
         </div>
       </header>
+
+      {/* EXPLAINER HERO */}
+      <section className="border-b border-border bg-gradient-to-b from-accent/5 to-transparent">
+        <div className="mx-auto max-w-[1280px] px-6 py-12 text-center">
+          <h1 className="font-display text-3xl font-bold sm:text-4xl lg:text-5xl">{t("hero.title")}</h1>
+          <p className="mx-auto mt-4 max-w-3xl text-base text-muted-foreground sm:text-lg">{t("hero.sub")}</p>
+          <div className="mx-auto mt-8 grid max-w-4xl gap-3 sm:grid-cols-3">
+            <div className="rounded-xl border border-border bg-card/60 p-4 text-left text-sm">{t("hero.bullet.contractor")}</div>
+            <div className="rounded-xl border border-border bg-card/60 p-4 text-left text-sm">{t("hero.bullet.worker")}</div>
+            <div className="rounded-xl border border-border bg-card/60 p-4 text-left text-sm">{t("hero.bullet.admin")}</div>
+          </div>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button asChild size="lg" className="btn-primary-amber h-12">
+              <Link to="/auth?role=contractor">{t("hero.cta.contractor")} <ArrowRight className="ml-1 h-4 w-4" /></Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="h-12">
+              <Link to="/auth?role=labour">{t("hero.cta.worker")} <ArrowRight className="ml-1 h-4 w-4" /></Link>
+            </Button>
+          </div>
+        </div>
+      </section>
 
       {/* HERO */}
       <section className="relative overflow-hidden">
