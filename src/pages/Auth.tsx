@@ -24,10 +24,11 @@ const registerSchema = z.object({
   email: z.string().trim().email("Invalid email").max(255),
   password: z.string().min(6, "Min 6 characters").max(72),
   phone: z.string().trim().min(6, "Phone required").max(20),
-  role: z.enum(["admin", "contractor", "labour"]),
+  role: z.enum(["admin", "contractor", "labour", "client"]),
   admin_key: z.string().trim().max(20).optional(),
   company_name: z.string().trim().max(100).optional(),
   skill: z.string().trim().max(50).optional(),
+  project_type: z.string().trim().max(100).optional(),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
@@ -48,7 +49,8 @@ const Auth = () => {
   const routeForRole = async (uid: string) => {
     const { data } = await supabase.from("user_roles").select("role").eq("user_id", uid).maybeSingle();
     const r = data?.role;
-    navigate(r === "admin" ? "/admin/verify" : r === "contractor" ? "/contractor" : "/labour", { replace: true });
+    const dest = r === "admin" ? "/admin/verify" : r === "contractor" ? "/contractor" : r === "client" ? "/client" : "/labour";
+    navigate(dest, { replace: true });
   };
 
   const onLogin = async (values: LoginForm) => {
@@ -81,6 +83,7 @@ const Auth = () => {
           role: values.role,
           company_name: values.company_name,
           skill: values.skill,
+          project_type: values.project_type,
         },
       },
     });
