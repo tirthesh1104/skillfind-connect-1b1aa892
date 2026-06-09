@@ -44,7 +44,7 @@ export const ProtectedRoute = ({ children, allowedRoles }: Props) => {
   if (!user) return <Navigate to="/auth" state={{ from: location }} replace />;
 
   if (allowedRoles && role && !allowedRoles.includes(role)) {
-    const dest = role === "admin" ? "/admin" : role === "contractor" ? "/contractor" : "/labour";
+    const dest = role === "admin" ? "/admin" : role === "contractor" ? "/contractor" : role === "client" ? "/client" : "/labour";
     return <Navigate to={dest} replace />;
   }
 
