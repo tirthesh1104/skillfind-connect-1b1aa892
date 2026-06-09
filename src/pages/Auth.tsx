@@ -24,10 +24,11 @@ const registerSchema = z.object({
   email: z.string().trim().email("Invalid email").max(255),
   password: z.string().min(6, "Min 6 characters").max(72),
   phone: z.string().trim().min(6, "Phone required").max(20),
-  role: z.enum(["admin", "contractor", "labour"]),
+  role: z.enum(["admin", "contractor", "labour", "client"]),
   admin_key: z.string().trim().max(20).optional(),
   company_name: z.string().trim().max(100).optional(),
   skill: z.string().trim().max(50).optional(),
+  project_type: z.string().trim().max(100).optional(),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
@@ -48,7 +49,8 @@ const Auth = () => {
   const routeForRole = async (uid: string) => {
     const { data } = await supabase.from("user_roles").select("role").eq("user_id", uid).maybeSingle();
     const r = data?.role;
-    navigate(r === "admin" ? "/admin/verify" : r === "contractor" ? "/contractor" : "/labour", { replace: true });
+    const dest = r === "admin" ? "/admin/verify" : r === "contractor" ? "/contractor" : r === "client" ? "/client" : "/labour";
+    navigate(dest, { replace: true });
   };
 
   const onLogin = async (values: LoginForm) => {
@@ -81,6 +83,7 @@ const Auth = () => {
           role: values.role,
           company_name: values.company_name,
           skill: values.skill,
+          project_type: values.project_type,
         },
       },
     });
@@ -189,11 +192,12 @@ const Auth = () => {
                   </div>
                   <div className="col-span-2">
                     <Label>Role</Label>
-                    <Select value={watchedRole} onValueChange={(v) => registerForm.setValue("role", v as "admin" | "contractor" | "labour")}>
+                    <Select value={watchedRole} onValueChange={(v) => registerForm.setValue("role", v as "admin" | "contractor" | "labour" | "client")}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="contractor">Contractor (Thekedar)</SelectItem>
                         <SelectItem value="labour">Labour (Majdoor)</SelectItem>
+                        <SelectItem value="client">Client (Hire Labour)</SelectItem>
                         <SelectItem value="admin">Admin</SelectItem>
                       </SelectContent>
                     </Select>
@@ -209,6 +213,18 @@ const Auth = () => {
                       <Label htmlFor="company">Company Name</Label>
                       <Input id="company" placeholder="e.g. Ramesh Constructions" {...registerForm.register("company_name")} />
                     </div>
+                  )}
+                  {watchedRole === "client" && (
+                    <>
+                      <div className="col-span-2">
+                        <Label htmlFor="client-company">Company / Organisation (optional)</Label>
+                        <Input id="client-company" placeholder="e.g. ABC Builders" {...registerForm.register("company_name")} />
+                      </div>
+                      <div className="col-span-2">
+                        <Label htmlFor="project_type">Project Type</Label>
+                        <Input id="project_type" placeholder="e.g. Residential Building, Renovation" {...registerForm.register("project_type")} />
+                      </div>
+                    </>
                   )}
                   {watchedRole === "labour" && (
                     <div className="col-span-2">

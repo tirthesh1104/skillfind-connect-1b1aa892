@@ -17,6 +17,7 @@ import ContractorHome from "./pages/contractor/ContractorHome";
 import FindLabour from "./pages/contractor/FindLabour";
 import ContractorJobs from "./pages/contractor/ContractorJobs";
 import ContractorRequests from "./pages/contractor/ContractorRequests";
+import ClientHome from "./pages/client/ClientHome";
 import PayLabour from "./pages/PayLabour";
 import MyReceipts from "./pages/MyReceipts";
 import MyPaymentDetails from "./pages/labour/MyPaymentDetails";
@@ -38,7 +39,7 @@ import AdminDisputes from "./pages/admin/AdminDisputes";
 
 const queryClient = new QueryClient();
 
-const RoleLayout = ({ children, roles }: { children: React.ReactNode; roles: ("admin" | "contractor" | "labour")[] }) => (
+const RoleLayout = ({ children, roles }: { children: React.ReactNode; roles: ("admin" | "contractor" | "labour" | "client")[] }) => (
   <ProtectedRoute allowedRoles={roles}>
     <AppLayout>{children}</AppLayout>
   </ProtectedRoute>
@@ -68,6 +69,9 @@ const App = () => (
             <Route path="/labour/find-jobs" element={<RoleLayout roles={["labour"]}><LabourFindJobs /></RoleLayout>} />
             <Route path="/labour/applications" element={<RoleLayout roles={["labour"]}><LabourApplications /></RoleLayout>} />
 
+            {/* Client */}
+            <Route path="/client" element={<RoleLayout roles={["client"]}><ClientHome /></RoleLayout>} />
+
             {/* Admin */}
             <Route path="/admin" element={<RoleLayout roles={["admin"]}><AdminHome /></RoleLayout>} />
             <Route path="/admin/users" element={<RoleLayout roles={["admin"]}><AdminUsers /></RoleLayout>} />
@@ -77,7 +81,7 @@ const App = () => (
             <Route path="/admin/disputes" element={<RoleLayout roles={["admin"]}><AdminDisputes /></RoleLayout>} />
 
             {/* Messages (all roles) */}
-            <Route path="/messages" element={<RoleLayout roles={["admin","contractor","labour"]}><Messages /></RoleLayout>} />
+            <Route path="/messages" element={<RoleLayout roles={["admin","contractor","labour","client"]}><Messages /></RoleLayout>} />
 
             {/* Payment flow */}
             <Route path="/my-payment-details" element={<RoleLayout roles={["labour"]}><MyPaymentDetails /></RoleLayout>} />
