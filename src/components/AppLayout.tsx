@@ -8,6 +8,7 @@ import { NotificationBell } from "@/components/NotificationBell";
 import { InitialsAvatar } from "@/components/InitialsAvatar";
 import { RoleChatbot } from "@/components/RoleChatbot";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
@@ -41,6 +42,10 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/my-id-card", label: "My ID Card", icon: IdCard },
     { to: "/my-receipts", label: "My Receipts", icon: Receipt },
     { to: "/my-payslips", label: "Payslips", icon: FileText },
+    { to: "/messages", label: "Messages", icon: MessageCircle },
+  ],
+  client: [
+    { to: "/client", label: "Dashboard", icon: LayoutDashboard, end: true },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   admin: [
@@ -150,6 +155,7 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
             <span className="font-semibold">Labour Connector</span>
           </div>
           <div className="ml-auto flex items-center gap-2">
+            <LanguageSwitcher />
             <ThemeToggle />
             <NotificationBell />
           </div>
