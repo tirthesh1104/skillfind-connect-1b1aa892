@@ -81,7 +81,7 @@ const App = () => (
             <Route path="/admin/disputes" element={<RoleLayout roles={["admin"]}><AdminDisputes /></RoleLayout>} />
 
             {/* Messages (all roles) */}
-            <Route path="/messages" element={<RoleLayout roles={["admin","contractor","labour"]}><Messages /></RoleLayout>} />
+            <Route path="/messages" element={<RoleLayout roles={["admin","contractor","labour","client"]}><Messages /></RoleLayout>} />
 
             {/* Payment flow */}
             <Route path="/my-payment-details" element={<RoleLayout roles={["labour"]}><MyPaymentDetails /></RoleLayout>} />
