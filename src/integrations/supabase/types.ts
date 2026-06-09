@@ -32,6 +32,44 @@ export type Database = {
         }
         Relationships: []
       }
+      client_profiles: {
+        Row: {
+          company_name: string | null
+          created_at: string
+          id: string
+          location: string | null
+          project_type: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company_name?: string | null
+          created_at?: string
+          id?: string
+          location?: string | null
+          project_type?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company_name?: string | null
+          created_at?: string
+          id?: string
+          location?: string | null
+          project_type?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contractor_profiles: {
         Row: {
           company_name: string
@@ -1040,7 +1078,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "contractor" | "labour"
+      app_role: "admin" | "contractor" | "labour" | "client"
       job_status: "open" | "closed"
       notification_type: "request" | "accepted" | "rejected" | "system"
       request_status: "pending" | "accepted" | "rejected"
@@ -1171,7 +1209,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "contractor", "labour"],
+      app_role: ["admin", "contractor", "labour", "client"],
       job_status: ["open", "closed"],
       notification_type: ["request", "accepted", "rejected", "system"],
       request_status: ["pending", "accepted", "rejected"],
