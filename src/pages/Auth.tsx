@@ -192,11 +192,12 @@ const Auth = () => {
                   </div>
                   <div className="col-span-2">
                     <Label>Role</Label>
-                    <Select value={watchedRole} onValueChange={(v) => registerForm.setValue("role", v as "admin" | "contractor" | "labour")}>
+                    <Select value={watchedRole} onValueChange={(v) => registerForm.setValue("role", v as "admin" | "contractor" | "labour" | "client")}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="contractor">Contractor (Thekedar)</SelectItem>
                         <SelectItem value="labour">Labour (Majdoor)</SelectItem>
+                        <SelectItem value="client">Client (Hire Labour)</SelectItem>
                         <SelectItem value="admin">Admin</SelectItem>
                       </SelectContent>
                     </Select>
@@ -212,6 +213,18 @@ const Auth = () => {
                       <Label htmlFor="company">Company Name</Label>
                       <Input id="company" placeholder="e.g. Ramesh Constructions" {...registerForm.register("company_name")} />
                     </div>
+                  )}
+                  {watchedRole === "client" && (
+                    <>
+                      <div className="col-span-2">
+                        <Label htmlFor="client-company">Company / Organisation (optional)</Label>
+                        <Input id="client-company" placeholder="e.g. ABC Builders" {...registerForm.register("company_name")} />
+                      </div>
+                      <div className="col-span-2">
+                        <Label htmlFor="project_type">Project Type</Label>
+                        <Input id="project_type" placeholder="e.g. Residential Building, Renovation" {...registerForm.register("project_type")} />
+                      </div>
+                    </>
                   )}
                   {watchedRole === "labour" && (
                     <div className="col-span-2">
