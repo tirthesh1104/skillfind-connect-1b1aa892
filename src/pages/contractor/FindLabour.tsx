@@ -12,9 +12,11 @@ import { InitialsAvatar } from "@/components/InitialsAvatar";
 import { EmptyState } from "@/components/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SKILL_OPTIONS, skillBadgeClass } from "@/lib/labour";
-import { Search, MapPin, Send, Users } from "lucide-react";
+import { Search, MapPin, Send, Users, FileText, IndianRupee } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { AppointmentLetterDialog } from "@/components/AppointmentLetterDialog";
+import { GiveAdvanceDialog } from "@/components/GiveAdvanceDialog";
 
 interface Labour {
   id: string;
@@ -38,6 +40,14 @@ const FindLabour = () => {
   const [contractor, setContractor] = useState<{ id: string; max_labour_per_day: number; total_hired_today: number } | null>(null);
   const [requestedIds, setRequestedIds] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<Labour | null>(null);
+  const [letterFor, setLetterFor] = useState<Labour | null>(null);
+  const [advanceFor, setAdvanceFor] = useState<Labour | null>(null);
+  const [contractorName, setContractorName] = useState("");
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle().then(({ data }) => setContractorName(data?.full_name ?? ""));
+  }, [user]);
 
   const load = async () => {
     setLoading(true);
