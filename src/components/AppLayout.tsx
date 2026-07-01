@@ -31,6 +31,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/contractor/requests", label: "Requests", icon: Inbox },
     { to: "/pay-labour", label: "Pay Labour", icon: Wallet },
     { to: "/my-receipts", label: "Receipts", icon: Receipt },
+    { to: "/my-documents", label: "Documents", icon: FileText },
+    { to: "/my-advances", label: "Advances", icon: Wallet },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   labour: [
@@ -42,6 +44,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/my-id-card", label: "My ID Card", icon: IdCard },
     { to: "/my-receipts", label: "My Receipts", icon: Receipt },
     { to: "/my-payslips", label: "Payslips", icon: FileText },
+    { to: "/my-documents", label: "Documents", icon: FileText },
+    { to: "/my-advances", label: "My Advances", icon: Wallet },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   client: [

@@ -12,8 +12,9 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { EmptyState } from "@/components/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SKILL_OPTIONS } from "@/lib/labour";
-import { Briefcase, Plus, Pencil, X } from "lucide-react";
+import { Briefcase, Plus, Pencil, X, ShieldCheck, ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
+import { SKILL_CATEGORIES, checkWage } from "@/lib/wageCompliance";
 
 interface Job {
   id: string; title: string; work_type: string; required_skill: string;
@@ -27,8 +28,15 @@ const ContractorJobs = () => {
   const [contractorId, setContractorId] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Job | null>(null);
-  const empty = { title: "", work_type: "", required_skill: "Plumber", location: "", price_offered: 0, description: "", status: "open" as const };
+  const empty = { title: "", work_type: "", required_skill: "Plumber", location: "", price_offered: 0, description: "", status: "open" as const, skill_category: "Unskilled", state: "Maharashtra" };
   const [form, setForm] = useState<any>(empty);
+  const [wageCheck, setWageCheck] = useState<{ compliant: boolean; minimum: number; message: string } | null>(null);
+
+  useEffect(() => {
+    const price = Number(form.price_offered) || 0;
+    if (price <= 0) { setWageCheck(null); return; }
+    checkWage(form.state, form.skill_category, price).then(setWageCheck);
+  }, [form.price_offered, form.skill_category, form.state]);
 
   const load = async (cid?: string) => {
     setLoading(true);
@@ -51,7 +59,11 @@ const ContractorJobs = () => {
   const save = async () => {
     if (!contractorId) return;
     if (!form.title.trim() || !form.work_type.trim() || !form.location.trim()) return toast.error("Fill required fields");
-    const payload = { ...form, contractor_id: contractorId, price_offered: Number(form.price_offered) || 0 };
+    if (wageCheck && !wageCheck.compliant) {
+      return toast.error(`Wage below Maharashtra minimum (₹${wageCheck.minimum}/day). Labour Code 2025 violation.`);
+    }
+    const { skill_category, state, ...rest } = form;
+    const payload = { ...rest, contractor_id: contractorId, price_offered: Number(form.price_offered) || 0 };
     let res;
     if (editing) res = await supabase.from("jobs").update(payload).eq("id", editing.id);
     else res = await supabase.from("jobs").insert(payload);
@@ -97,6 +109,28 @@ const ContractorJobs = () => {
                 <div><Label>Location</Label><Input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} /></div>
                 <div><Label>Price (Rs/day)</Label><Input type="number" value={form.price_offered} onChange={(e) => setForm({ ...form, price_offered: e.target.value })} /></div>
               </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label>Skill Category (for wage compliance)</Label>
+                  <Select value={form.skill_category} onValueChange={(v) => setForm({ ...form, skill_category: v })}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>{SKILL_CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>State</Label>
+                  <Select value={form.state} onValueChange={(v) => setForm({ ...form, state: v })}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent><SelectItem value="Maharashtra">Maharashtra</SelectItem></SelectContent>
+                  </Select>
+                </div>
+              </div>
+              {wageCheck && (
+                <div className={`rounded-lg border p-3 text-sm flex items-start gap-2 ${wageCheck.compliant ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : "border-destructive/40 bg-destructive/10 text-destructive"}`}>
+                  {wageCheck.compliant ? <ShieldCheck className="h-4 w-4 mt-0.5"/> : <ShieldAlert className="h-4 w-4 mt-0.5"/>}
+                  <span>{wageCheck.message}</span>
+                </div>
+              )}
               <div><Label>Description</Label><Textarea rows={3} value={form.description ?? ""} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
               <div>
                 <Label>Status</Label>

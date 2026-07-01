@@ -12,9 +12,11 @@ import { InitialsAvatar } from "@/components/InitialsAvatar";
 import { EmptyState } from "@/components/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SKILL_OPTIONS, skillBadgeClass } from "@/lib/labour";
-import { Search, MapPin, Send, Users } from "lucide-react";
+import { Search, MapPin, Send, Users, FileText, IndianRupee } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { AppointmentLetterDialog } from "@/components/AppointmentLetterDialog";
+import { GiveAdvanceDialog } from "@/components/GiveAdvanceDialog";
 
 interface Labour {
   id: string;
@@ -38,6 +40,14 @@ const FindLabour = () => {
   const [contractor, setContractor] = useState<{ id: string; max_labour_per_day: number; total_hired_today: number } | null>(null);
   const [requestedIds, setRequestedIds] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<Labour | null>(null);
+  const [letterFor, setLetterFor] = useState<Labour | null>(null);
+  const [advanceFor, setAdvanceFor] = useState<Labour | null>(null);
+  const [contractorName, setContractorName] = useState("");
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle().then(({ data }) => setContractorName(data?.full_name ?? ""));
+  }, [user]);
 
   const load = async () => {
     setLoading(true);
@@ -198,13 +208,40 @@ const FindLabour = () => {
                 {/* Phone hidden — contact happens after request is accepted */}
               </div>
               {selected.bio && <p className="text-sm text-muted-foreground">{selected.bio}</p>}
-              <Button className="w-full bg-gradient-primary" disabled={requestedIds.has(selected.id) || !selected.is_available} onClick={() => sendRequest(selected)}>
-                <Send className="mr-2 h-4 w-4" />{requestedIds.has(selected.id) ? "Request Sent" : "Send Request"}
-              </Button>
+              <div className="grid grid-cols-2 gap-2">
+                <Button className="col-span-2 bg-gradient-primary" disabled={requestedIds.has(selected.id) || !selected.is_available} onClick={() => sendRequest(selected)}>
+                  <Send className="mr-2 h-4 w-4" />{requestedIds.has(selected.id) ? "Request Sent" : "Send Request"}
+                </Button>
+                <Button variant="outline" onClick={() => { setLetterFor(selected); setSelected(null); }}>
+                  <FileText className="mr-2 h-4 w-4"/> Appointment Letter
+                </Button>
+                <Button variant="outline" onClick={() => { setAdvanceFor(selected); setSelected(null); }}>
+                  <IndianRupee className="mr-2 h-4 w-4"/> Give Advance
+                </Button>
+              </div>
             </>
           )}
         </DialogContent>
       </Dialog>
+
+      {letterFor && (
+        <AppointmentLetterDialog
+          open={!!letterFor}
+          onOpenChange={(o) => !o && setLetterFor(null)}
+          workerId={letterFor.user_id}
+          workerName={letterFor.profile.full_name}
+          contractorName={contractorName}
+          defaultWage={letterFor.price_per_day}
+        />
+      )}
+      {advanceFor && (
+        <GiveAdvanceDialog
+          open={!!advanceFor}
+          onOpenChange={(o) => !o && setAdvanceFor(null)}
+          workerId={advanceFor.user_id}
+          workerName={advanceFor.profile.full_name}
+        />
+      )}
     </div>
   );
 };
