@@ -32,6 +32,93 @@ export type Database = {
         }
         Relationships: []
       }
+      advances: {
+        Row: {
+          agreed_by_worker: boolean
+          amount: number
+          balance: number
+          contractor_id: string
+          created_at: string
+          date: string
+          id: string
+          installment_amount: number | null
+          reason: string | null
+          repayment_type: string
+          status: string
+          total_repaid: number
+          weeks: number | null
+          worker_id: string
+        }
+        Insert: {
+          agreed_by_worker?: boolean
+          amount: number
+          balance?: number
+          contractor_id: string
+          created_at?: string
+          date?: string
+          id?: string
+          installment_amount?: number | null
+          reason?: string | null
+          repayment_type?: string
+          status?: string
+          total_repaid?: number
+          weeks?: number | null
+          worker_id: string
+        }
+        Update: {
+          agreed_by_worker?: boolean
+          amount?: number
+          balance?: number
+          contractor_id?: string
+          created_at?: string
+          date?: string
+          id?: string
+          installment_amount?: number | null
+          reason?: string | null
+          repayment_type?: string
+          status?: string
+          total_repaid?: number
+          weeks?: number | null
+          worker_id?: string
+        }
+        Relationships: []
+      }
+      appointment_letters: {
+        Row: {
+          content_json: Json
+          contractor_id: string
+          created_at: string
+          id: string
+          job_id: string | null
+          pdf_url: string | null
+          signed_at: string | null
+          status: string
+          worker_id: string
+        }
+        Insert: {
+          content_json?: Json
+          contractor_id: string
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          pdf_url?: string | null
+          signed_at?: string | null
+          status?: string
+          worker_id: string
+        }
+        Update: {
+          content_json?: Json
+          contractor_id?: string
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          pdf_url?: string | null
+          signed_at?: string | null
+          status?: string
+          worker_id?: string
+        }
+        Relationships: []
+      }
       client_profiles: {
         Row: {
           company_name: string | null
@@ -435,6 +522,36 @@ export type Database = {
           message?: string
           receiver_id?: string
           sender_id?: string
+        }
+        Relationships: []
+      }
+      minimum_wages: {
+        Row: {
+          created_at: string
+          effective_date: string
+          id: string
+          skill_category: string
+          source_url: string | null
+          state: string
+          wage_per_day: number
+        }
+        Insert: {
+          created_at?: string
+          effective_date?: string
+          id?: string
+          skill_category: string
+          source_url?: string | null
+          state: string
+          wage_per_day: number
+        }
+        Update: {
+          created_at?: string
+          effective_date?: string
+          id?: string
+          skill_category?: string
+          source_url?: string | null
+          state?: string
+          wage_per_day?: number
         }
         Relationships: []
       }
