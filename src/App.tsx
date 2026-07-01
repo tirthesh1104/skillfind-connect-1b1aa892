@@ -24,6 +24,8 @@ import MyPaymentDetails from "./pages/labour/MyPaymentDetails";
 import MyIdCard from "./pages/labour/MyIdCard";
 import MyPayslips from "./pages/labour/MyPayslips";
 import PublicWorker from "./pages/PublicWorker";
+import MyDocuments from "./pages/MyDocuments";
+import MyAdvances from "./pages/MyAdvances";
 
 import LabourHome from "./pages/labour/LabourHome";
 import LabourProfile from "./pages/labour/LabourProfile";
@@ -90,6 +92,9 @@ const App = () => (
             <Route path="/admin/payments" element={<RoleLayout roles={["admin"]}><MyReceipts /></RoleLayout>} />
             <Route path="/my-id-card" element={<RoleLayout roles={["labour"]}><MyIdCard /></RoleLayout>} />
             <Route path="/my-payslips" element={<RoleLayout roles={["labour"]}><MyPayslips /></RoleLayout>} />
+            <Route path="/my-documents" element={<RoleLayout roles={["labour","contractor"]}><MyDocuments /></RoleLayout>} />
+            <Route path="/my-advances" element={<RoleLayout roles={["labour","contractor"]}><MyAdvances /></RoleLayout>} />
+
 
             {/* Public worker profile (QR scan target) */}
             <Route path="/worker/:id" element={<PublicWorker />} />
