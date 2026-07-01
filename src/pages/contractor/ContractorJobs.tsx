@@ -68,14 +68,6 @@ const ContractorJobs = () => {
     if (editing) res = await supabase.from("jobs").update(payload).eq("id", editing.id);
     else res = await supabase.from("jobs").insert(payload);
     if (res.error) return toast.error(res.error.message);
-    // log compliance
-    await supabase.from("wage_compliance_logs" as any).insert({
-      contractor_id: user!.id,
-      offered_wage: Number(form.price_offered) || 0,
-      minimum_wage: wageCheck?.minimum ?? 0,
-      state,
-      compliant: wageCheck?.compliant ?? true,
-    }).then(() => {}, () => {});
     toast.success(editing ? "Job updated" : "Job posted");
     setOpen(false); setEditing(null); setForm(empty); load();
   };
