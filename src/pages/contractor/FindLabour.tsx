@@ -208,13 +208,40 @@ const FindLabour = () => {
                 {/* Phone hidden — contact happens after request is accepted */}
               </div>
               {selected.bio && <p className="text-sm text-muted-foreground">{selected.bio}</p>}
-              <Button className="w-full bg-gradient-primary" disabled={requestedIds.has(selected.id) || !selected.is_available} onClick={() => sendRequest(selected)}>
-                <Send className="mr-2 h-4 w-4" />{requestedIds.has(selected.id) ? "Request Sent" : "Send Request"}
-              </Button>
+              <div className="grid grid-cols-2 gap-2">
+                <Button className="col-span-2 bg-gradient-primary" disabled={requestedIds.has(selected.id) || !selected.is_available} onClick={() => sendRequest(selected)}>
+                  <Send className="mr-2 h-4 w-4" />{requestedIds.has(selected.id) ? "Request Sent" : "Send Request"}
+                </Button>
+                <Button variant="outline" onClick={() => { setLetterFor(selected); setSelected(null); }}>
+                  <FileText className="mr-2 h-4 w-4"/> Appointment Letter
+                </Button>
+                <Button variant="outline" onClick={() => { setAdvanceFor(selected); setSelected(null); }}>
+                  <IndianRupee className="mr-2 h-4 w-4"/> Give Advance
+                </Button>
+              </div>
             </>
           )}
         </DialogContent>
       </Dialog>
+
+      {letterFor && (
+        <AppointmentLetterDialog
+          open={!!letterFor}
+          onOpenChange={(o) => !o && setLetterFor(null)}
+          workerId={letterFor.user_id}
+          workerName={letterFor.profile.full_name}
+          contractorName={contractorName}
+          defaultWage={letterFor.price_per_day}
+        />
+      )}
+      {advanceFor && (
+        <GiveAdvanceDialog
+          open={!!advanceFor}
+          onOpenChange={(o) => !o && setAdvanceFor(null)}
+          workerId={advanceFor.user_id}
+          workerName={advanceFor.profile.full_name}
+        />
+      )}
     </div>
   );
 };
