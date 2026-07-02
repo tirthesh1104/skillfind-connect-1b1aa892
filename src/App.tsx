@@ -41,6 +41,8 @@ import AdminJobs from "./pages/admin/AdminJobs";
 import AdminRequests from "./pages/admin/AdminRequests";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminDisputes from "./pages/admin/AdminDisputes";
+import AdminFraud from "./pages/admin/AdminFraud";
+import AdminInsuranceClaims from "./pages/admin/AdminInsuranceClaims";
 
 const queryClient = new QueryClient();
 
