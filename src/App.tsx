@@ -97,6 +97,10 @@ const App = () => (
             <Route path="/my-payslips" element={<RoleLayout roles={["labour"]}><MyPayslips /></RoleLayout>} />
             <Route path="/my-documents" element={<RoleLayout roles={["labour","contractor"]}><MyDocuments /></RoleLayout>} />
             <Route path="/my-advances" element={<RoleLayout roles={["labour","contractor"]}><MyAdvances /></RoleLayout>} />
+            <Route path="/insurance" element={<RoleLayout roles={["labour","contractor","admin"]}><Insurance /></RoleLayout>} />
+            <Route path="/wage-agreements" element={<RoleLayout roles={["labour","contractor"]}><WageAgreements /></RoleLayout>} />
+            <Route path="/upskill" element={<RoleLayout roles={["labour"]}><UpskillMe /></RoleLayout>} />
+
 
 
             {/* Public worker profile (QR scan target) */}
