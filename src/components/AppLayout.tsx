@@ -12,7 +12,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
-  Wallet, Receipt, CreditCard, IdCard
+  Wallet, Receipt, CreditCard, IdCard, GraduationCap, FileSignature
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +33,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/my-receipts", label: "Receipts", icon: Receipt },
     { to: "/my-documents", label: "Documents", icon: FileText },
     { to: "/my-advances", label: "Advances", icon: Wallet },
+    { to: "/wage-agreements", label: "Wage Agreements", icon: FileSignature },
+    { to: "/insurance", label: "Insurance Pool", icon: Shield },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   labour: [
@@ -46,6 +48,9 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/my-payslips", label: "Payslips", icon: FileText },
     { to: "/my-documents", label: "Documents", icon: FileText },
     { to: "/my-advances", label: "My Advances", icon: Wallet },
+    { to: "/wage-agreements", label: "Wage Agreements", icon: FileSignature },
+    { to: "/insurance", label: "Insurance Pool", icon: Shield },
+    { to: "/upskill", label: "Upskill Me", icon: GraduationCap },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   client: [

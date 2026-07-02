@@ -26,6 +26,9 @@ import MyPayslips from "./pages/labour/MyPayslips";
 import PublicWorker from "./pages/PublicWorker";
 import MyDocuments from "./pages/MyDocuments";
 import MyAdvances from "./pages/MyAdvances";
+import Insurance from "./pages/Insurance";
+import WageAgreements from "./pages/WageAgreements";
+import UpskillMe from "./pages/labour/UpskillMe";
 
 import LabourHome from "./pages/labour/LabourHome";
 import LabourProfile from "./pages/labour/LabourProfile";
@@ -94,6 +97,10 @@ const App = () => (
             <Route path="/my-payslips" element={<RoleLayout roles={["labour"]}><MyPayslips /></RoleLayout>} />
             <Route path="/my-documents" element={<RoleLayout roles={["labour","contractor"]}><MyDocuments /></RoleLayout>} />
             <Route path="/my-advances" element={<RoleLayout roles={["labour","contractor"]}><MyAdvances /></RoleLayout>} />
+            <Route path="/insurance" element={<RoleLayout roles={["labour","contractor","admin"]}><Insurance /></RoleLayout>} />
+            <Route path="/wage-agreements" element={<RoleLayout roles={["labour","contractor"]}><WageAgreements /></RoleLayout>} />
+            <Route path="/upskill" element={<RoleLayout roles={["labour"]}><UpskillMe /></RoleLayout>} />
+
 
 
             {/* Public worker profile (QR scan target) */}
