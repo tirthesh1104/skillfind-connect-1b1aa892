@@ -12,7 +12,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
-  Wallet, Receipt, CreditCard, IdCard, GraduationCap, FileSignature
+  Wallet, Receipt, CreditCard, IdCard, GraduationCap, FileSignature, ShieldAlert
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
