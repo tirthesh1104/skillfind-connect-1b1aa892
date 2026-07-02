@@ -48,6 +48,9 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/my-payslips", label: "Payslips", icon: FileText },
     { to: "/my-documents", label: "Documents", icon: FileText },
     { to: "/my-advances", label: "My Advances", icon: Wallet },
+    { to: "/wage-agreements", label: "Wage Agreements", icon: FileSignature },
+    { to: "/insurance", label: "Insurance Pool", icon: Shield },
+    { to: "/upskill", label: "Upskill Me", icon: GraduationCap },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   client: [
