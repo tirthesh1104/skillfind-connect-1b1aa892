@@ -26,6 +26,9 @@ import MyPayslips from "./pages/labour/MyPayslips";
 import PublicWorker from "./pages/PublicWorker";
 import MyDocuments from "./pages/MyDocuments";
 import MyAdvances from "./pages/MyAdvances";
+import Insurance from "./pages/Insurance";
+import WageAgreements from "./pages/WageAgreements";
+import UpskillMe from "./pages/labour/UpskillMe";
 
 import LabourHome from "./pages/labour/LabourHome";
 import LabourProfile from "./pages/labour/LabourProfile";
