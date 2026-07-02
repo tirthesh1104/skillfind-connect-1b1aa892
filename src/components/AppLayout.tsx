@@ -33,6 +33,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/my-receipts", label: "Receipts", icon: Receipt },
     { to: "/my-documents", label: "Documents", icon: FileText },
     { to: "/my-advances", label: "Advances", icon: Wallet },
+    { to: "/wage-agreements", label: "Wage Agreements", icon: FileSignature },
+    { to: "/insurance", label: "Insurance Pool", icon: Shield },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   labour: [
