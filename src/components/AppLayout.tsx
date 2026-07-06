@@ -186,7 +186,7 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
         <main className="flex-1 p-4 md:p-6 lg:p-8 animate-fade-in">{children}</main>
       </div>
 
-      {role === "labour" && <RoleChatbot role="worker" />}
+      {role === "labour" && <><RoleChatbot role="worker" /><SOSButton /></>}
       {role === "contractor" && <RoleChatbot role="contractor" />}
       {role === "admin" && <RoleChatbot role="admin" />}
     </div>
