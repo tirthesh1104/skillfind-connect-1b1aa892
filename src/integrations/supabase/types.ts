@@ -157,6 +157,54 @@ export type Database = {
           },
         ]
       }
+      completion_certificates: {
+        Row: {
+          certificate_number: string
+          contractor_id: string
+          contractor_name: string | null
+          end_date: string | null
+          id: string
+          issued_at: string
+          job_id: string | null
+          job_title: string | null
+          site_name: string | null
+          skills: string | null
+          start_date: string | null
+          worker_id: string
+          worker_name: string | null
+        }
+        Insert: {
+          certificate_number: string
+          contractor_id: string
+          contractor_name?: string | null
+          end_date?: string | null
+          id?: string
+          issued_at?: string
+          job_id?: string | null
+          job_title?: string | null
+          site_name?: string | null
+          skills?: string | null
+          start_date?: string | null
+          worker_id: string
+          worker_name?: string | null
+        }
+        Update: {
+          certificate_number?: string
+          contractor_id?: string
+          contractor_name?: string | null
+          end_date?: string | null
+          id?: string
+          issued_at?: string
+          job_id?: string | null
+          job_title?: string | null
+          site_name?: string | null
+          skills?: string | null
+          start_date?: string | null
+          worker_id?: string
+          worker_name?: string | null
+        }
+        Relationships: []
+      }
       contractor_profiles: {
         Row: {
           company_name: string
@@ -868,6 +916,7 @@ export type Database = {
           job_id: string | null
           score: number
           skill_verified: boolean
+          tags: string[] | null
         }
         Insert: {
           comment?: string | null
@@ -878,6 +927,7 @@ export type Database = {
           job_id?: string | null
           score: number
           skill_verified?: boolean
+          tags?: string[] | null
         }
         Update: {
           comment?: string | null
@@ -888,6 +938,7 @@ export type Database = {
           job_id?: string | null
           score?: number
           skill_verified?: boolean
+          tags?: string[] | null
         }
         Relationships: [
           {
@@ -956,6 +1007,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      sos_alerts: {
+        Row: {
+          address: string | null
+          admin_notes: string | null
+          created_at: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          resolved_at: string | null
+          status: string
+          worker_id: string
+        }
+        Insert: {
+          address?: string | null
+          admin_notes?: string | null
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          resolved_at?: string | null
+          status?: string
+          worker_id: string
+        }
+        Update: {
+          address?: string | null
+          admin_notes?: string | null
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          resolved_at?: string | null
+          status?: string
+          worker_id?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
