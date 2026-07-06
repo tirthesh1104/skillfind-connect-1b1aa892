@@ -9,10 +9,12 @@ import { InitialsAvatar } from "@/components/InitialsAvatar";
 import { RoleChatbot } from "@/components/RoleChatbot";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { SOSButton } from "@/components/SOSButton";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
-  Wallet, Receipt, CreditCard, IdCard, GraduationCap, FileSignature, ShieldAlert
+  Wallet, Receipt, CreditCard, IdCard, GraduationCap, FileSignature, ShieldAlert,
+  Calendar, Award, QrCode, Star, Siren
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -35,6 +37,10 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/my-advances", label: "Advances", icon: Wallet },
     { to: "/wage-agreements", label: "Wage Agreements", icon: FileSignature },
     { to: "/insurance", label: "Insurance Pool", icon: Shield },
+    { to: "/schedule", label: "Site Schedule", icon: Calendar },
+    { to: "/gang-pay", label: "Pay Gang", icon: Users },
+    { to: "/rate-jobs", label: "Rate & Certify", icon: Star },
+    { to: "/my-certificates", label: "Certificates", icon: Award },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   labour: [
@@ -51,6 +57,10 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/wage-agreements", label: "Wage Agreements", icon: FileSignature },
     { to: "/insurance", label: "Insurance Pool", icon: Shield },
     { to: "/upskill", label: "Upskill Me", icon: GraduationCap },
+    { to: "/schedule", label: "My Schedule", icon: Calendar },
+    { to: "/my-qr", label: "My QR Card", icon: QrCode },
+    { to: "/rate-jobs", label: "Rate Jobs", icon: Star },
+    { to: "/my-certificates", label: "Certificates", icon: Award },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   client: [
@@ -66,6 +76,7 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/admin/disputes", label: "Disputes", icon: AlertTriangle },
     { to: "/admin/fraud", label: "Fraud Scan", icon: ShieldAlert },
     { to: "/admin/insurance-claims", label: "Insurance Claims", icon: Shield },
+    { to: "/admin/sos", label: "SOS Alerts", icon: Siren },
     { to: "/pay-labour", label: "Pay Labour", icon: Wallet },
     { to: "/admin/payments", label: "All Payments", icon: Receipt },
     { to: "/messages", label: "Messages", icon: MessageCircle },
@@ -175,7 +186,7 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
         <main className="flex-1 p-4 md:p-6 lg:p-8 animate-fade-in">{children}</main>
       </div>
 
-      {role === "labour" && <RoleChatbot role="worker" />}
+      {role === "labour" && <><RoleChatbot role="worker" /><SOSButton /></>}
       {role === "contractor" && <RoleChatbot role="contractor" />}
       {role === "admin" && <RoleChatbot role="admin" />}
     </div>
