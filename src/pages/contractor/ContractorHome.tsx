@@ -5,6 +5,7 @@ import { StatCard } from "@/components/StatCard";
 import { Briefcase, HardHat, Inbox, Users } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
+import { WeatherWidget } from "@/components/WeatherWidget";
 
 const ContractorHome = () => {
   const { user } = useAuth();
@@ -46,6 +47,8 @@ const ContractorHome = () => {
         <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Contractor Dashboard</h1>
         <p className="text-sm text-muted-foreground">Overview of your hiring activity today.</p>
       </div>
+
+      <WeatherWidget />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard icon={HardHat} label="Hired Today" value={`${stats.hiredToday}/${stats.max}`} hint="Daily limit" accent="primary" />
