@@ -43,6 +43,12 @@ import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminDisputes from "./pages/admin/AdminDisputes";
 import AdminFraud from "./pages/admin/AdminFraud";
 import AdminInsuranceClaims from "./pages/admin/AdminInsuranceClaims";
+import AdminSOS from "./pages/admin/AdminSOS";
+import MySchedule from "./pages/MySchedule";
+import MyCertificates from "./pages/MyCertificates";
+import MyQR from "./pages/MyQR";
+import GangPay from "./pages/GangPay";
+import RateJobs from "./pages/RateJobs";
 
 const queryClient = new QueryClient();
 
@@ -104,6 +110,16 @@ const App = () => (
             <Route path="/insurance" element={<RoleLayout roles={["labour","contractor","admin"]}><Insurance /></RoleLayout>} />
             <Route path="/wage-agreements" element={<RoleLayout roles={["labour","contractor"]}><WageAgreements /></RoleLayout>} />
             <Route path="/upskill" element={<RoleLayout roles={["labour"]}><UpskillMe /></RoleLayout>} />
+
+            {/* New feature routes */}
+            <Route path="/schedule" element={<RoleLayout roles={["labour","contractor"]}><MySchedule /></RoleLayout>} />
+            <Route path="/my-certificates" element={<RoleLayout roles={["labour","contractor"]}><MyCertificates /></RoleLayout>} />
+            <Route path="/my-qr" element={<RoleLayout roles={["labour"]}><MyQR /></RoleLayout>} />
+            <Route path="/gang-pay" element={<RoleLayout roles={["contractor"]}><GangPay /></RoleLayout>} />
+            <Route path="/rate-jobs" element={<RoleLayout roles={["labour","contractor"]}><RateJobs /></RoleLayout>} />
+            <Route path="/admin/sos" element={<RoleLayout roles={["admin"]}><AdminSOS /></RoleLayout>} />
+
+
 
 
 
