@@ -123,6 +123,12 @@ const App = () => (
             <Route path="/rate-jobs" element={<RoleLayout roles={["labour","contractor"]}><RateJobs /></RoleLayout>} />
             <Route path="/admin/sos" element={<RoleLayout roles={["admin"]}><AdminSOS /></RoleLayout>} />
 
+            {/* Phase 1 additions */}
+            <Route path="/daily-tasks" element={<RoleLayout roles={["contractor","labour"]}><DailyTasks /></RoleLayout>} />
+            <Route path="/work-orders" element={<RoleLayout roles={["contractor","labour"]}><WorkOrders /></RoleLayout>} />
+            <Route path="/muster-roll" element={<RoleLayout roles={["contractor","admin"]}><MusterRoll /></RoleLayout>} />
+            <Route path="/dpr" element={<RoleLayout roles={["contractor","admin"]}><DPR /></RoleLayout>} />
+
 
 
 
