@@ -49,6 +49,10 @@ import MyCertificates from "./pages/MyCertificates";
 import MyQR from "./pages/MyQR";
 import GangPay from "./pages/GangPay";
 import RateJobs from "./pages/RateJobs";
+import DailyTasks from "./pages/DailyTasks";
+import WorkOrders from "./pages/WorkOrders";
+import MusterRoll from "./pages/MusterRoll";
+import DPR from "./pages/DPR";
 
 const queryClient = new QueryClient();
 
