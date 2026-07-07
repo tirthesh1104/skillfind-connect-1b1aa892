@@ -243,6 +243,45 @@ export type Database = {
           },
         ]
       }
+      daily_tasks: {
+        Row: {
+          completed_at: string | null
+          contractor_id: string
+          created_at: string
+          description: string
+          id: string
+          job_id: string | null
+          status: string
+          task_date: string
+          updated_at: string
+          worker_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          contractor_id: string
+          created_at?: string
+          description: string
+          id?: string
+          job_id?: string | null
+          status?: string
+          task_date?: string
+          updated_at?: string
+          worker_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          contractor_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          job_id?: string | null
+          status?: string
+          task_date?: string
+          updated_at?: string
+          worker_id?: string
+        }
+        Relationships: []
+      }
       disputes: {
         Row: {
           admin_resolution: string | null
@@ -320,6 +359,54 @@ export type Database = {
           file_path?: string
           id?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      dpr_reports: {
+        Row: {
+          contractor_id: string
+          created_at: string
+          id: string
+          issues: string | null
+          job_id: string | null
+          materials_used: string | null
+          notes: string | null
+          photo_url: string | null
+          report_date: string
+          tasks_completed: number | null
+          tasks_total: number | null
+          updated_at: string
+          workers_present: number | null
+        }
+        Insert: {
+          contractor_id: string
+          created_at?: string
+          id?: string
+          issues?: string | null
+          job_id?: string | null
+          materials_used?: string | null
+          notes?: string | null
+          photo_url?: string | null
+          report_date?: string
+          tasks_completed?: number | null
+          tasks_total?: number | null
+          updated_at?: string
+          workers_present?: number | null
+        }
+        Update: {
+          contractor_id?: string
+          created_at?: string
+          id?: string
+          issues?: string | null
+          job_id?: string | null
+          materials_used?: string | null
+          notes?: string | null
+          photo_url?: string | null
+          report_date?: string
+          tasks_completed?: number | null
+          tasks_total?: number | null
+          updated_at?: string
+          workers_present?: number | null
         }
         Relationships: []
       }
@@ -1120,6 +1207,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      work_orders: {
+        Row: {
+          amount: number
+          contractor_id: string
+          contractor_signed_at: string | null
+          created_at: string
+          description: string
+          duration_days: number
+          id: string
+          job_id: string | null
+          start_date: string | null
+          status: string
+          updated_at: string
+          worker_id: string
+          worker_signed_at: string | null
+        }
+        Insert: {
+          amount?: number
+          contractor_id: string
+          contractor_signed_at?: string | null
+          created_at?: string
+          description: string
+          duration_days?: number
+          id?: string
+          job_id?: string | null
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+          worker_id: string
+          worker_signed_at?: string | null
+        }
+        Update: {
+          amount?: number
+          contractor_id?: string
+          contractor_signed_at?: string | null
+          created_at?: string
+          description?: string
+          duration_days?: number
+          id?: string
+          job_id?: string | null
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+          worker_id?: string
+          worker_signed_at?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {

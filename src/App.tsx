@@ -49,6 +49,10 @@ import MyCertificates from "./pages/MyCertificates";
 import MyQR from "./pages/MyQR";
 import GangPay from "./pages/GangPay";
 import RateJobs from "./pages/RateJobs";
+import DailyTasks from "./pages/DailyTasks";
+import WorkOrders from "./pages/WorkOrders";
+import MusterRoll from "./pages/MusterRoll";
+import DPR from "./pages/DPR";
 
 const queryClient = new QueryClient();
 
@@ -118,6 +122,12 @@ const App = () => (
             <Route path="/gang-pay" element={<RoleLayout roles={["contractor"]}><GangPay /></RoleLayout>} />
             <Route path="/rate-jobs" element={<RoleLayout roles={["labour","contractor"]}><RateJobs /></RoleLayout>} />
             <Route path="/admin/sos" element={<RoleLayout roles={["admin"]}><AdminSOS /></RoleLayout>} />
+
+            {/* Phase 1 additions */}
+            <Route path="/daily-tasks" element={<RoleLayout roles={["contractor","labour"]}><DailyTasks /></RoleLayout>} />
+            <Route path="/work-orders" element={<RoleLayout roles={["contractor","labour"]}><WorkOrders /></RoleLayout>} />
+            <Route path="/muster-roll" element={<RoleLayout roles={["contractor","admin"]}><MusterRoll /></RoleLayout>} />
+            <Route path="/dpr" element={<RoleLayout roles={["contractor","admin"]}><DPR /></RoleLayout>} />
 
 
 

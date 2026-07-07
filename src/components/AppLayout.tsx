@@ -14,7 +14,7 @@ import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
   Wallet, Receipt, CreditCard, IdCard, GraduationCap, FileSignature, ShieldAlert,
-  Calendar, Award, QrCode, Star, Siren
+  Calendar, Award, QrCode, Star, Siren, ClipboardList, FileSpreadsheet
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +31,10 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/contractor/find-labour", label: "Find Labour", icon: Search },
     { to: "/contractor/jobs", label: "My Jobs", icon: Briefcase },
     { to: "/contractor/requests", label: "Requests", icon: Inbox },
+    { to: "/daily-tasks", label: "Daily Tasks", icon: ListChecks },
+    { to: "/work-orders", label: "Work Orders", icon: FileSignature },
+    { to: "/muster-roll", label: "Muster Roll", icon: FileSpreadsheet },
+    { to: "/dpr", label: "Daily Report", icon: ClipboardList },
     { to: "/pay-labour", label: "Pay Labour", icon: Wallet },
     { to: "/my-receipts", label: "Receipts", icon: Receipt },
     { to: "/my-documents", label: "Documents", icon: FileText },
@@ -48,6 +52,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/labour/profile", label: "My Profile", icon: UserCircle },
     { to: "/labour/find-jobs", label: "Find Jobs", icon: Search },
     { to: "/labour/applications", label: "Applications", icon: ListChecks },
+    { to: "/daily-tasks", label: "Daily Tasks", icon: ListChecks },
+    { to: "/work-orders", label: "Work Orders", icon: FileSignature },
     { to: "/my-payment-details", label: "Payment Details", icon: CreditCard },
     { to: "/my-id-card", label: "My ID Card", icon: IdCard },
     { to: "/my-receipts", label: "My Receipts", icon: Receipt },
@@ -79,6 +85,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/admin/sos", label: "SOS Alerts", icon: Siren },
     { to: "/pay-labour", label: "Pay Labour", icon: Wallet },
     { to: "/admin/payments", label: "All Payments", icon: Receipt },
+    { to: "/muster-roll", label: "Muster Roll", icon: FileSpreadsheet },
+    { to: "/dpr", label: "Daily Reports", icon: ClipboardList },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
 };
