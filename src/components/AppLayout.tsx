@@ -78,6 +78,7 @@ const NAV: Record<string, NavItem[]> = {
   ],
   client: [
     { to: "/client", label: "Dashboard", icon: LayoutDashboard, end: true },
+    { to: "/milestones", label: "Project Progress", icon: Flag },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   admin: [
