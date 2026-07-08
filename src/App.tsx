@@ -133,6 +133,12 @@ const App = () => (
             <Route path="/muster-roll" element={<RoleLayout roles={["contractor","admin"]}><MusterRoll /></RoleLayout>} />
             <Route path="/dpr" element={<RoleLayout roles={["contractor","admin"]}><DPR /></RoleLayout>} />
 
+            {/* Phase 2 additions */}
+            <Route path="/sites" element={<RoleLayout roles={["contractor","admin"]}><MultiSiteDashboard /></RoleLayout>} />
+            <Route path="/materials" element={<RoleLayout roles={["contractor","labour","admin"]}><Materials /></RoleLayout>} />
+            <Route path="/sub-contractors" element={<RoleLayout roles={["contractor","admin"]}><SubContractors /></RoleLayout>} />
+            <Route path="/milestones" element={<RoleLayout roles={["contractor","client","labour","admin"]}><Milestones /></RoleLayout>} />
+
 
 
 
