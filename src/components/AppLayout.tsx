@@ -86,6 +86,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
     { to: "/admin/users", label: "Users", icon: Users },
     { to: "/admin/jobs", label: "Jobs", icon: Briefcase },
+    { to: "/sites", label: "Multi-Site View", icon: LayoutGrid },
+    { to: "/milestones", label: "Milestones", icon: Flag },
     { to: "/admin/requests", label: "Requests", icon: FileText },
     { to: "/admin/disputes", label: "Disputes", icon: AlertTriangle },
     { to: "/admin/fraud", label: "Fraud Scan", icon: ShieldAlert },
