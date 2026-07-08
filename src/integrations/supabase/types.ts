@@ -633,6 +633,59 @@ export type Database = {
           },
         ]
       }
+      materials: {
+        Row: {
+          contractor_id: string
+          cost_per_unit: number
+          created_at: string
+          id: string
+          job_id: string
+          name: string
+          notes: string | null
+          quantity: number
+          supplier: string | null
+          unit: string
+          updated_at: string
+          used: number
+        }
+        Insert: {
+          contractor_id: string
+          cost_per_unit?: number
+          created_at?: string
+          id?: string
+          job_id: string
+          name: string
+          notes?: string | null
+          quantity?: number
+          supplier?: string | null
+          unit?: string
+          updated_at?: string
+          used?: number
+        }
+        Update: {
+          contractor_id?: string
+          cost_per_unit?: number
+          created_at?: string
+          id?: string
+          job_id?: string
+          name?: string
+          notes?: string | null
+          quantity?: number
+          supplier?: string | null
+          unit?: string
+          updated_at?: string
+          used?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "materials_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           created_at: string
@@ -659,6 +712,62 @@ export type Database = {
           sender_id?: string
         }
         Relationships: []
+      }
+      milestones: {
+        Row: {
+          client_approved: boolean
+          client_approved_at: string | null
+          client_note: string | null
+          contractor_id: string
+          created_at: string
+          description: string | null
+          id: string
+          job_id: string
+          progress_percent: number
+          status: string
+          target_date: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          client_approved?: boolean
+          client_approved_at?: string | null
+          client_note?: string | null
+          contractor_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          job_id: string
+          progress_percent?: number
+          status?: string
+          target_date?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          client_approved?: boolean
+          client_approved_at?: string | null
+          client_note?: string | null
+          contractor_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          job_id?: string
+          progress_percent?: number
+          status?: string
+          target_date?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "milestones_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       minimum_wages: {
         Row: {
@@ -1130,6 +1239,59 @@ export type Database = {
           worker_id?: string
         }
         Relationships: []
+      }
+      sub_contractors: {
+        Row: {
+          agreed_amount: number
+          contractor_id: string
+          created_at: string
+          id: string
+          job_id: string | null
+          name: string
+          notes: string | null
+          paid_amount: number
+          phone: string | null
+          scope_of_work: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          agreed_amount?: number
+          contractor_id: string
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          name: string
+          notes?: string | null
+          paid_amount?: number
+          phone?: string | null
+          scope_of_work?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          agreed_amount?: number
+          contractor_id?: string
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          name?: string
+          notes?: string | null
+          paid_amount?: number
+          phone?: string | null
+          scope_of_work?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sub_contractors_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

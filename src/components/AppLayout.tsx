@@ -14,7 +14,8 @@ import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
   Wallet, Receipt, CreditCard, IdCard, GraduationCap, FileSignature, ShieldAlert,
-  Calendar, Award, QrCode, Star, Siren, ClipboardList, FileSpreadsheet
+  Calendar, Award, QrCode, Star, Siren, ClipboardList, FileSpreadsheet,
+  LayoutGrid, Package, Flag
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +32,10 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/contractor/find-labour", label: "Find Labour", icon: Search },
     { to: "/contractor/jobs", label: "My Jobs", icon: Briefcase },
     { to: "/contractor/requests", label: "Requests", icon: Inbox },
+    { to: "/sites", label: "Multi-Site View", icon: LayoutGrid },
+    { to: "/milestones", label: "Milestones", icon: Flag },
+    { to: "/materials", label: "Materials", icon: Package },
+    { to: "/sub-contractors", label: "Sub-Contractors", icon: Users },
     { to: "/daily-tasks", label: "Daily Tasks", icon: ListChecks },
     { to: "/work-orders", label: "Work Orders", icon: FileSignature },
     { to: "/muster-roll", label: "Muster Roll", icon: FileSpreadsheet },
@@ -59,6 +64,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/my-receipts", label: "My Receipts", icon: Receipt },
     { to: "/my-payslips", label: "Payslips", icon: FileText },
     { to: "/my-documents", label: "Documents", icon: FileText },
+    { to: "/milestones", label: "Site Progress", icon: Flag },
+    { to: "/materials", label: "Materials", icon: Package },
     { to: "/my-advances", label: "My Advances", icon: Wallet },
     { to: "/wage-agreements", label: "Wage Agreements", icon: FileSignature },
     { to: "/insurance", label: "Insurance Pool", icon: Shield },
@@ -71,6 +78,7 @@ const NAV: Record<string, NavItem[]> = {
   ],
   client: [
     { to: "/client", label: "Dashboard", icon: LayoutDashboard, end: true },
+    { to: "/milestones", label: "Project Progress", icon: Flag },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   admin: [
@@ -78,6 +86,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
     { to: "/admin/users", label: "Users", icon: Users },
     { to: "/admin/jobs", label: "Jobs", icon: Briefcase },
+    { to: "/sites", label: "Multi-Site View", icon: LayoutGrid },
+    { to: "/milestones", label: "Milestones", icon: Flag },
     { to: "/admin/requests", label: "Requests", icon: FileText },
     { to: "/admin/disputes", label: "Disputes", icon: AlertTriangle },
     { to: "/admin/fraud", label: "Fraud Scan", icon: ShieldAlert },

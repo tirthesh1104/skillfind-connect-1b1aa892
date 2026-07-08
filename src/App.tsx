@@ -53,6 +53,10 @@ import DailyTasks from "./pages/DailyTasks";
 import WorkOrders from "./pages/WorkOrders";
 import MusterRoll from "./pages/MusterRoll";
 import DPR from "./pages/DPR";
+import MultiSiteDashboard from "./pages/MultiSiteDashboard";
+import Materials from "./pages/Materials";
+import SubContractors from "./pages/SubContractors";
+import Milestones from "./pages/Milestones";
 
 const queryClient = new QueryClient();
 
@@ -128,6 +132,12 @@ const App = () => (
             <Route path="/work-orders" element={<RoleLayout roles={["contractor","labour"]}><WorkOrders /></RoleLayout>} />
             <Route path="/muster-roll" element={<RoleLayout roles={["contractor","admin"]}><MusterRoll /></RoleLayout>} />
             <Route path="/dpr" element={<RoleLayout roles={["contractor","admin"]}><DPR /></RoleLayout>} />
+
+            {/* Phase 2 additions */}
+            <Route path="/sites" element={<RoleLayout roles={["contractor","admin"]}><MultiSiteDashboard /></RoleLayout>} />
+            <Route path="/materials" element={<RoleLayout roles={["contractor","labour","admin"]}><Materials /></RoleLayout>} />
+            <Route path="/sub-contractors" element={<RoleLayout roles={["contractor","admin"]}><SubContractors /></RoleLayout>} />
+            <Route path="/milestones" element={<RoleLayout roles={["contractor","client","labour","admin"]}><Milestones /></RoleLayout>} />
 
 
 
