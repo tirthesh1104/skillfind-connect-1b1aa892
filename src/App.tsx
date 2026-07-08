@@ -58,6 +58,8 @@ import Materials from "./pages/Materials";
 import SubContractors from "./pages/SubContractors";
 import Milestones from "./pages/Milestones";
 
+const queryClient = new QueryClient();
+
 const RoleLayout = ({ children, roles }: { children: React.ReactNode; roles: ("admin" | "contractor" | "labour" | "client")[] }) => (
   <ProtectedRoute allowedRoles={roles}>
     <AppLayout>{children}</AppLayout>
