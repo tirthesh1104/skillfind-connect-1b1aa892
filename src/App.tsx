@@ -53,8 +53,10 @@ import DailyTasks from "./pages/DailyTasks";
 import WorkOrders from "./pages/WorkOrders";
 import MusterRoll from "./pages/MusterRoll";
 import DPR from "./pages/DPR";
-
-const queryClient = new QueryClient();
+import MultiSiteDashboard from "./pages/MultiSiteDashboard";
+import Materials from "./pages/Materials";
+import SubContractors from "./pages/SubContractors";
+import Milestones from "./pages/Milestones";
 
 const RoleLayout = ({ children, roles }: { children: React.ReactNode; roles: ("admin" | "contractor" | "labour" | "client")[] }) => (
   <ProtectedRoute allowedRoles={roles}>
