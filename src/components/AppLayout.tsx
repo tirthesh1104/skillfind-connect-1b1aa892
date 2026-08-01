@@ -90,6 +90,7 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/admin/users", label: "Users", icon: Users },
     { to: "/admin/jobs", label: "Jobs", icon: Briefcase },
     { to: "/sites", label: "Multi-Site View", icon: LayoutGrid },
+    { to: "/labour-chowk", label: "Labour Chowk (Live)", icon: Radio },
     { to: "/milestones", label: "Milestones", icon: Flag },
     { to: "/admin/requests", label: "Requests", icon: FileText },
     { to: "/admin/disputes", label: "Disputes", icon: AlertTriangle },
