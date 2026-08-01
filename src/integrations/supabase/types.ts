@@ -205,6 +205,39 @@ export type Database = {
         }
         Relationships: []
       }
+      contractor_plans: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          plan: string
+          started_at: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          plan?: string
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          plan?: string
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       contractor_profiles: {
         Row: {
           company_name: string
@@ -1415,6 +1448,48 @@ export type Database = {
           updated_at?: string
           worker_id?: string
           worker_signed_at?: string | null
+        }
+        Relationships: []
+      }
+      worker_availability: {
+        Row: {
+          created_at: string
+          expires_at: string
+          full_name: string
+          id: string
+          location: string
+          note: string | null
+          phone: string | null
+          price_per_day: number
+          skill: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          full_name: string
+          id?: string
+          location: string
+          note?: string | null
+          phone?: string | null
+          price_per_day?: number
+          skill: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          full_name?: string
+          id?: string
+          location?: string
+          note?: string | null
+          phone?: string | null
+          price_per_day?: number
+          skill?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

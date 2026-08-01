@@ -57,6 +57,8 @@ import MultiSiteDashboard from "./pages/MultiSiteDashboard";
 import Materials from "./pages/Materials";
 import SubContractors from "./pages/SubContractors";
 import Milestones from "./pages/Milestones";
+import LabourChowk from "./pages/LabourChowk";
+import Pricing from "./pages/Pricing";
 
 const queryClient = new QueryClient();
 
@@ -138,6 +140,11 @@ const App = () => (
             <Route path="/materials" element={<RoleLayout roles={["contractor","labour","admin"]}><Materials /></RoleLayout>} />
             <Route path="/sub-contractors" element={<RoleLayout roles={["contractor","admin"]}><SubContractors /></RoleLayout>} />
             <Route path="/milestones" element={<RoleLayout roles={["contractor","client","labour","admin"]}><Milestones /></RoleLayout>} />
+
+            {/* Live availability + plans */}
+            <Route path="/labour-chowk" element={<RoleLayout roles={["contractor","labour","admin"]}><LabourChowk /></RoleLayout>} />
+            <Route path="/pricing" element={<RoleLayout roles={["contractor"]}><Pricing /></RoleLayout>} />
+
 
 
 

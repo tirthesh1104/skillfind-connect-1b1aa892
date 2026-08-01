@@ -15,7 +15,7 @@ import {
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
   Wallet, Receipt, CreditCard, IdCard, GraduationCap, FileSignature, ShieldAlert,
   Calendar, Award, QrCode, Star, Siren, ClipboardList, FileSpreadsheet,
-  LayoutGrid, Package, Flag
+  LayoutGrid, Package, Flag, Radio, Crown
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +30,7 @@ const NAV: Record<string, NavItem[]> = {
   contractor: [
     { to: "/contractor", label: "Dashboard", icon: LayoutDashboard, end: true },
     { to: "/contractor/find-labour", label: "Find Labour", icon: Search },
+    { to: "/labour-chowk", label: "Labour Chowk (Live)", icon: Radio },
     { to: "/contractor/jobs", label: "My Jobs", icon: Briefcase },
     { to: "/contractor/requests", label: "Requests", icon: Inbox },
     { to: "/sites", label: "Multi-Site View", icon: LayoutGrid },
@@ -51,12 +52,14 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/rate-jobs", label: "Rate & Certify", icon: Star },
     { to: "/my-certificates", label: "Certificates", icon: Award },
     { to: "/messages", label: "Messages", icon: MessageCircle },
+    { to: "/pricing", label: "Plans & Billing", icon: Crown },
   ],
   labour: [
     { to: "/labour", label: "Dashboard", icon: LayoutDashboard, end: true },
     { to: "/labour/profile", label: "My Profile", icon: UserCircle },
     { to: "/labour/find-jobs", label: "Find Jobs", icon: Search },
     { to: "/labour/applications", label: "Applications", icon: ListChecks },
+    { to: "/labour-chowk", label: "Labour Chowk (Live)", icon: Radio },
     { to: "/daily-tasks", label: "Daily Tasks", icon: ListChecks },
     { to: "/work-orders", label: "Work Orders", icon: FileSignature },
     { to: "/my-payment-details", label: "Payment Details", icon: CreditCard },
@@ -87,6 +90,7 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/admin/users", label: "Users", icon: Users },
     { to: "/admin/jobs", label: "Jobs", icon: Briefcase },
     { to: "/sites", label: "Multi-Site View", icon: LayoutGrid },
+    { to: "/labour-chowk", label: "Labour Chowk (Live)", icon: Radio },
     { to: "/milestones", label: "Milestones", icon: Flag },
     { to: "/admin/requests", label: "Requests", icon: FileText },
     { to: "/admin/disputes", label: "Disputes", icon: AlertTriangle },
