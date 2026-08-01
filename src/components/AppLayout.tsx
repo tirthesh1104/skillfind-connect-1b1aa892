@@ -15,7 +15,7 @@ import {
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
   Wallet, Receipt, CreditCard, IdCard, GraduationCap, FileSignature, ShieldAlert,
   Calendar, Award, QrCode, Star, Siren, ClipboardList, FileSpreadsheet,
-  LayoutGrid, Package, Flag
+  LayoutGrid, Package, Flag, Radio, Crown
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
