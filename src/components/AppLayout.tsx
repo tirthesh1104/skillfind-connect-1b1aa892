@@ -52,6 +52,7 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/rate-jobs", label: "Rate & Certify", icon: Star },
     { to: "/my-certificates", label: "Certificates", icon: Award },
     { to: "/messages", label: "Messages", icon: MessageCircle },
+    { to: "/pricing", label: "Plans & Billing", icon: Crown },
   ],
   labour: [
     { to: "/labour", label: "Dashboard", icon: LayoutDashboard, end: true },
