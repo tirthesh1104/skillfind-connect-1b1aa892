@@ -57,6 +57,8 @@ import MultiSiteDashboard from "./pages/MultiSiteDashboard";
 import Materials from "./pages/Materials";
 import SubContractors from "./pages/SubContractors";
 import Milestones from "./pages/Milestones";
+import LabourChowk from "./pages/LabourChowk";
+import Pricing from "./pages/Pricing";
 
 const queryClient = new QueryClient();
 
