@@ -30,6 +30,7 @@ const NAV: Record<string, NavItem[]> = {
   contractor: [
     { to: "/contractor", label: "Dashboard", icon: LayoutDashboard, end: true },
     { to: "/contractor/find-labour", label: "Find Labour", icon: Search },
+    { to: "/labour-chowk", label: "Labour Chowk (Live)", icon: Radio },
     { to: "/contractor/jobs", label: "My Jobs", icon: Briefcase },
     { to: "/contractor/requests", label: "Requests", icon: Inbox },
     { to: "/sites", label: "Multi-Site View", icon: LayoutGrid },
