@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { StatCard } from "@/components/StatCard";
 import { Briefcase, CheckCircle, Clock, IndianRupee } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AvailabilityToggle } from "@/components/AvailabilityToggle";
 
 const LabourHome = () => {
   const { user } = useAuth();
@@ -33,6 +34,7 @@ const LabourHome = () => {
         <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Labour Dashboard</h1>
         <p className="text-sm text-muted-foreground">Track your applications and earnings.</p>
       </div>
+      <AvailabilityToggle />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard icon={Briefcase} label="Active Applications" value={stats.active} accent="primary" />
         <StatCard icon={CheckCircle} label="Accepted Jobs" value={stats.accepted} accent="success" />
