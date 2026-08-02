@@ -150,9 +150,12 @@ const App = () => (
             <Route path="/labour-chowk" element={<RoleLayout roles={["contractor","labour","admin"]}><LabourChowk /></RoleLayout>} />
             <Route path="/pricing" element={<RoleLayout roles={["contractor"]}><Pricing /></RoleLayout>} />
 
-
-
-
+            {/* Live monitoring layer */}
+            <Route path="/live-map" element={<RoleLayout roles={["contractor","labour","admin","client"]}><LiveMap /></RoleLayout>} />
+            <Route path="/proof-feed" element={<RoleLayout roles={["contractor","labour","admin","client"]}><ProofFeed /></RoleLayout>} />
+            <Route path="/compliance" element={<RoleLayout roles={["contractor","labour","admin"]}><ComplianceBoard /></RoleLayout>} />
+            <Route path="/wage-ledger" element={<RoleLayout roles={["contractor","labour","admin"]}><WageLedger /></RoleLayout>} />
+            <Route path="/admin/audit" element={<RoleLayout roles={["admin"]}><AuditCenter /></RoleLayout>} />
 
 
             {/* Public worker profile (QR scan target) */}
