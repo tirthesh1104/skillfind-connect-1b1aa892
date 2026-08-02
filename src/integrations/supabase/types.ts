@@ -119,6 +119,36 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          details: string | null
+          entity: string | null
+          entity_id: string | null
+          id: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          details?: string | null
+          entity?: string | null
+          entity_id?: string | null
+          id?: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          details?: string | null
+          entity?: string | null
+          entity_id?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
       client_profiles: {
         Row: {
           company_name: string | null
@@ -202,6 +232,45 @@ export type Database = {
           start_date?: string | null
           worker_id?: string
           worker_name?: string | null
+        }
+        Relationships: []
+      }
+      compliance_docs: {
+        Row: {
+          created_at: string
+          doc_number: string | null
+          doc_type: string
+          expires_on: string | null
+          file_url: string | null
+          id: string
+          issued_on: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          doc_number?: string | null
+          doc_type: string
+          expires_on?: string | null
+          file_url?: string | null
+          id?: string
+          issued_on?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          doc_number?: string | null
+          doc_type?: string
+          expires_on?: string | null
+          file_url?: string | null
+          id?: string
+          issued_on?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -443,6 +512,47 @@ export type Database = {
         }
         Relationships: []
       }
+      fraud_flags: {
+        Row: {
+          created_at: string
+          details: string | null
+          flag_type: string
+          id: string
+          job_id: string | null
+          resolved: boolean
+          severity: string
+          subject_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          details?: string | null
+          flag_type: string
+          id?: string
+          job_id?: string | null
+          resolved?: boolean
+          severity?: string
+          subject_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          details?: string | null
+          flag_type?: string
+          id?: string
+          job_id?: string | null
+          resolved?: boolean
+          severity?: string
+          subject_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fraud_flags_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       insurance_claims: {
         Row: {
           admin_note: string | null
@@ -514,9 +624,11 @@ export type Database = {
           duration_days: number | null
           id: string
           is_urgent: boolean
+          live_progress_percent: number
           location: string
           pin_code: string | null
           price_offered: number
+          progress_updated_at: string | null
           required_skill: string
           start_date: string | null
           status: Database["public"]["Enums"]["job_status"]
@@ -532,9 +644,11 @@ export type Database = {
           duration_days?: number | null
           id?: string
           is_urgent?: boolean
+          live_progress_percent?: number
           location: string
           pin_code?: string | null
           price_offered?: number
+          progress_updated_at?: string | null
           required_skill: string
           start_date?: string | null
           status?: Database["public"]["Enums"]["job_status"]
@@ -550,9 +664,11 @@ export type Database = {
           duration_days?: number | null
           id?: string
           is_urgent?: boolean
+          live_progress_percent?: number
           location?: string
           pin_code?: string | null
           price_offered?: number
+          progress_updated_at?: string | null
           required_skill?: string
           start_date?: string | null
           status?: Database["public"]["Enums"]["job_status"]
@@ -1237,6 +1353,97 @@ export type Database = {
           },
         ]
       }
+      site_checkins: {
+        Row: {
+          created_at: string
+          id: string
+          job_id: string | null
+          kind: string
+          latitude: number | null
+          longitude: number | null
+          photo_url: string | null
+          place_name: string | null
+          worker_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          kind?: string
+          latitude?: number | null
+          longitude?: number | null
+          photo_url?: string | null
+          place_name?: string | null
+          worker_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          kind?: string
+          latitude?: number | null
+          longitude?: number | null
+          photo_url?: string | null
+          place_name?: string | null
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "site_checkins_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      site_proofs: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          job_id: string | null
+          media_type: string
+          media_url: string
+          status: string
+          uploaded_by: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          media_type?: string
+          media_url: string
+          status?: string
+          uploaded_by: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          media_type?: string
+          media_url?: string
+          status?: string
+          uploaded_by?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "site_proofs_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sos_alerts: {
         Row: {
           address: string | null
@@ -1650,6 +1857,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_job_contractor: {
+        Args: { _job_id: string; _uid: string }
         Returns: boolean
       }
     }
