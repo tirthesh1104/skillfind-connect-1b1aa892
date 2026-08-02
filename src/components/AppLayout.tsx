@@ -90,6 +90,8 @@ const NAV: Record<string, NavItem[]> = {
   client: [
     { to: "/client", label: "Dashboard", icon: LayoutDashboard, end: true },
     { to: "/milestones", label: "Project Progress", icon: Flag },
+    { to: "/live-map", label: "Live Site Map", icon: Map },
+    { to: "/proof-feed", label: "Site Proofs", icon: Camera },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   admin: [
@@ -97,6 +99,11 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
     { to: "/admin/users", label: "Users", icon: Users },
     { to: "/admin/jobs", label: "Jobs", icon: Briefcase },
+    { to: "/live-map", label: "Live Command Map", icon: Map },
+    { to: "/proof-feed", label: "Site Proofs", icon: Camera },
+    { to: "/compliance", label: "Compliance Board", icon: BadgeCheck },
+    { to: "/wage-ledger", label: "Wage Ledger", icon: Wallet },
+    { to: "/admin/audit", label: "Audit & Fraud Center", icon: ScrollText },
     { to: "/sites", label: "Multi-Site View", icon: LayoutGrid },
     { to: "/labour-chowk", label: "Labour Chowk (Live)", icon: Radio },
     { to: "/milestones", label: "Milestones", icon: Flag },
