@@ -59,6 +59,11 @@ import SubContractors from "./pages/SubContractors";
 import Milestones from "./pages/Milestones";
 import LabourChowk from "./pages/LabourChowk";
 import Pricing from "./pages/Pricing";
+import LiveMap from "./pages/LiveMap";
+import ProofFeed from "./pages/ProofFeed";
+import ComplianceBoard from "./pages/ComplianceBoard";
+import WageLedger from "./pages/WageLedger";
+import AuditCenter from "./pages/AuditCenter";
 
 const queryClient = new QueryClient();
 
