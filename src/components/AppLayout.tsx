@@ -15,7 +15,7 @@ import {
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
   Wallet, Receipt, CreditCard, IdCard, GraduationCap, FileSignature, ShieldAlert,
   Calendar, Award, QrCode, Star, Siren, ClipboardList, FileSpreadsheet,
-  LayoutGrid, Package, Flag, Radio, Crown
+  LayoutGrid, Package, Flag, Radio, Crown, Map, Camera, ScrollText, BadgeCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +31,10 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/contractor", label: "Dashboard", icon: LayoutDashboard, end: true },
     { to: "/contractor/find-labour", label: "Find Labour", icon: Search },
     { to: "/labour-chowk", label: "Labour Chowk (Live)", icon: Radio },
+    { to: "/live-map", label: "Live Command Map", icon: Map },
+    { to: "/proof-feed", label: "Site Proofs", icon: Camera },
+    { to: "/compliance", label: "Compliance Board", icon: BadgeCheck },
+    { to: "/wage-ledger", label: "Wage Ledger", icon: Wallet },
     { to: "/contractor/jobs", label: "My Jobs", icon: Briefcase },
     { to: "/contractor/requests", label: "Requests", icon: Inbox },
     { to: "/sites", label: "Multi-Site View", icon: LayoutGrid },
@@ -60,6 +64,10 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/labour/find-jobs", label: "Find Jobs", icon: Search },
     { to: "/labour/applications", label: "Applications", icon: ListChecks },
     { to: "/labour-chowk", label: "Labour Chowk (Live)", icon: Radio },
+    { to: "/live-map", label: "Live Map", icon: Map },
+    { to: "/proof-feed", label: "Site Proofs", icon: Camera },
+    { to: "/compliance", label: "My Compliance", icon: BadgeCheck },
+    { to: "/wage-ledger", label: "Wage Ledger", icon: Wallet },
     { to: "/daily-tasks", label: "Daily Tasks", icon: ListChecks },
     { to: "/work-orders", label: "Work Orders", icon: FileSignature },
     { to: "/my-payment-details", label: "Payment Details", icon: CreditCard },
@@ -82,6 +90,8 @@ const NAV: Record<string, NavItem[]> = {
   client: [
     { to: "/client", label: "Dashboard", icon: LayoutDashboard, end: true },
     { to: "/milestones", label: "Project Progress", icon: Flag },
+    { to: "/live-map", label: "Live Site Map", icon: Map },
+    { to: "/proof-feed", label: "Site Proofs", icon: Camera },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   admin: [
@@ -89,6 +99,11 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
     { to: "/admin/users", label: "Users", icon: Users },
     { to: "/admin/jobs", label: "Jobs", icon: Briefcase },
+    { to: "/live-map", label: "Live Command Map", icon: Map },
+    { to: "/proof-feed", label: "Site Proofs", icon: Camera },
+    { to: "/compliance", label: "Compliance Board", icon: BadgeCheck },
+    { to: "/wage-ledger", label: "Wage Ledger", icon: Wallet },
+    { to: "/admin/audit", label: "Audit & Fraud Center", icon: ScrollText },
     { to: "/sites", label: "Multi-Site View", icon: LayoutGrid },
     { to: "/labour-chowk", label: "Labour Chowk (Live)", icon: Radio },
     { to: "/milestones", label: "Milestones", icon: Flag },
