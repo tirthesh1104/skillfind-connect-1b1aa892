@@ -10,13 +10,14 @@ import { RoleChatbot } from "@/components/RoleChatbot";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { SOSButton } from "@/components/SOSButton";
+import { OfflineBanner } from "@/components/DataSaver";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
   Wallet, Receipt, CreditCard, IdCard, GraduationCap, FileSignature, ShieldAlert,
   Calendar, Award, QrCode, Star, Siren, ClipboardList, FileSpreadsheet,
   LayoutGrid, Package, Flag, Radio, Crown, Map, Camera, ScrollText, BadgeCheck,
-  Lock, MapPin, PlayCircle
+  Lock, MapPin, PlayCircle, ShieldCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
