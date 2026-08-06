@@ -11,6 +11,7 @@ import { EmptyState } from "@/components/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SKILL_OPTIONS, skillBadgeClass } from "@/lib/labour";
 import { Search, Briefcase, Send } from "lucide-react";
+import { VoiceSearchButton } from "@/components/VoiceSearch";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -78,10 +79,13 @@ const LabourFindJobs = () => {
 
       <div className="glass-card grid gap-4 p-4 md:grid-cols-3">
         <div>
-          <Label className="text-xs">Search</Label>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Title, contractor, location" className="pl-9" />
+          <Label className="text-xs">Search (बोलून शोधा)</Label>
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Title, contractor, location" className="pl-9" />
+            </div>
+            <VoiceSearchButton onResult={(t) => setSearch(t)} />
           </div>
         </div>
         <div>

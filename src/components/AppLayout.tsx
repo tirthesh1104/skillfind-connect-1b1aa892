@@ -10,12 +10,14 @@ import { RoleChatbot } from "@/components/RoleChatbot";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { SOSButton } from "@/components/SOSButton";
+import { OfflineBanner } from "@/components/DataSaver";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
   Wallet, Receipt, CreditCard, IdCard, GraduationCap, FileSignature, ShieldAlert,
   Calendar, Award, QrCode, Star, Siren, ClipboardList, FileSpreadsheet,
-  LayoutGrid, Package, Flag, Radio, Crown, Map, Camera, ScrollText, BadgeCheck
+  LayoutGrid, Package, Flag, Radio, Crown, Map, Camera, ScrollText, BadgeCheck,
+  Lock, MapPin, PlayCircle, ShieldCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -56,6 +58,9 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/rate-jobs", label: "Rate & Certify", icon: Star },
     { to: "/my-certificates", label: "Certificates", icon: Award },
     { to: "/messages", label: "Messages", icon: MessageCircle },
+    { to: "/site-attendance", label: "Geofenced Attendance", icon: MapPin },
+    { to: "/escrow", label: "Wage Escrow", icon: Lock },
+    { to: "/learn", label: "Training Videos", icon: PlayCircle },
     { to: "/pricing", label: "Plans & Billing", icon: Crown },
   ],
   labour: [
@@ -83,6 +88,10 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/upskill", label: "Upskill Me", icon: GraduationCap },
     { to: "/schedule", label: "My Schedule", icon: Calendar },
     { to: "/my-qr", label: "My QR Card", icon: QrCode },
+    { to: "/government-id", label: "Government ID", icon: ShieldCheck },
+    { to: "/site-attendance", label: "Site Attendance", icon: MapPin },
+    { to: "/escrow", label: "Wage Escrow", icon: Lock },
+    { to: "/learn", label: "Learn", icon: PlayCircle },
     { to: "/rate-jobs", label: "Rate Jobs", icon: Star },
     { to: "/my-certificates", label: "Certificates", icon: Award },
     { to: "/messages", label: "Messages", icon: MessageCircle },
@@ -112,6 +121,10 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/admin/fraud", label: "Fraud Scan", icon: ShieldAlert },
     { to: "/admin/insurance-claims", label: "Insurance Claims", icon: Shield },
     { to: "/admin/sos", label: "SOS Alerts", icon: Siren },
+    { to: "/admin/eshram", label: "e-Shram Verification", icon: ShieldCheck },
+    { to: "/admin/skill-badges", label: "Skill Badges & Training", icon: Award },
+    { to: "/site-attendance", label: "Geofenced Attendance", icon: MapPin },
+    { to: "/escrow", label: "Wage Escrow", icon: Lock },
     { to: "/pay-labour", label: "Pay Labour", icon: Wallet },
     { to: "/admin/payments", label: "All Payments", icon: Receipt },
     { to: "/muster-roll", label: "Muster Roll", icon: FileSpreadsheet },
@@ -220,6 +233,7 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
           </div>
         </header>
 
+        <OfflineBanner />
         <main className="flex-1 p-4 md:p-6 lg:p-8 animate-fade-in">{children}</main>
       </div>
 

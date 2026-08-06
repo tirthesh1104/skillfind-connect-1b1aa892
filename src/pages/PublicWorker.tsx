@@ -5,12 +5,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { HardHat, MessageCircle, IndianRupee } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
 const PublicWorker = () => {
   const { id } = useParams();
   const [worker, setWorker] = useState<any>(null);
   const [skill, setSkill] = useState<any>(null);
+  const [badges, setBadges] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,6 +22,8 @@ const PublicWorker = () => {
       const { data: s } = await supabase.rpc("get_public_worker_skill", { _user_id: id });
       setWorker(Array.isArray(w) ? w[0] : w);
       setSkill(Array.isArray(s) ? s[0] : s);
+      const { data: b } = await supabase.from("worker_skill_badges").select("id, skill_name, badge_level").eq("worker_id", id);
+      setBadges(b ?? []);
       setLoading(false);
     })();
   }, [id]);
@@ -64,6 +68,14 @@ const PublicWorker = () => {
               <Row label="Location" value={worker.location ?? "—"} />
               <Row label="Verified" value={worker.upi_id ? "✅ Yes" : "⏳ Pending"} />
             </div>
+
+            {badges.length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-2">
+                {badges.map((b) => (
+                  <Badge key={b.id} variant="secondary">🏅 {b.skill_name} · {b.badge_level}</Badge>
+                ))}
+              </div>
+            )}
 
             <div className="grid gap-2 pt-3">
               <Button onClick={payViaUPI} className="bg-gradient-primary" disabled={!worker.upi_id}>

@@ -64,6 +64,12 @@ import ProofFeed from "./pages/ProofFeed";
 import ComplianceBoard from "./pages/ComplianceBoard";
 import WageLedger from "./pages/WageLedger";
 import AuditCenter from "./pages/AuditCenter";
+import GovernmentId from "./pages/labour/GovernmentId";
+import Learn from "./pages/labour/Learn";
+import Escrow from "./pages/Escrow";
+import SiteAttendance from "./pages/SiteAttendance";
+import AdminEshram from "./pages/admin/AdminEshram";
+import AdminSkillBadges from "./pages/admin/AdminSkillBadges";
 
 const queryClient = new QueryClient();
 
@@ -156,6 +162,15 @@ const App = () => (
             <Route path="/compliance" element={<RoleLayout roles={["contractor","labour","admin"]}><ComplianceBoard /></RoleLayout>} />
             <Route path="/wage-ledger" element={<RoleLayout roles={["contractor","labour","admin"]}><WageLedger /></RoleLayout>} />
             <Route path="/admin/audit" element={<RoleLayout roles={["admin"]}><AuditCenter /></RoleLayout>} />
+
+            {/* Market-gap additions */}
+            <Route path="/government-id" element={<RoleLayout roles={["labour"]}><GovernmentId /></RoleLayout>} />
+            <Route path="/learn" element={<RoleLayout roles={["labour","contractor"]}><Learn /></RoleLayout>} />
+            <Route path="/escrow" element={<RoleLayout roles={["contractor","labour","admin"]}><Escrow /></RoleLayout>} />
+            <Route path="/site-attendance" element={<RoleLayout roles={["contractor","labour","admin"]}><SiteAttendance /></RoleLayout>} />
+            <Route path="/admin/eshram" element={<RoleLayout roles={["admin"]}><AdminEshram /></RoleLayout>} />
+            <Route path="/admin/skill-badges" element={<RoleLayout roles={["admin"]}><AdminSkillBadges /></RoleLayout>} />
+
 
 
             {/* Public worker profile (QR scan target) */}
