@@ -34,7 +34,7 @@ const SiteAttendance = () => {
     if (r === "contractor") {
       const { data: cp } = await supabase.from("contractor_profiles").select("id").eq("user_id", user.id).maybeSingle();
       if (cp) {
-        const { data: js } = await supabase.from("jobs").select("id, title, location, site_lat, site_lng, geofence_radius_m").eq("contractor_id", cp.id);
+        const { data: js } = await supabase.from("jobs").select("id, contractor_id, title, location, site_lat, site_lng, geofence_radius_m").eq("contractor_id", cp.id);
         setJobs(js ?? []);
       }
     } else {
@@ -42,7 +42,7 @@ const SiteAttendance = () => {
       if (lp) {
         const { data: reqs } = await supabase
           .from("requests")
-          .select("job:jobs(id, title, location, site_lat, site_lng, geofence_radius_m)")
+          .select("job:jobs(id, contractor_id, title, location, site_lat, site_lng, geofence_radius_m)")
           .eq("labour_id", lp.id).eq("status", "accepted");
         const js = (reqs ?? []).map((x: any) => x.job).filter(Boolean);
         setJobs(js);
