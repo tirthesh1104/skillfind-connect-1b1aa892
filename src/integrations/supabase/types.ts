@@ -622,6 +622,7 @@ export type Database = {
           created_at: string
           description: string | null
           duration_days: number | null
+          geofence_radius_m: number
           id: string
           is_urgent: boolean
           live_progress_percent: number
@@ -630,6 +631,8 @@ export type Database = {
           price_offered: number
           progress_updated_at: string | null
           required_skill: string
+          site_lat: number | null
+          site_lng: number | null
           start_date: string | null
           status: Database["public"]["Enums"]["job_status"]
           title: string
@@ -642,6 +645,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           duration_days?: number | null
+          geofence_radius_m?: number
           id?: string
           is_urgent?: boolean
           live_progress_percent?: number
@@ -650,6 +654,8 @@ export type Database = {
           price_offered?: number
           progress_updated_at?: string | null
           required_skill: string
+          site_lat?: number | null
+          site_lng?: number | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["job_status"]
           title: string
@@ -662,6 +668,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           duration_days?: number | null
+          geofence_radius_m?: number
           id?: string
           is_urgent?: boolean
           live_progress_percent?: number
@@ -670,6 +677,8 @@ export type Database = {
           price_offered?: number
           progress_updated_at?: string | null
           required_skill?: string
+          site_lat?: number | null
+          site_lng?: number | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["job_status"]
           title?: string
@@ -1166,6 +1175,8 @@ export type Database = {
           created_at: string
           date_of_birth: string | null
           eshram_number: string | null
+          eshram_verified: boolean
+          eshram_verified_at: string | null
           full_name: string
           id: string
           id_card_generated_at: string | null
@@ -1197,6 +1208,8 @@ export type Database = {
           created_at?: string
           date_of_birth?: string | null
           eshram_number?: string | null
+          eshram_verified?: boolean
+          eshram_verified_at?: string | null
           full_name: string
           id: string
           id_card_generated_at?: string | null
@@ -1228,6 +1241,8 @@ export type Database = {
           created_at?: string
           date_of_birth?: string | null
           eshram_number?: string | null
+          eshram_verified?: boolean
+          eshram_verified_at?: string | null
           full_name?: string
           id?: string
           id_card_generated_at?: string | null
@@ -1349,6 +1364,56 @@ export type Database = {
             columns: ["labour_id"]
             isOneToOne: false
             referencedRelation: "labour_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      site_attendance: {
+        Row: {
+          check_in_lat: number | null
+          check_in_lng: number | null
+          check_in_time: string
+          check_out_time: string | null
+          contractor_id: string | null
+          created_at: string
+          distance_m: number | null
+          id: string
+          is_within_geofence: boolean
+          job_id: string | null
+          worker_id: string
+        }
+        Insert: {
+          check_in_lat?: number | null
+          check_in_lng?: number | null
+          check_in_time?: string
+          check_out_time?: string | null
+          contractor_id?: string | null
+          created_at?: string
+          distance_m?: number | null
+          id?: string
+          is_within_geofence?: boolean
+          job_id?: string | null
+          worker_id: string
+        }
+        Update: {
+          check_in_lat?: number | null
+          check_in_lng?: number | null
+          check_in_time?: string
+          check_out_time?: string | null
+          contractor_id?: string | null
+          created_at?: string
+          distance_m?: number | null
+          id?: string
+          is_within_geofence?: boolean
+          job_id?: string | null
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "site_attendance_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
             referencedColumns: ["id"]
           },
         ]
@@ -1533,6 +1598,33 @@ export type Database = {
           },
         ]
       }
+      training_videos: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          skill_category: string
+          title: string
+          youtube_url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          skill_category: string
+          title: string
+          youtube_url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          skill_category?: string
+          title?: string
+          youtube_url?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -1603,6 +1695,53 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "wage_agreements_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wage_escrow: {
+        Row: {
+          amount: number
+          contractor_id: string
+          created_at: string
+          id: string
+          job_id: string | null
+          released_at: string | null
+          status: string
+          updated_at: string
+          worker_id: string
+          worker_marked_complete_at: string | null
+        }
+        Insert: {
+          amount: number
+          contractor_id: string
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          released_at?: string | null
+          status?: string
+          updated_at?: string
+          worker_id: string
+          worker_marked_complete_at?: string | null
+        }
+        Update: {
+          amount?: number
+          contractor_id?: string
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          released_at?: string | null
+          status?: string
+          updated_at?: string
+          worker_id?: string
+          worker_marked_complete_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wage_escrow_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
             referencedRelation: "jobs"
@@ -1700,6 +1839,39 @@ export type Database = {
         }
         Relationships: []
       }
+      worker_skill_badges: {
+        Row: {
+          badge_level: string
+          certified_at: string
+          certified_by: string | null
+          created_at: string
+          id: string
+          note: string | null
+          skill_name: string
+          worker_id: string
+        }
+        Insert: {
+          badge_level?: string
+          certified_at?: string
+          certified_by?: string | null
+          created_at?: string
+          id?: string
+          note?: string | null
+          skill_name: string
+          worker_id: string
+        }
+        Update: {
+          badge_level?: string
+          certified_at?: string
+          certified_by?: string | null
+          created_at?: string
+          id?: string
+          note?: string | null
+          skill_name?: string
+          worker_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -1717,6 +1889,8 @@ export type Database = {
           created_at: string
           date_of_birth: string | null
           eshram_number: string | null
+          eshram_verified: boolean
+          eshram_verified_at: string | null
           full_name: string
           id: string
           id_card_generated_at: string | null
@@ -1757,6 +1931,8 @@ export type Database = {
           created_at: string
           date_of_birth: string | null
           eshram_number: string | null
+          eshram_verified: boolean
+          eshram_verified_at: string | null
           full_name: string
           id: string
           id_card_generated_at: string | null
@@ -1797,6 +1973,8 @@ export type Database = {
           created_at: string
           date_of_birth: string | null
           eshram_number: string | null
+          eshram_verified: boolean
+          eshram_verified_at: string | null
           full_name: string
           id: string
           id_card_generated_at: string | null
