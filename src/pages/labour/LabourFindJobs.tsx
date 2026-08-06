@@ -11,6 +11,7 @@ import { EmptyState } from "@/components/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SKILL_OPTIONS, skillBadgeClass } from "@/lib/labour";
 import { Search, Briefcase, Send } from "lucide-react";
+import { VoiceSearchButton } from "@/components/VoiceSearch";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
