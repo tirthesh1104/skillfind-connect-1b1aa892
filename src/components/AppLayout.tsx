@@ -11,6 +11,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { SOSButton } from "@/components/SOSButton";
 import { OfflineBanner } from "@/components/DataSaver";
+import { ComingSoonBadge } from "@/components/ComingSoonBadge";
+import { toast } from "sonner";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
@@ -26,6 +28,8 @@ interface NavItem {
   label: string;
   icon: typeof LayoutDashboard;
   end?: boolean;
+  /** Mark a nav entry whose page is not functional yet: shows a badge + toast instead of navigating. */
+  comingSoon?: boolean;
 }
 
 const NAV: Record<string, NavItem[]> = {
@@ -171,20 +175,30 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
             key={item.to}
             to={item.to}
             end={item.end}
-            onClick={() => setOpen(false)}
+            onClick={(e) => {
+              if (item.comingSoon) {
+                e.preventDefault();
+                toast("This feature is coming soon");
+                return;
+              }
+              setOpen(false);
+            }}
             className={({ isActive }) =>
               cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all",
-                isActive
+                isActive && !item.comingSoon
                   ? "bg-gradient-primary text-white shadow-glow"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-foreground"
+                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-foreground",
+                item.comingSoon && "opacity-70"
               )
             }
           >
             <item.icon className="h-4 w-4" />
-            <span>{item.label}</span>
+            <span className="flex-1">{item.label}</span>
+            {item.comingSoon && <ComingSoonBadge />}
           </NavLink>
         ))}
+
       </nav>
 
       <div className="border-t border-sidebar-border p-4">
