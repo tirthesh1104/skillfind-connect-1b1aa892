@@ -70,6 +70,10 @@ import Escrow from "./pages/Escrow";
 import SiteAttendance from "./pages/SiteAttendance";
 import AdminEshram from "./pages/admin/AdminEshram";
 import AdminSkillBadges from "./pages/admin/AdminSkillBadges";
+import BusinessVerification from "./pages/contractor/BusinessVerification";
+import AdminContractorKyc from "./pages/admin/AdminContractorKyc";
+import WorkProof from "./pages/WorkProof";
+import AdvanceRequests from "./pages/AdvanceRequests";
 
 const queryClient = new QueryClient();
 
@@ -170,6 +174,12 @@ const App = () => (
             <Route path="/site-attendance" element={<RoleLayout roles={["contractor","labour","admin"]}><SiteAttendance /></RoleLayout>} />
             <Route path="/admin/eshram" element={<RoleLayout roles={["admin"]}><AdminEshram /></RoleLayout>} />
             <Route path="/admin/skill-badges" element={<RoleLayout roles={["admin"]}><AdminSkillBadges /></RoleLayout>} />
+
+            {/* Batch 2 additions */}
+            <Route path="/business-verification" element={<RoleLayout roles={["contractor"]}><BusinessVerification /></RoleLayout>} />
+            <Route path="/admin/contractor-kyc" element={<RoleLayout roles={["admin"]}><AdminContractorKyc /></RoleLayout>} />
+            <Route path="/work-proof" element={<RoleLayout roles={["labour","contractor","admin"]}><WorkProof /></RoleLayout>} />
+            <Route path="/advance-requests" element={<RoleLayout roles={["labour","contractor","admin"]}><AdvanceRequests /></RoleLayout>} />
 
 
 

@@ -309,27 +309,42 @@ export type Database = {
       }
       contractor_profiles: {
         Row: {
+          business_registration_number: string | null
           company_name: string
           created_at: string
+          gst_number: string | null
           id: string
+          kyc_document_url: string | null
+          kyc_reviewed_at: string | null
+          kyc_status: string
           max_labour_per_day: number
           total_hired_today: number
           updated_at: string
           user_id: string
         }
         Insert: {
+          business_registration_number?: string | null
           company_name: string
           created_at?: string
+          gst_number?: string | null
           id?: string
+          kyc_document_url?: string | null
+          kyc_reviewed_at?: string | null
+          kyc_status?: string
           max_labour_per_day?: number
           total_hired_today?: number
           updated_at?: string
           user_id: string
         }
         Update: {
+          business_registration_number?: string | null
           company_name?: string
           created_at?: string
+          gst_number?: string | null
           id?: string
+          kyc_document_url?: string | null
+          kyc_reviewed_at?: string | null
+          kyc_status?: string
           max_labour_per_day?: number
           total_hired_today?: number
           updated_at?: string
@@ -615,6 +630,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      job_work_proof: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          job_id: string | null
+          photo_url: string
+          stage: string
+          uploaded_at: string
+          uploaded_by: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          photo_url: string
+          stage: string
+          uploaded_at?: string
+          uploaded_by: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          photo_url?: string
+          stage?: string
+          uploaded_at?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_work_proof_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       jobs: {
         Row: {
@@ -1266,6 +1322,45 @@ export type Database = {
         }
         Relationships: []
       }
+      push_subscriptions: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          endpoint: string
+          id: string
+          lat: number | null
+          lng: number | null
+          radius_km: number
+          subscription: Json | null
+          updated_at: string
+          worker_id: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          endpoint: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          radius_km?: number
+          subscription?: Json | null
+          updated_at?: string
+          worker_id: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          endpoint?: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          radius_km?: number
+          subscription?: Json | null
+          updated_at?: string
+          worker_id?: string
+        }
+        Relationships: []
+      }
       ratings: {
         Row: {
           comment: string | null
@@ -1645,6 +1740,62 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      wage_advance_requests: {
+        Row: {
+          approved_at: string | null
+          contractor_id: string
+          created_at: string
+          decision_note: string | null
+          id: string
+          job_id: string | null
+          reason: string | null
+          repaid_at: string | null
+          requested_amount: number
+          requested_at: string
+          status: string
+          updated_at: string
+          worker_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          contractor_id: string
+          created_at?: string
+          decision_note?: string | null
+          id?: string
+          job_id?: string | null
+          reason?: string | null
+          repaid_at?: string | null
+          requested_amount: number
+          requested_at?: string
+          status?: string
+          updated_at?: string
+          worker_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          contractor_id?: string
+          created_at?: string
+          decision_note?: string | null
+          id?: string
+          job_id?: string | null
+          reason?: string | null
+          repaid_at?: string | null
+          requested_amount?: number
+          requested_at?: string
+          status?: string
+          updated_at?: string
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wage_advance_requests_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       wage_agreements: {
         Row: {
