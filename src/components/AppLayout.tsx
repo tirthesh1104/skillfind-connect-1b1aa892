@@ -26,6 +26,8 @@ interface NavItem {
   label: string;
   icon: typeof LayoutDashboard;
   end?: boolean;
+  /** Mark a nav entry whose page is not functional yet: shows a badge + toast instead of navigating. */
+  comingSoon?: boolean;
 }
 
 const NAV: Record<string, NavItem[]> = {
