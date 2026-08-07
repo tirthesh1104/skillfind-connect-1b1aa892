@@ -65,6 +65,9 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/site-attendance", label: "Geofenced Attendance", icon: MapPin },
     { to: "/escrow", label: "Wage Escrow", icon: Lock },
     { to: "/learn", label: "Training Videos", icon: PlayCircle },
+    { to: "/business-verification", label: "Business Verification", icon: BadgeCheck },
+    { to: "/work-proof", label: "Before/After Proof", icon: Camera },
+    { to: "/advance-requests", label: "Advance Requests", icon: Wallet },
     { to: "/pricing", label: "Plans & Billing", icon: Crown },
   ],
   labour: [
@@ -98,6 +101,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/learn", label: "Learn", icon: PlayCircle },
     { to: "/rate-jobs", label: "Rate Jobs", icon: Star },
     { to: "/my-certificates", label: "Certificates", icon: Award },
+    { to: "/work-proof", label: "Before/After Proof", icon: Camera },
+    { to: "/advance-requests", label: "Request Advance", icon: Wallet },
     { to: "/messages", label: "Messages", icon: MessageCircle },
   ],
   client: [
@@ -126,6 +131,8 @@ const NAV: Record<string, NavItem[]> = {
     { to: "/admin/insurance-claims", label: "Insurance Claims", icon: Shield },
     { to: "/admin/sos", label: "SOS Alerts", icon: Siren },
     { to: "/admin/eshram", label: "e-Shram Verification", icon: ShieldCheck },
+    { to: "/admin/contractor-kyc", label: "Contractor KYC", icon: BadgeCheck },
+    { to: "/advance-requests", label: "Advance Requests", icon: Wallet },
     { to: "/admin/skill-badges", label: "Skill Badges & Training", icon: Award },
     { to: "/site-attendance", label: "Geofenced Attendance", icon: MapPin },
     { to: "/escrow", label: "Wage Escrow", icon: Lock },
