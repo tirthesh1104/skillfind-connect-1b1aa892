@@ -175,6 +175,12 @@ const App = () => (
             <Route path="/admin/eshram" element={<RoleLayout roles={["admin"]}><AdminEshram /></RoleLayout>} />
             <Route path="/admin/skill-badges" element={<RoleLayout roles={["admin"]}><AdminSkillBadges /></RoleLayout>} />
 
+            {/* Batch 2 additions */}
+            <Route path="/business-verification" element={<RoleLayout roles={["contractor"]}><BusinessVerification /></RoleLayout>} />
+            <Route path="/admin/contractor-kyc" element={<RoleLayout roles={["admin"]}><AdminContractorKyc /></RoleLayout>} />
+            <Route path="/work-proof" element={<RoleLayout roles={["labour","contractor","admin"]}><WorkProof /></RoleLayout>} />
+            <Route path="/advance-requests" element={<RoleLayout roles={["labour","contractor","admin"]}><AdvanceRequests /></RoleLayout>} />
+
 
 
             {/* Public worker profile (QR scan target) */}
