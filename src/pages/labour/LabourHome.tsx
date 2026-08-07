@@ -54,7 +54,7 @@ const LabourHome = () => {
         <StatCard icon={Briefcase} label="Active Applications" value={stats.active} accent="primary" />
         <StatCard icon={CheckCircle} label="Accepted Jobs" value={stats.accepted} accent="success" />
         <StatCard icon={Clock} label="Pending Requests" value={stats.pending} accent="warning" />
-        <StatCard icon={IndianRupee} label="Earnings (Month)" value="—" hint="Coming soon" accent="primary" />
+        <StatCard icon={IndianRupee} label="Earnings (Month)" value={`Rs. ${stats.earnings.toLocaleString("en-IN")}`} hint={`${stats.paidDays} paid day${stats.paidDays === 1 ? "" : "s"} this month`} accent="primary" />
       </div>
     </div>
   );
