@@ -11,6 +11,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { SOSButton } from "@/components/SOSButton";
 import { OfflineBanner } from "@/components/DataSaver";
+import { ComingSoonBadge } from "@/components/ComingSoonBadge";
+import { toast } from "sonner";
 import {
   HardHat, LayoutDashboard, Users, Briefcase, Inbox, LogOut, Menu,
   UserCircle, Search, ListChecks, Shield, FileText, BarChart3, AlertTriangle, MessageCircle,
