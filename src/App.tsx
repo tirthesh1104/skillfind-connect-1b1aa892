@@ -70,6 +70,10 @@ import Escrow from "./pages/Escrow";
 import SiteAttendance from "./pages/SiteAttendance";
 import AdminEshram from "./pages/admin/AdminEshram";
 import AdminSkillBadges from "./pages/admin/AdminSkillBadges";
+import BusinessVerification from "./pages/contractor/BusinessVerification";
+import AdminContractorKyc from "./pages/admin/AdminContractorKyc";
+import WorkProof from "./pages/WorkProof";
+import AdvanceRequests from "./pages/AdvanceRequests";
 
 const queryClient = new QueryClient();
 
