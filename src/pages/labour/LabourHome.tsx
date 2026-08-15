@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AvailabilityToggle } from "@/components/AvailabilityToggle";
 import { GpsCheckIn } from "@/components/GpsCheckIn";
 import { DataSaverCard } from "@/components/DataSaver";
+import { DashboardSections } from "@/components/DashboardSections";
 
 const LabourHome = () => {
   const { user } = useAuth();
@@ -56,6 +57,7 @@ const LabourHome = () => {
         <StatCard icon={Clock} label="Pending Requests" value={stats.pending} accent="warning" />
         <StatCard icon={IndianRupee} label="Earnings (Month)" value={`Rs. ${stats.earnings.toLocaleString("en-IN")}`} hint={`${stats.paidDays} paid day${stats.paidDays === 1 ? "" : "s"} this month`} accent="primary" />
       </div>
+      <DashboardSections role="labour" />
     </div>
   );
 };

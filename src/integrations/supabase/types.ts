@@ -1230,6 +1230,9 @@ export type Database = {
           bank_name: string | null
           created_at: string
           date_of_birth: string | null
+          emergency_contact_email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
           eshram_number: string | null
           eshram_verified: boolean
           eshram_verified_at: string | null
@@ -1263,6 +1266,9 @@ export type Database = {
           bank_name?: string | null
           created_at?: string
           date_of_birth?: string | null
+          emergency_contact_email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
           eshram_number?: string | null
           eshram_verified?: boolean
           eshram_verified_at?: string | null
@@ -1296,6 +1302,9 @@ export type Database = {
           bank_name?: string | null
           created_at?: string
           date_of_birth?: string | null
+          emergency_contact_email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
           eshram_number?: string | null
           eshram_verified?: boolean
           eshram_verified_at?: string | null
@@ -1609,33 +1618,42 @@ export type Database = {
           address: string | null
           admin_notes: string | null
           created_at: string
+          email_status: string
           id: string
           latitude: number | null
           longitude: number | null
+          notify_detail: string | null
           resolved_at: string | null
           status: string
+          whatsapp_status: string
           worker_id: string
         }
         Insert: {
           address?: string | null
           admin_notes?: string | null
           created_at?: string
+          email_status?: string
           id?: string
           latitude?: number | null
           longitude?: number | null
+          notify_detail?: string | null
           resolved_at?: string | null
           status?: string
+          whatsapp_status?: string
           worker_id: string
         }
         Update: {
           address?: string | null
           admin_notes?: string | null
           created_at?: string
+          email_status?: string
           id?: string
           latitude?: number | null
           longitude?: number | null
+          notify_detail?: string | null
           resolved_at?: string | null
           status?: string
+          whatsapp_status?: string
           worker_id?: string
         }
         Relationships: []
@@ -2039,6 +2057,9 @@ export type Database = {
           bank_name: string | null
           created_at: string
           date_of_birth: string | null
+          emergency_contact_email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
           eshram_number: string | null
           eshram_verified: boolean
           eshram_verified_at: string | null
@@ -2081,6 +2102,9 @@ export type Database = {
           bank_name: string | null
           created_at: string
           date_of_birth: string | null
+          emergency_contact_email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
           eshram_number: string | null
           eshram_verified: boolean
           eshram_verified_at: string | null
@@ -2123,6 +2147,9 @@ export type Database = {
           bank_name: string | null
           created_at: string
           date_of_birth: string | null
+          emergency_contact_email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
           eshram_number: string | null
           eshram_verified: boolean
           eshram_verified_at: string | null

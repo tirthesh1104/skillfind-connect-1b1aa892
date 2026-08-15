@@ -20,6 +20,7 @@ const LabourProfile = () => {
   const [form, setForm] = useState<any>({
     full_name: "", phone: "", location: "", skill: "Plumber",
     price_per_day: 0, experience_years: 0, bio: "", is_available: true,
+    emergency_contact_name: "", emergency_contact_phone: "", emergency_contact_email: "",
   });
 
   useEffect(() => {
@@ -38,6 +39,9 @@ const LabourProfile = () => {
         experience_years: lp?.experience_years ?? 0,
         bio: lp?.bio ?? "",
         is_available: lp?.is_available ?? true,
+        emergency_contact_name: profile?.emergency_contact_name ?? "",
+        emergency_contact_phone: profile?.emergency_contact_phone ?? "",
+        emergency_contact_email: profile?.emergency_contact_email ?? "",
       });
       setLoading(false);
     })();
@@ -47,7 +51,12 @@ const LabourProfile = () => {
     if (!user) return;
     setSaving(true);
     const [{ error: e1 }, { error: e2 }] = await Promise.all([
-      supabase.from("profiles").update({ full_name: form.full_name, phone: form.phone, location: form.location }).eq("id", user.id),
+      supabase.from("profiles").update({
+        full_name: form.full_name, phone: form.phone, location: form.location,
+        emergency_contact_name: form.emergency_contact_name || null,
+        emergency_contact_phone: form.emergency_contact_phone || null,
+        emergency_contact_email: form.emergency_contact_email || null,
+      }).eq("id", user.id),
       supabase.from("labour_profiles").update({
         skill: form.skill, price_per_day: Number(form.price_per_day) || 0,
         experience_years: Number(form.experience_years) || 0, bio: form.bio, is_available: form.is_available,
@@ -85,6 +94,13 @@ const LabourProfile = () => {
           <Label className="cursor-pointer">Available for hire</Label>
         </div>
         <div className="md:col-span-2"><Label>Bio</Label><Textarea rows={3} value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} /></div>
+        <div className="md:col-span-2 border-t border-border pt-4">
+          <p className="text-sm font-semibold">Emergency Contact (family)</p>
+          <p className="text-xs text-muted-foreground">Used for SOS alerts — WhatsApp and email will reach them if you press SOS.</p>
+        </div>
+        <div><Label>Emergency contact name</Label><Input value={form.emergency_contact_name} onChange={(e) => setForm({ ...form, emergency_contact_name: e.target.value })} placeholder="e.g. Brother / Wife" /></div>
+        <div><Label>Emergency contact phone</Label><Input value={form.emergency_contact_phone} onChange={(e) => setForm({ ...form, emergency_contact_phone: e.target.value })} placeholder="10-digit mobile" /></div>
+        <div className="md:col-span-2"><Label>Emergency contact email (optional)</Label><Input type="email" value={form.emergency_contact_email} onChange={(e) => setForm({ ...form, emergency_contact_email: e.target.value })} placeholder="family@example.com" /></div>
         <div className="md:col-span-2">
           <Button className="bg-gradient-primary" onClick={save} disabled={saving}><Save className="mr-2 h-4 w-4" />{saving ? "Saving..." : "Save Changes"}</Button>
       </div>

@@ -174,18 +174,16 @@ export const RoleChatbot = ({ role }: { role: "worker" | "contractor" | "admin" 
               <Sparkles className="h-4 w-4 text-primary" />
               {TITLE[role]}
             </SheetTitle>
-            <Badge variant="outline" className="text-[10px]">Powered by Lovable AI</Badge>
           </div>
           <div className="flex items-center justify-between gap-2">
-            {role === "worker" && (
-              <div className="flex gap-1">
-                {(["mr", "hi", "en"] as Lang[]).map(l => (
-                  <Button key={l} size="sm" variant={lang === l ? "default" : "outline"} onClick={() => setLang(l)} className="h-7 px-2 text-xs">
-                    {l === "mr" ? "मराठी" : l === "hi" ? "हिंदी" : "EN"}
-                  </Button>
-                ))}
-              </div>
-            )}
+            {/* Language mode: available for every role. Input accepts Devanagari + Latin freely. */}
+            <div className="flex gap-1">
+              {(["mr", "hi", "en"] as Lang[]).map(l => (
+                <Button key={l} size="sm" variant={lang === l ? "default" : "outline"} onClick={() => setLang(l)} className="h-7 px-2 text-xs">
+                  {l === "mr" ? "मराठी" : l === "hi" ? "हिंदी" : "EN"}
+                </Button>
+              ))}
+            </div>
             {messages.length > 0 && (
               <Button size="sm" variant="ghost" onClick={() => setMessages([])} className="ml-auto h-7 px-2 text-xs">
                 <Trash2 className="mr-1 h-3 w-3" /> Clear
