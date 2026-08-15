@@ -7,6 +7,9 @@ import { Label } from "@/components/ui/label";
 import { FileCheck2, FileX2, Upload, Trash2, Download, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 
+// Future (Phase 2): DigiLocker integration so worker documents already verified via
+// DigiLocker auto-sync here instead of manual upload. Requires DigiLocker Partner API
+// registration — until then the manual upload flow below stays unchanged.
 const DOC_TYPES = [
   { key: "aadhaar", label: "Aadhaar Card" },
   { key: "pan", label: "PAN Card" },

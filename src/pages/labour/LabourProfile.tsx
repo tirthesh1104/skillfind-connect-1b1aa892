@@ -20,6 +20,7 @@ const LabourProfile = () => {
   const [form, setForm] = useState<any>({
     full_name: "", phone: "", location: "", skill: "Plumber",
     price_per_day: 0, experience_years: 0, bio: "", is_available: true,
+    emergency_contact_name: "", emergency_contact_phone: "", emergency_contact_email: "",
   });
 
   useEffect(() => {
@@ -38,6 +39,9 @@ const LabourProfile = () => {
         experience_years: lp?.experience_years ?? 0,
         bio: lp?.bio ?? "",
         is_available: lp?.is_available ?? true,
+        emergency_contact_name: profile?.emergency_contact_name ?? "",
+        emergency_contact_phone: profile?.emergency_contact_phone ?? "",
+        emergency_contact_email: profile?.emergency_contact_email ?? "",
       });
       setLoading(false);
     })();
@@ -47,7 +51,12 @@ const LabourProfile = () => {
     if (!user) return;
     setSaving(true);
     const [{ error: e1 }, { error: e2 }] = await Promise.all([
-      supabase.from("profiles").update({ full_name: form.full_name, phone: form.phone, location: form.location }).eq("id", user.id),
+      supabase.from("profiles").update({
+        full_name: form.full_name, phone: form.phone, location: form.location,
+        emergency_contact_name: form.emergency_contact_name || null,
+        emergency_contact_phone: form.emergency_contact_phone || null,
+        emergency_contact_email: form.emergency_contact_email || null,
+      }).eq("id", user.id),
       supabase.from("labour_profiles").update({
         skill: form.skill, price_per_day: Number(form.price_per_day) || 0,
         experience_years: Number(form.experience_years) || 0, bio: form.bio, is_available: form.is_available,
