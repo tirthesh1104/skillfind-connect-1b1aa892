@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Search, MessageCircle, Star, MapPin, Briefcase, Shield } from "lucide-react";
 import { InitialsAvatar } from "@/components/InitialsAvatar";
+import { DashboardSections } from "@/components/DashboardSections";
 
 interface WorkerRow {
   id: string;
@@ -244,6 +245,8 @@ const ClientHome = () => {
           </Button>
         </div>
       </Card>
+
+      <DashboardSections role="client" />
 
       <Dialog open={!!contactTarget} onOpenChange={(o) => !o && setContactTarget(null)}>
         <DialogContent>

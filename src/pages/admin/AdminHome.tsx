@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { StatCard } from "@/components/StatCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { InitialsAvatar } from "@/components/InitialsAvatar";
+import { DashboardSections } from "@/components/DashboardSections";
 import { EmptyState } from "@/components/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -599,6 +600,7 @@ const AdminHome = () => {
           )}
         </SheetContent>
       </Sheet>
+      <DashboardSections role="admin" />
     </div>
   );
 };
