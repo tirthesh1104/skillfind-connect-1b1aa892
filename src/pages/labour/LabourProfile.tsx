@@ -94,6 +94,13 @@ const LabourProfile = () => {
           <Label className="cursor-pointer">Available for hire</Label>
         </div>
         <div className="md:col-span-2"><Label>Bio</Label><Textarea rows={3} value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} /></div>
+        <div className="md:col-span-2 border-t border-border pt-4">
+          <p className="text-sm font-semibold">Emergency Contact (family)</p>
+          <p className="text-xs text-muted-foreground">Used for SOS alerts — WhatsApp and email will reach them if you press SOS.</p>
+        </div>
+        <div><Label>Emergency contact name</Label><Input value={form.emergency_contact_name} onChange={(e) => setForm({ ...form, emergency_contact_name: e.target.value })} placeholder="e.g. Brother / Wife" /></div>
+        <div><Label>Emergency contact phone</Label><Input value={form.emergency_contact_phone} onChange={(e) => setForm({ ...form, emergency_contact_phone: e.target.value })} placeholder="10-digit mobile" /></div>
+        <div className="md:col-span-2"><Label>Emergency contact email (optional)</Label><Input type="email" value={form.emergency_contact_email} onChange={(e) => setForm({ ...form, emergency_contact_email: e.target.value })} placeholder="family@example.com" /></div>
         <div className="md:col-span-2">
           <Button className="bg-gradient-primary" onClick={save} disabled={saving}><Save className="mr-2 h-4 w-4" />{saving ? "Saving..." : "Save Changes"}</Button>
       </div>
