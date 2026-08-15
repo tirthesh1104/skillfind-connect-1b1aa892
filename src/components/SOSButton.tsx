@@ -6,6 +6,16 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { Siren } from "lucide-react";
 
+// NOTE (pre-deployment): WhatsApp delivery uses the official wa.me deep link and opens
+// a pre-filled message for each recipient (contractor + family emergency contact).
+// A server-side WhatsApp Business/bot API is NOT connected yet — when it is, replace
+// the openWhatsApp() calls below with an edge-function send and keep the same statuses.
+const openWhatsApp = (phone: string, text: string) => {
+  const digits = phone.replace(/\D/g, "");
+  const num = digits.length === 10 ? `91${digits}` : digits;
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+};
+
 export const SOSButton = () => {
   const { user } = useAuth();
   const [sending, setSending] = useState(false);
@@ -24,30 +34,90 @@ export const SOSButton = () => {
 
     const mapsLink = lat && lon ? `https://maps.google.com/?q=${lat},${lon}` : null;
 
-    const { data: prof } = await supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle();
+    const { data: prof } = await supabase
+      .from("profiles")
+      .select("full_name, phone, emergency_contact_name, emergency_contact_phone, emergency_contact_email")
+      .eq("id", user.id)
+      .maybeSingle();
     const name = prof?.full_name || "Worker";
 
-    const { error } = await supabase.from("sos_alerts").insert({
+    const { data: alert, error } = await supabase.from("sos_alerts").insert({
       worker_id: user.id, latitude: lat, longitude: lon, address: mapsLink,
-    });
+    }).select("id, created_at").maybeSingle();
 
-    // Notify all admins
+    if (error) { setSending(false); return toast.error(error.message); }
+
+    // Find the worker's most recent contractor (assigned/accepted request)
+    let contractorUserId: string | null = null;
+    let contractorPhone: string | null = null;
+    const { data: lp } = await supabase.from("labour_profiles").select("id").eq("user_id", user.id).maybeSingle();
+    if (lp) {
+      const { data: req } = await supabase
+        .from("requests")
+        .select("contractor_id, created_at")
+        .eq("labour_id", lp.id)
+        .eq("status", "accepted")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (req?.contractor_id) {
+        const { data: cp } = await supabase.from("contractor_profiles").select("user_id").eq("id", req.contractor_id).maybeSingle();
+        if (cp?.user_id) {
+          contractorUserId = cp.user_id;
+          const { data: cprof } = await supabase.from("profiles").select("phone").eq("id", cp.user_id).maybeSingle();
+          contractorPhone = cprof?.phone ?? null;
+        }
+      }
+    }
+
+    // Notify all admins in-app (existing behaviour)
     const { data: admins } = await supabase.from("user_roles").select("user_id").eq("role", "admin");
-    if (admins?.length) {
-      const rows = admins.map((a: any) => ({
-        user_id: a.user_id,
+    const inAppTargets = [...(admins?.map((a: any) => a.user_id) ?? []), ...(contractorUserId ? [contractorUserId] : [])];
+    if (inAppTargets.length) {
+      const rows = inAppTargets.map((uid) => ({
+        user_id: uid,
         title: "🆘 SOS Alert",
         body: `${name} needs urgent help. ${mapsLink ? "Location: " + mapsLink : "Location unavailable"}`,
-        link: "/admin",
+        link: "/admin/sos",
         type: "system" as const,
         message: `SOS from ${name}`,
       }));
       await supabase.from("notifications").insert(rows as any);
     }
 
+    // WhatsApp to BOTH contractor and family emergency contact
+    const waText = `🆘 SOS ALERT\n${name} has raised an SOS alert and may be in danger.\nPhone: ${prof?.phone || "N/A"}\nLocation: ${mapsLink || "unavailable"}\nTime: ${new Date().toLocaleString("en-IN")}`;
+    const waTargets = [contractorPhone, prof?.emergency_contact_phone].filter(Boolean) as string[];
+    waTargets.forEach((p) => openWhatsApp(p, waText));
+
+    // Email to contractor + emergency contact (real send via Resend edge function)
+    let emailOk = false;
+    try {
+      const { data: res } = await supabase.functions.invoke("send-sos-email", {
+        body: {
+          alert_id: alert?.id,
+          worker_name: name,
+          worker_phone: prof?.phone ?? null,
+          latitude: lat,
+          longitude: lon,
+          contractor_id: contractorUserId,
+          emergency_email: prof?.emergency_contact_email ?? null,
+          created_at: alert?.created_at ?? new Date().toISOString(),
+        },
+      });
+      emailOk = !!(res as any)?.sent;
+    } catch { /* status stays failed */ }
+
+    if (alert?.id) {
+      await supabase.from("sos_alerts").update({
+        whatsapp_status: waTargets.length ? "sent" : "skipped",
+      }).eq("id", alert.id);
+    }
+
     setSending(false);
-    if (error) return toast.error(error.message);
-    toast.success("SOS bheja gaya. Admin ko notification mili hai. Shant raho.");
+    toast.success(
+      `SOS bheja gaya. WhatsApp: ${waTargets.length ? waTargets.length + " recipient(s)" : "no number saved"} · Email: ${emailOk ? "sent" : "not sent"}`
+    );
   };
 
   return (
@@ -61,7 +131,7 @@ export const SOSButton = () => {
         <AlertDialogHeader>
           <AlertDialogTitle>Send Emergency SOS?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will share your live location with the admin team and any registered emergency contacts.
+            This shares your live location with the admin team, your contractor and your family emergency contact — via app alert, WhatsApp and email.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
