@@ -6,6 +6,7 @@ import { Briefcase, HardHat, Inbox, Users } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import { WeatherWidget } from "@/components/WeatherWidget";
+import { DashboardSections } from "@/components/DashboardSections";
 
 const ContractorHome = () => {
   const { user } = useAuth();
@@ -75,6 +76,7 @@ const ContractorHome = () => {
           </ul>
         )}
       </div>
+      <DashboardSections role="contractor" />
     </div>
   );
 };
