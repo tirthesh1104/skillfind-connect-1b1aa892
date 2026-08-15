@@ -45,6 +45,15 @@ const AdminSOS = () => {
                 <div>
                   <p className="font-semibold">{a.profile?.full_name || "Worker"} <span className={`ml-2 rounded-full px-2 py-0.5 text-xs ${a.status === "active" ? "bg-red-500/20 text-red-600" : "bg-green-500/20 text-green-600"}`}>{a.status}</span></p>
                   <p className="text-xs text-muted-foreground">Phone: {a.profile?.phone || "—"} · {new Date(a.created_at).toLocaleString()}</p>
+                  <div className="mt-1 flex flex-wrap gap-2 text-[11px]">
+                    <span className={`rounded-full px-2 py-0.5 ${a.whatsapp_status === "sent" ? "bg-green-500/20 text-green-600" : a.whatsapp_status === "skipped" ? "bg-muted text-muted-foreground" : "bg-red-500/20 text-red-600"}`}>
+                      WhatsApp: {a.whatsapp_status || "pending"}
+                    </span>
+                    <span className={`rounded-full px-2 py-0.5 ${a.email_status === "sent" ? "bg-green-500/20 text-green-600" : a.email_status === "skipped" ? "bg-muted text-muted-foreground" : "bg-red-500/20 text-red-600"}`}>
+                      Email: {a.email_status || "pending"}
+                    </span>
+                  </div>
+                  {a.notify_detail && <p className="mt-1 text-[11px] text-muted-foreground">{a.notify_detail}</p>}
                 </div>
                 {a.latitude && (
                   <a href={`https://maps.google.com/?q=${a.latitude},${a.longitude}`} target="_blank" rel="noreferrer" className="text-sm text-primary underline">
