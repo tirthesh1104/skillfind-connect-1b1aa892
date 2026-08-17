@@ -6,6 +6,7 @@ import { Briefcase, CheckCircle, Clock, IndianRupee } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AvailabilityToggle } from "@/components/AvailabilityToggle";
 import { GpsCheckIn } from "@/components/GpsCheckIn";
+import { PushAlertsToggle } from "@/components/PushAlertsToggle";
 import { DataSaverCard } from "@/components/DataSaver";
 import { DashboardSections } from "@/components/DashboardSections";
 
@@ -50,6 +51,7 @@ const LabourHome = () => {
       </div>
       <AvailabilityToggle />
       <GpsCheckIn />
+      <PushAlertsToggle />
       <DataSaverCard />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard icon={Briefcase} label="Active Applications" value={stats.active} accent="primary" />
