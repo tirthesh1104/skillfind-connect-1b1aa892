@@ -126,7 +126,7 @@ export const SOSButton = () => {
       emailOk = !!(res as any)?.sent;
     } catch { /* status stays failed */ }
 
-    if (alert?.id) {
+    if (alert?.id && !waAuto) {
       await supabase.from("sos_alerts").update({
         whatsapp_status: waTargets.length ? "sent" : "skipped",
       }).eq("id", alert.id);
@@ -134,7 +134,7 @@ export const SOSButton = () => {
 
     setSending(false);
     toast.success(
-      `SOS bheja gaya. WhatsApp: ${waTargets.length ? waTargets.length + " recipient(s)" : "no number saved"} · Email: ${emailOk ? "sent" : "not sent"}`
+      `SOS bheja gaya. WhatsApp: ${waTargets.length ? `${waTargets.length} recipient(s)${waAuto ? " (auto-sent)" : " (tap Send)"}` : "no number saved"} · Email: ${emailOk ? "sent" : "not sent"}`
     );
   };
 
