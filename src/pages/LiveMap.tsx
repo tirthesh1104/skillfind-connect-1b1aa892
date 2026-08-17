@@ -127,6 +127,7 @@ const LiveMap = () => {
               attribution='&copy; OpenStreetMap'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
+            <MapSync center={center} hasPins={pins.length > 0} />
             {pins.map((p) => {
               const s = statusOf(p);
               return (
