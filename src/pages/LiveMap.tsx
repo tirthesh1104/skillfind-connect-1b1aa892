@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -7,6 +7,24 @@ import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/EmptyState";
 import { MapPin, Radio } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+
+// OpenStreetMap tiles need no API key. If tiles are ever swapped for Mapbox/Google,
+// read the token from a secret (e.g. VITE_MAP_TILE_TOKEN) — never hardcode it.
+
+// Fixes the two classic Leaflet bugs: container measured at 0px height on first
+// paint (blank map), and the map never re-centering when new pins arrive.
+const MapSync = ({ center, hasPins }: { center: [number, number]; hasPins: boolean }) => {
+  const map = useMap();
+  useEffect(() => {
+    const t = setTimeout(() => map.invalidateSize(), 200);
+    return () => clearTimeout(t);
+  }, [map]);
+  useEffect(() => {
+    if (hasPins) map.setView(center, Math.max(map.getZoom(), 10), { animate: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [center[0], center[1], hasPins]);
+  return null;
+};
 
 interface Checkin {
   id: string;
