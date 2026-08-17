@@ -85,10 +85,28 @@ export const SOSButton = () => {
       await supabase.from("notifications").insert(rows as any);
     }
 
-    // WhatsApp to BOTH contractor and family emergency contact
+    // WhatsApp to BOTH contractor and family emergency contact.
+    // Primary: automatic send via WhatsApp Cloud API edge function.
+    // Fallback: wa.me deep link (used when secrets are not configured yet).
     const waText = `🆘 SOS ALERT\n${name} has raised an SOS alert and may be in danger.\nPhone: ${prof?.phone || "N/A"}\nLocation: ${mapsLink || "unavailable"}\nTime: ${new Date().toLocaleString("en-IN")}`;
     const waTargets = [contractorPhone, prof?.emergency_contact_phone].filter(Boolean) as string[];
-    waTargets.forEach((p) => openWhatsApp(p, waText));
+    let waAuto = false;
+    if (waTargets.length) {
+      try {
+        const { data: waRes } = await supabase.functions.invoke("send-sos-whatsapp", {
+          body: {
+            alert_id: alert?.id,
+            worker_name: name,
+            worker_phone: prof?.phone ?? null,
+            maps_link: mapsLink,
+            phones: waTargets,
+          },
+        });
+        waAuto = !!(waRes as any)?.sent;
+      } catch { /* fall back below */ }
+      if (!waAuto) waTargets.forEach((p) => openWhatsApp(p, waText));
+    }
+
 
     // Email to contractor + emergency contact (real send via Resend edge function)
     let emailOk = false;
