@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { MapPin, LogIn, LogOut } from "lucide-react";
+import { MapPin, LogIn, LogOut, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
 
 interface Checkin {
@@ -15,7 +15,11 @@ interface Checkin {
 
 const getPosition = () =>
   new Promise<GeolocationPosition>((res, rej) =>
-    navigator.geolocation.getCurrentPosition(res, rej, { timeout: 10000, enableHighAccuracy: true })
+    navigator.geolocation.getCurrentPosition(res, rej, {
+      timeout: 15000,
+      enableHighAccuracy: true,
+      maximumAge: 0, // never use a stale cached fix
+    })
   );
 
 const reverseGeocode = async (lat: number, lon: number) => {
@@ -36,6 +40,7 @@ export const GpsCheckIn = () => {
   const { user } = useAuth();
   const [last, setLast] = useState<Checkin | null>(null);
   const [busy, setBusy] = useState(false);
+  const [permission, setPermission] = useState<PermissionState | "unsupported" | "insecure" | null>(null);
 
   const load = async () => {
     if (!user) return;
@@ -49,6 +54,20 @@ export const GpsCheckIn = () => {
     setLast(data ?? null);
   };
 
+  // Permission / secure-origin pre-check. Browsers block geolocation on
+  // non-HTTPS origins (localhost is exempt) — surface that instead of failing silently.
+  useEffect(() => {
+    if (!("geolocation" in navigator)) return setPermission("unsupported");
+    if (!window.isSecureContext) return setPermission("insecure");
+    navigator.permissions
+      ?.query({ name: "geolocation" as PermissionName })
+      .then((p) => {
+        setPermission(p.state);
+        p.onchange = () => setPermission(p.state);
+      })
+      .catch(() => setPermission(null));
+  }, []);
+
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,6 +75,11 @@ export const GpsCheckIn = () => {
 
   const mark = async (kind: "in" | "out") => {
     if (!user) return;
+
+    if (permission === "unsupported") return toast.error("This browser does not support GPS location.");
+    if (permission === "insecure")
+      return toast.error("Location needs a secure (HTTPS) connection. Open the site over https://");
+
     setBusy(true);
     let lat: number | null = null;
     let lon: number | null = null;
@@ -65,8 +89,17 @@ export const GpsCheckIn = () => {
       lat = pos.coords.latitude;
       lon = pos.coords.longitude;
       place = await reverseGeocode(lat, lon);
-    } catch {
-      toast.warning("Location off — GPS शिवाय नोंद होईल");
+    } catch (err) {
+      const code = (err as GeolocationPositionError)?.code;
+      if (code === 1) {
+        setPermission("denied");
+        setBusy(false);
+        return toast.error(
+          "Location blocked. Browser/phone settings मध्ये या साइटसाठी Location 'Allow' करा, मग पुन्हा प्रयत्न करा."
+        );
+      }
+      if (code === 3) toast.warning("GPS signal slow — location न घेता नोंद होईल");
+      else toast.warning("Location unavailable — GPS शिवाय नोंद होईल");
     }
 
     // pick the worker's most recent job, if any
@@ -87,8 +120,14 @@ export const GpsCheckIn = () => {
       place_name: place,
     });
     setBusy(false);
-    if (error) return toast.error(error.message);
-    toast.success(kind === "in" ? "Check-in झाले ✅" : "Check-out झाले 👋");
+    if (error) return toast.error(`Check-in save failed: ${error.message}`);
+    toast.success(
+      kind === "in"
+        ? lat
+          ? "Check-in झाले ✅ (location saved)"
+          : "Check-in झाले ✅ (location नाही)"
+        : "Check-out झाले 👋"
+    );
     load();
   };
 
@@ -115,6 +154,19 @@ export const GpsCheckIn = () => {
           </Button>
         </div>
       </div>
+
+      {(permission === "denied" || permission === "insecure" || permission === "unsupported") && (
+        <div className="mt-3 flex items-start gap-2 rounded-md border border-destructive/30 bg-destructive/10 p-2.5 text-xs text-destructive">
+          <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+          <span>
+            {permission === "denied"
+              ? "Location access denied. Chrome: address bar चा 🔒 icon → Location → Allow. Phone: Settings → Apps → Browser → Permissions → Location."
+              : permission === "insecure"
+              ? "Geolocation works only on a secure HTTPS connection."
+              : "This device/browser does not provide GPS location."}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
