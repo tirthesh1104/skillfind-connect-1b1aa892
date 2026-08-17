@@ -2219,6 +2219,10 @@ export type Database = {
         Args: { _job_id: string; _uid: string }
         Returns: boolean
       }
+      is_my_worker: {
+        Args: { _contractor_uid: string; _worker_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "contractor" | "labour" | "client"
