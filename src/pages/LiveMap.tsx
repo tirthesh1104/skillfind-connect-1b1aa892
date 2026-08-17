@@ -149,7 +149,14 @@ const LiveMap = () => {
             })}
           </MapContainer>
         </div>
+        {!loading && pins.length === 0 && (
+          <p className="border-t border-border p-3 text-xs text-muted-foreground">
+            No GPS coordinates yet. Workers must press <strong>Check In</strong> on their dashboard and allow
+            location access in the browser — check-ins saved without location won't appear as pins here.
+          </p>
+        )}
       </div>
+
 
       <div className="glass-card p-6">
         <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
