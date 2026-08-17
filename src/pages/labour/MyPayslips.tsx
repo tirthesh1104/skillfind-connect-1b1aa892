@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/EmptyState";
-import { FileText, Download } from "lucide-react";
+import { FileText, Download, Mail } from "lucide-react";
 import { generatePayslip } from "@/lib/payslip";
 import { toast } from "sonner";
 
@@ -15,6 +15,23 @@ const MyPayslips = () => {
   const { user } = useAuth();
   const [rows, setRows] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [emailing, setEmailing] = useState<string | null>(null);
+
+  const emailPayslip = async (r: any) => {
+    setEmailing(r.id);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-payslip-server", {
+        body: { receipt_id: r.id },
+      });
+      if (error) throw error;
+      if ((data as any)?.sent) toast.success("📧 Payslip तुमच्या email वर पाठवला");
+      else toast.error(`Email not sent: ${(data as any)?.reason || (data as any)?.detail || "unknown error"}`);
+    } catch (e: any) {
+      toast.error(e?.message ?? "Could not email payslip");
+    } finally {
+      setEmailing(null);
+    }
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -72,9 +89,14 @@ const MyPayslips = () => {
                       <TableCell className="font-medium">₹{r.amount.toLocaleString()}</TableCell>
                       <TableCell><Badge variant="outline">{r.payment_method}</Badge></TableCell>
                       <TableCell className="text-right">
-                        <Button size="sm" className="bg-gradient-primary" onClick={() => download(r)}>
-                          <Download className="mr-1 h-3 w-3" />PDF
-                        </Button>
+                        <div className="flex justify-end gap-2">
+                          <Button size="sm" className="bg-gradient-primary" onClick={() => download(r)}>
+                            <Download className="mr-1 h-3 w-3" />PDF
+                          </Button>
+                          <Button size="sm" variant="outline" disabled={emailing === r.id} onClick={() => emailPayslip(r)}>
+                            <Mail className="mr-1 h-3 w-3" />{emailing === r.id ? "Sending…" : "Email Me"}
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
