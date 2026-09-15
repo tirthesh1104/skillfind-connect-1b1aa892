@@ -31,17 +31,25 @@ const STARTERS: Record<string, string[]> = {
 
 export const RoleChatbot = ({ role }: { role: "worker" | "contractor" | "admin" }) => {
   const { user } = useAuth();
+  const { lang: siteLang } = useLanguage();
+  const { speak, stop, speaking } = useAiVoice();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
-  const [lang, setLang] = useState<Lang>(() => (localStorage.getItem("chatbot_lang") as Lang) || (role === "worker" ? "mr" : "en"));
+  // Chat language follows the site language switcher by default; user can still override here.
+  const [lang, setLang] = useState<Lang>(() => (localStorage.getItem("chatbot_lang") as Lang) || (siteLang as Lang));
+  const [voiceOn, setVoiceOn] = useState(() => localStorage.getItem("chatbot_voice") === "1");
   const [recording, setRecording] = useState(false);
   const [context, setContext] = useState<Record<string, unknown>>({});
   const scrollRef = useRef<HTMLDivElement>(null);
   const recogRef = useRef<any>(null);
 
   useEffect(() => { localStorage.setItem("chatbot_lang", lang); }, [lang]);
+  useEffect(() => { localStorage.setItem("chatbot_voice", voiceOn ? "1" : "0"); }, [voiceOn]);
+  // Keep the chat in sync when the user changes the site language.
+  useEffect(() => { setLang(siteLang as Lang); }, [siteLang]);
+  useEffect(() => { if (!open) stop(); }, [open, stop]);
 
   // Build live user context (read-only quick stats) when opened
   useEffect(() => {
