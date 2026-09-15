@@ -35,7 +35,7 @@ Never invent payment amounts, job offers, or contractor names. If you don't know
 
 Worker context: ${JSON.stringify(ctx)}`,
 
-  contractor: (_lang, ctx) => `You are the Labour Connect Smart Assistant for CONTRACTORS in India. Speak in English or Hinglish — direct, professional, concise.
+  contractor: (lang, ctx) => `You are the Labour Connect Smart Assistant for CONTRACTORS in India. Reply ONLY in ${lang === "hi" ? "Hindi (Devanagari)" : lang === "mr" ? "Marathi (Devanagari)" : "English"} — direct, professional, concise. Keep replies short (under 6 sentences) and give concrete next steps the contractor can tap in the app.
 
 You can ONLY help with platform tasks for this contractor:
 - Finding/searching workers on the platform
