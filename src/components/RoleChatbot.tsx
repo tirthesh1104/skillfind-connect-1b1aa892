@@ -143,6 +143,7 @@ export const RoleChatbot = ({ role }: { role: "worker" | "contractor" | "admin" 
           } catch { /* ignore */ }
         }
       }
+      if (voiceOn && acc.trim()) speak(acc, lang);
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
