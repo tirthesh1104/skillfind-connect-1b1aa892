@@ -240,13 +240,24 @@ export const RoleChatbot = ({ role }: { role: "worker" | "contractor" | "admin" 
               </div>
             )}
             {messages.map((m, i) => (
-              <div key={i} className={cn("flex", m.role === "user" ? "justify-end" : "justify-start")}>
+              <div key={i} className={cn("flex items-end gap-1", m.role === "user" ? "justify-end" : "justify-start")}>
                 <div className={cn(
                   "rounded-2xl px-3 py-2 max-w-[85%] text-sm whitespace-pre-wrap break-words",
                   m.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
                 )}>
                   {m.content || <span className="opacity-60">...</span>}
                 </div>
+                {m.role === "assistant" && m.content && (
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-6 w-6 shrink-0 text-muted-foreground"
+                    onClick={() => speak(m.content, lang)}
+                    title="Listen"
+                  >
+                    <Volume2 className="h-3 w-3" />
+                  </Button>
+                )}
               </div>
             ))}
             {busy && messages[messages.length - 1]?.role === "user" && (
