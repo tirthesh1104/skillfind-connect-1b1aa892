@@ -4,11 +4,13 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { Bot, Send, Mic, MicOff, Trash2, Sparkles } from "lucide-react";
+import { Bot, Send, Mic, MicOff, Trash2, Sparkles, Volume2, VolumeX, Square } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useAiVoice } from "@/hooks/useAiVoice";
 
 type Lang = "mr" | "hi" | "en";
 type Msg = { role: "user" | "assistant"; content: string };
