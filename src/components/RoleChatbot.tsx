@@ -4,11 +4,13 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { Bot, Send, Mic, MicOff, Trash2, Sparkles } from "lucide-react";
+import { Bot, Send, Mic, MicOff, Trash2, Sparkles, Volume2, VolumeX, Square } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useAiVoice } from "@/hooks/useAiVoice";
 
 type Lang = "mr" | "hi" | "en";
 type Msg = { role: "user" | "assistant"; content: string };
@@ -29,17 +31,25 @@ const STARTERS: Record<string, string[]> = {
 
 export const RoleChatbot = ({ role }: { role: "worker" | "contractor" | "admin" }) => {
   const { user } = useAuth();
+  const { lang: siteLang } = useLanguage();
+  const { speak, stop, speaking } = useAiVoice();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
-  const [lang, setLang] = useState<Lang>(() => (localStorage.getItem("chatbot_lang") as Lang) || (role === "worker" ? "mr" : "en"));
+  // Chat language follows the site language switcher by default; user can still override here.
+  const [lang, setLang] = useState<Lang>(() => (localStorage.getItem("chatbot_lang") as Lang) || (siteLang as Lang));
+  const [voiceOn, setVoiceOn] = useState(() => localStorage.getItem("chatbot_voice") === "1");
   const [recording, setRecording] = useState(false);
   const [context, setContext] = useState<Record<string, unknown>>({});
   const scrollRef = useRef<HTMLDivElement>(null);
   const recogRef = useRef<any>(null);
 
   useEffect(() => { localStorage.setItem("chatbot_lang", lang); }, [lang]);
+  useEffect(() => { localStorage.setItem("chatbot_voice", voiceOn ? "1" : "0"); }, [voiceOn]);
+  // Keep the chat in sync when the user changes the site language.
+  useEffect(() => { setLang(siteLang as Lang); }, [siteLang]);
+  useEffect(() => { if (!open) stop(); }, [open, stop]);
 
   // Build live user context (read-only quick stats) when opened
   useEffect(() => {
@@ -133,6 +143,7 @@ export const RoleChatbot = ({ role }: { role: "worker" | "contractor" | "admin" 
           } catch { /* ignore */ }
         }
       }
+      if (voiceOn && acc.trim()) speak(acc, lang);
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
@@ -184,11 +195,27 @@ export const RoleChatbot = ({ role }: { role: "worker" | "contractor" | "admin" 
                 </Button>
               ))}
             </div>
-            {messages.length > 0 && (
-              <Button size="sm" variant="ghost" onClick={() => setMessages([])} className="ml-auto h-7 px-2 text-xs">
-                <Trash2 className="mr-1 h-3 w-3" /> Clear
+            <div className="ml-auto flex items-center gap-1">
+              <Button
+                size="sm"
+                variant={voiceOn ? "default" : "outline"}
+                onClick={() => { if (voiceOn) stop(); setVoiceOn(v => !v); }}
+                className="h-7 px-2 text-xs"
+                title={voiceOn ? "Voice replies on" : "Voice replies off"}
+              >
+                {voiceOn ? <Volume2 className="h-3 w-3" /> : <VolumeX className="h-3 w-3" />}
               </Button>
-            )}
+              {speaking && (
+                <Button size="sm" variant="ghost" onClick={stop} className="h-7 px-2 text-xs" title="Stop speaking">
+                  <Square className="h-3 w-3" />
+                </Button>
+              )}
+              {messages.length > 0 && (
+                <Button size="sm" variant="ghost" onClick={() => { stop(); setMessages([]); }} className="h-7 px-2 text-xs">
+                  <Trash2 className="mr-1 h-3 w-3" /> Clear
+                </Button>
+              )}
+            </div>
           </div>
         </SheetHeader>
 
@@ -213,13 +240,24 @@ export const RoleChatbot = ({ role }: { role: "worker" | "contractor" | "admin" 
               </div>
             )}
             {messages.map((m, i) => (
-              <div key={i} className={cn("flex", m.role === "user" ? "justify-end" : "justify-start")}>
+              <div key={i} className={cn("flex items-end gap-1", m.role === "user" ? "justify-end" : "justify-start")}>
                 <div className={cn(
                   "rounded-2xl px-3 py-2 max-w-[85%] text-sm whitespace-pre-wrap break-words",
                   m.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
                 )}>
                   {m.content || <span className="opacity-60">...</span>}
                 </div>
+                {m.role === "assistant" && m.content && (
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-6 w-6 shrink-0 text-muted-foreground"
+                    onClick={() => speak(m.content, lang)}
+                    title="Listen"
+                  >
+                    <Volume2 className="h-3 w-3" />
+                  </Button>
+                )}
               </div>
             ))}
             {busy && messages[messages.length - 1]?.role === "user" && (
