@@ -195,11 +195,27 @@ export const RoleChatbot = ({ role }: { role: "worker" | "contractor" | "admin" 
                 </Button>
               ))}
             </div>
-            {messages.length > 0 && (
-              <Button size="sm" variant="ghost" onClick={() => setMessages([])} className="ml-auto h-7 px-2 text-xs">
-                <Trash2 className="mr-1 h-3 w-3" /> Clear
+            <div className="ml-auto flex items-center gap-1">
+              <Button
+                size="sm"
+                variant={voiceOn ? "default" : "outline"}
+                onClick={() => { if (voiceOn) stop(); setVoiceOn(v => !v); }}
+                className="h-7 px-2 text-xs"
+                title={voiceOn ? "Voice replies on" : "Voice replies off"}
+              >
+                {voiceOn ? <Volume2 className="h-3 w-3" /> : <VolumeX className="h-3 w-3" />}
               </Button>
-            )}
+              {speaking && (
+                <Button size="sm" variant="ghost" onClick={stop} className="h-7 px-2 text-xs" title="Stop speaking">
+                  <Square className="h-3 w-3" />
+                </Button>
+              )}
+              {messages.length > 0 && (
+                <Button size="sm" variant="ghost" onClick={() => { stop(); setMessages([]); }} className="h-7 px-2 text-xs">
+                  <Trash2 className="mr-1 h-3 w-3" /> Clear
+                </Button>
+              )}
+            </div>
           </div>
         </SheetHeader>
 
