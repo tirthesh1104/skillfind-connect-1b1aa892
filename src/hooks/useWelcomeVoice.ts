@@ -1,97 +1,81 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Language } from "@/contexts/LanguageContext";
 
-const MESSAGES: Record<Language, { text: string; lang: string }> = {
-  mr: {
-    text: "Labour Connect मध्ये आपले स्वागत आहे. हे एक व्यासपीठ आहे जे कंत्राटदार आणि कामगार यांना जोडते. कामगारांना काम मिळवण्यासाठी आणि कंत्राटदारांना योग्य कामगार शोधण्यासाठी हे बनवले आहे.",
-    lang: "mr-IN",
-  },
-  hi: {
-    text: "Labour Connect में आपका स्वागत है। यह एक ऐसा मंच है जो ठेकेदारों और मजदूरों को जोड़ता है।",
-    lang: "hi-IN",
-  },
-  en: {
-    text: "Welcome to Labour Connect. This platform connects contractors with skilled workers across India.",
-    lang: "en-IN",
-  },
+const TTS_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/tts`;
+
+/** Short greeting per language — short = faster to start and easier to follow. */
+const MESSAGES: Record<Language, string> = {
+  mr: "Labour Connect मध्ये आपले स्वागत आहे. कंत्राटदार आणि कामगार यांना जोडणारे व्यासपीठ.",
+  hi: "Labour Connect में आपका स्वागत है। ठेकेदारों और मजदूरों को जोड़ने वाला मंच।",
+  en: "Welcome to Labour Connect. The platform that connects contractors with skilled workers.",
 };
 
-/** Pick the best available voice for a language, with sensible fallbacks. */
-const pickVoice = (voices: SpeechSynthesisVoice[], lang: Language): SpeechSynthesisVoice | null => {
-  const byPrefix = (p: string) => voices.filter((v) => v.lang.toLowerCase().replace("_", "-").startsWith(p));
-  const preferNatural = (list: SpeechSynthesisVoice[]) =>
-    list.find((v) => /google|natural|female|neural/i.test(v.name)) ?? list[0] ?? null;
-
-  if (lang === "en") {
-    const indian = byPrefix("en-in");
-    const us = byPrefix("en-us");
-    return preferNatural(indian) ?? preferNatural(us) ?? preferNatural(byPrefix("en"));
-  }
-
-  if (lang === "hi") {
-    return preferNatural(byPrefix("hi"));
-  }
-
-  // Marathi: most devices have no mr voice — fall back to Hindi (never English).
-  const mr = preferNatural(byPrefix("mr"));
-  if (mr) return mr;
-  const hi = preferNatural(byPrefix("hi"));
-  if (hi) return hi;
-  return null;
+const browserFallback = (text: string, lang: Language) => {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+  const voices = window.speechSynthesis.getVoices();
+  const pick = (p: string) => voices.find((v) => v.lang.toLowerCase().replace("_", "-").startsWith(p));
+  const u = new SpeechSynthesisUtterance(text);
+  const v = pick(lang) ?? (lang === "mr" ? pick("hi") : undefined) ?? pick("en-in");
+  if (v) { u.voice = v; u.lang = v.lang; } else { u.lang = lang === "mr" ? "hi-IN" : lang === "hi" ? "hi-IN" : "en-IN"; }
+  u.rate = 1.15;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
 };
 
+/**
+ * Plays a natural, quick welcome greeting in the currently selected site language.
+ * Uses the AI voice service; if autoplay is blocked it plays on the first tap/click.
+ */
 export const useWelcomeVoice = (lang: Language) => {
+  const playedFor = useRef<Language | null>(null);
+
   useEffect(() => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    if (sessionStorage.getItem("welcome_voice_spoken") === "1") return;
+    if (typeof window === "undefined") return;
+    if (sessionStorage.getItem("welcome_voice_lang") === lang) return;
+    if (playedFor.current === lang) return;
+    playedFor.current = lang;
 
-    let done = false;
+    let cancelled = false;
+    let audio: HTMLAudioElement | null = null;
+    let unlock: (() => void) | null = null;
+    const text = MESSAGES[lang];
 
-    const speak = () => {
-      if (done) return;
-      const voices = window.speechSynthesis.getVoices();
-      if (voices.length === 0) return; // wait for voiceschanged
-      done = true;
-
-      const cfg = MESSAGES[lang];
-      const utterance = new SpeechSynthesisUtterance(cfg.text);
-      const voice = pickVoice(voices, lang);
-
-      if (voice) {
-        utterance.voice = voice;
-        utterance.lang = voice.lang;
-      } else {
-        utterance.lang = lang === "mr" ? "hi-IN" : cfg.lang;
-        if (import.meta.env.DEV) {
-          console.warn(`[welcome-voice] No TTS voice found for "${lang}". Falling back to ${utterance.lang}.`);
+    (async () => {
+      try {
+        const res = await fetch(TTS_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({ text, language: lang, speed: 1.15 }),
+        });
+        if (!res.ok) throw new Error(`tts ${res.status}`);
+        if (cancelled) return;
+        const url = URL.createObjectURL(await res.blob());
+        audio = new Audio(url);
+        const mark = () => sessionStorage.setItem("welcome_voice_lang", lang);
+        try {
+          await audio.play();
+          mark();
+        } catch {
+          // Autoplay blocked — play on first user gesture instead.
+          unlock = () => {
+            audio?.play().then(mark).catch(() => {});
+            window.removeEventListener("pointerdown", unlock!);
+          };
+          window.addEventListener("pointerdown", unlock, { once: true });
         }
+      } catch {
+        if (!cancelled) browserFallback(text, lang);
       }
+    })();
 
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      utterance.volume = 1;
-
-      const mark = () => sessionStorage.setItem("welcome_voice_spoken", "1");
-      utterance.onend = mark;
-      utterance.onerror = mark;
-
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utterance);
+    return () => {
+      cancelled = true;
+      audio?.pause();
+      if (unlock) window.removeEventListener("pointerdown", unlock);
+      if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
     };
-
-    // Voices load asynchronously in Chrome/Edge.
-    speak();
-    if (!done) {
-      const handler = () => {
-        speak();
-        window.speechSynthesis.removeEventListener("voiceschanged", handler);
-      };
-      window.speechSynthesis.addEventListener("voiceschanged", handler);
-      const t = setTimeout(speak, 800);
-      return () => {
-        clearTimeout(t);
-        window.speechSynthesis.removeEventListener("voiceschanged", handler);
-      };
-    }
   }, [lang]);
 };
