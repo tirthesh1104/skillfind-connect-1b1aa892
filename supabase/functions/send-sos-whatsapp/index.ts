@@ -34,9 +34,15 @@ Deno.serve(async (req) => {
     let sent = 0;
     const errors: string[] = [];
     for (const to of targets) {
-      const res = await fetch(`https://graph.facebook.com/v20.0/${phoneId}/messages`, {
+      const url = useGateway
+        ? "https://connector-gateway.lovable.dev/whatsapp/messages"
+        : `https://graph.facebook.com/v20.0/${phoneId}/messages`;
+      const headers: Record<string, string> = useGateway
+        ? { Authorization: `Bearer ${lovableKey}`, "X-Connection-Api-Key": gwKey!, "Content-Type": "application/json" }
+        : { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
+      const res = await fetch(url, {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ messaging_product: "whatsapp", to, type: "text", text: { body: text } }),
       });
       if (res.ok) sent++;
