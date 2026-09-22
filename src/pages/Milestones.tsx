@@ -11,6 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { EmptyState } from "@/components/EmptyState";
 import { toast } from "sonner";
 import { Flag, Plus, Loader2, CheckCircle2, XCircle, Trash2 } from "lucide-react";
+import { useRealtime } from "@/hooks/useRealtime";
 
 type Milestone = {
   id: string; job_id: string; title: string; description: string | null;
@@ -28,9 +29,9 @@ const Milestones = () => {
   const [form, setForm] = useState({ job_id: "", title: "", description: "", target_date: "" });
   const [note, setNote] = useState<Record<string, string>>({});
 
-  const load = async () => {
+  const load = async (silent = false) => {
     if (!user) return;
-    setLoading(true);
+    if (!silent) setLoading(true);
     const [{ data: jd }, { data: md }] = await Promise.all([
       supabase.from("jobs").select("id,title").eq("contractor_id", user.id),
       supabase.from("milestones" as any).select("*").order("created_at", { ascending: false }),
@@ -40,6 +41,7 @@ const Milestones = () => {
     setLoading(false);
   };
   useEffect(() => { load(); }, [user]);
+  useRealtime(["milestones", "jobs"], () => load(true), !!user);
 
   const add = async () => {
     if (!user) return;

@@ -74,6 +74,8 @@ const DailyTasks = () => {
     }
   }, [user, role]);
 
+  useRealtime(["daily_tasks"], () => load(true), !!user);
+
   const assign = async () => {
     if (!user || !selectedWorker || !desc.trim()) {
       toast.error("Select worker and enter task");
