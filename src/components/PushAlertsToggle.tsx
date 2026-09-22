@@ -6,8 +6,11 @@ import { toast } from "sonner";
 import { Bell } from "lucide-react";
 
 // The VAPID public key is safe to expose in the client (private key stays in
-// the VAPID_PRIVATE_KEY backend secret). Set VITE_VAPID_PUBLIC_KEY to enable.
-const VAPID_PUBLIC_KEY = (import.meta.env.VITE_VAPID_PUBLIC_KEY as string) || "";
+// the VAPID_PRIVATE_KEY backend secret). Fetched from the backend at runtime.
+const fetchVapidKey = async (): Promise<string> => {
+  const { data } = await supabase.functions.invoke("push-vapid-key");
+  return (data as any)?.publicKey ?? "";
+};
 
 const urlBase64ToUint8Array = (base64: string) => {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -46,7 +49,8 @@ export const PushAlertsToggle = () => {
         toast.error("This browser does not support push notifications.");
         return;
       }
-      if (!VAPID_PUBLIC_KEY) {
+      const vapidKey = await fetchVapidKey();
+      if (!vapidKey) {
         toast.error("Push alerts not configured yet (VAPID key missing).");
         return;
       }
