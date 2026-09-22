@@ -21,18 +21,28 @@ Deno.serve(async (req) => {
 
     const token = Deno.env.get("WHATSAPP_ACCESS_TOKEN");
     const phoneId = Deno.env.get("WHATSAPP_PHONE_NUMBER_ID");
+    // Preferred path: the WhatsApp Business connection (gateway); fallback: raw Cloud API token.
+    const gwKey = Deno.env.get("WHATSAPP_API_KEY");
+    const lovableKey = Deno.env.get("LOVABLE_API_KEY");
+    const useGateway = !!(gwKey && lovableKey);
 
     if (!targets.length) return json({ sent: false, reason: "no_recipients" });
-    if (!token || !phoneId) return json({ sent: false, reason: "not_configured" });
+    if (!useGateway && (!token || !phoneId)) return json({ sent: false, reason: "not_configured" });
 
     const text = `🆘 SOS ALERT\n${worker_name || "A worker"} has raised an SOS alert and may be in danger.\nPhone: ${worker_phone || "N/A"}\nLocation: ${maps_link || "unavailable"}\nTime: ${new Date().toLocaleString("en-IN")}`;
 
     let sent = 0;
     const errors: string[] = [];
     for (const to of targets) {
-      const res = await fetch(`https://graph.facebook.com/v20.0/${phoneId}/messages`, {
+      const url = useGateway
+        ? "https://connector-gateway.lovable.dev/whatsapp/messages"
+        : `https://graph.facebook.com/v20.0/${phoneId}/messages`;
+      const headers: Record<string, string> = useGateway
+        ? { Authorization: `Bearer ${lovableKey}`, "X-Connection-Api-Key": gwKey!, "Content-Type": "application/json" }
+        : { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
+      const res = await fetch(url, {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ messaging_product: "whatsapp", to, type: "text", text: { body: text } }),
       });
       if (res.ok) sent++;

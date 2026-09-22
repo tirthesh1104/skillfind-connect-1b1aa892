@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { ListChecks, Plus, Loader2 } from "lucide-react";
+import { useRealtime } from "@/hooks/useRealtime";
 
 type Task = {
   id: string;
@@ -33,9 +34,9 @@ const DailyTasks = () => {
   const [date, setDate] = useState(today());
   const [saving, setSaving] = useState(false);
 
-  const load = async () => {
+  const load = async (silent = false) => {
     if (!user) return;
-    setLoading(true);
+    if (!silent) setLoading(true);
     const col = role === "contractor" ? "contractor_id" : "worker_id";
     const { data } = await supabase
       .from("daily_tasks" as any)
@@ -72,6 +73,8 @@ const DailyTasks = () => {
         });
     }
   }, [user, role]);
+
+  useRealtime(["daily_tasks"], () => load(true), !!user);
 
   const assign = async () => {
     if (!user || !selectedWorker || !desc.trim()) {
