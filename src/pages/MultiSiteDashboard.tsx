@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/EmptyState";
 import { Loader2, LayoutGrid, MapPin, Users as UsersIcon, Package, Wallet, Flag } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
+import { useRealtime } from "@/hooks/useRealtime";
 
 type Job = { id: string; title: string; location: string; status: string; price_offered: number; start_date: string | null; duration_days: number | null };
 type Milestone = { id: string; job_id: string; progress_percent: number; client_approved: boolean; status: string };
@@ -23,25 +24,26 @@ const MultiSiteDashboard = () => {
   const [pays, setPays] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const load = async (silent = false) => {
     if (!user) return;
-    (async () => {
-      setLoading(true);
-      const [j, m, mt, s, p] = await Promise.all([
-        supabase.from("jobs").select("id,title,location,status,price_offered,start_date,duration_days").eq("contractor_id", user.id),
-        supabase.from("milestones" as any).select("id,job_id,progress_percent,client_approved,status"),
-        supabase.from("materials" as any).select("id,job_id,quantity,used,cost_per_unit"),
-        supabase.from("sub_contractors" as any).select("id,job_id,agreed_amount,paid_amount"),
-        supabase.from("labour_payments").select("job_id,amount_due,days_worked").eq("contractor_id", user.id),
-      ]);
-      setJobs((j.data as Job[]) ?? []);
-      setMs(((m.data as any) ?? []) as Milestone[]);
-      setMats(((mt.data as any) ?? []) as Material[]);
-      setSubs(((s.data as any) ?? []) as Sub[]);
-      setPays(((p.data as any) ?? []) as Payment[]);
-      setLoading(false);
-    })();
-  }, [user]);
+    if (!silent) setLoading(true);
+    const [j, m, mt, s, p] = await Promise.all([
+      supabase.from("jobs").select("id,title,location,status,price_offered,start_date,duration_days").eq("contractor_id", user.id),
+      supabase.from("milestones" as any).select("id,job_id,progress_percent,client_approved,status"),
+      supabase.from("materials" as any).select("id,job_id,quantity,used,cost_per_unit"),
+      supabase.from("sub_contractors" as any).select("id,job_id,agreed_amount,paid_amount"),
+      supabase.from("labour_payments").select("job_id,amount_due,days_worked").eq("contractor_id", user.id),
+    ]);
+    setJobs((j.data as Job[]) ?? []);
+    setMs(((m.data as any) ?? []) as Milestone[]);
+    setMats(((mt.data as any) ?? []) as Material[]);
+    setSubs(((s.data as any) ?? []) as Sub[]);
+    setPays(((p.data as any) ?? []) as Payment[]);
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, [user]);
+  useRealtime(["jobs", "milestones", "materials", "sub_contractors", "labour_payments"], () => load(true), !!user);
 
   if (loading) return <div className="flex justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>;
 
