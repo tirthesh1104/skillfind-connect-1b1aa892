@@ -6,6 +6,7 @@ import { EmptyState } from "@/components/EmptyState";
 import { Badge } from "@/components/ui/badge";
 import { Wallet, IndianRupee, Clock, Receipt } from "lucide-react";
 import { format } from "date-fns";
+import { useRealtime } from "@/hooks/useRealtime";
 
 interface Row {
   id: string;
@@ -27,25 +28,26 @@ const WageLedger = () => {
   const [names, setNames] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const load = async () => {
     if (!user) return;
-    (async () => {
-      let q = supabase.from("labour_payments").select("*").order("created_at", { ascending: false }).limit(300);
-      if (role === "labour") q = q.eq("labour_id", user.id);
-      else if (role === "contractor") q = q.eq("contractor_id", user.id);
-      const { data } = await q;
-      const list = (data ?? []) as Row[];
-      setRows(list);
-      const ids = Array.from(new Set(list.flatMap((r) => [r.labour_id, r.contractor_id])));
-      if (ids.length) {
-        const { data: profs } = await supabase.from("profiles").select("id, full_name").in("id", ids);
-        const map: Record<string, string> = {};
-        (profs ?? []).forEach((p: any) => (map[p.id] = p.full_name));
-        setNames(map);
-      }
-      setLoading(false);
-    })();
-  }, [user, role]);
+    let q = supabase.from("labour_payments").select("*").order("created_at", { ascending: false }).limit(300);
+    if (role === "labour") q = q.eq("labour_id", user.id);
+    else if (role === "contractor") q = q.eq("contractor_id", user.id);
+    const { data } = await q;
+    const list = (data ?? []) as Row[];
+    setRows(list);
+    const ids = Array.from(new Set(list.flatMap((r) => [r.labour_id, r.contractor_id])));
+    if (ids.length) {
+      const { data: profs } = await supabase.from("profiles").select("id, full_name").in("id", ids);
+      const map: Record<string, string> = {};
+      (profs ?? []).forEach((p: any) => (map[p.id] = p.full_name));
+      setNames(map);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, [user, role]);
+  useRealtime(["labour_payments", "payment_history"], load, !!user);
 
   const totals = useMemo(() => {
     const gross = rows.reduce((s, r) => s + r.days_worked * r.daily_rate, 0);
