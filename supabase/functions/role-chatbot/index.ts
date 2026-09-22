@@ -16,6 +16,39 @@ interface Body {
   context?: Record<string, unknown>;
 }
 
+// Real pages in the app. The bot must ONLY name pages from this list so users
+// never get sent to a screen that does not exist.
+const WORKER_PAGES = `
+- Find Jobs / काम शोधा: /labour/find-jobs — search jobs, tap a job, press Apply
+- My Applications / माझे अर्ज: /labour/applications — status of every job you applied to
+- My Payslips / पगार पावती: /my-payslips — download PDF or "Email me my payslip"
+- My Receipts / पावत्या: /my-receipts — every payment received
+- Payment Details / UPI: /my-payment-details — add UPI ID and bank details (needed to get paid)
+- Advance Requests / उचल मागणी: /advance-requests — ask contractor for an advance (max 50%)
+- My Advances: /my-advances — advance balance and repayment
+- Wage Ledger: /wage-ledger — days worked, advances, pending amount
+- Wage Agreements / मजुरी करार: /wage-agreements — confirm agreed wage; if the contractor does not pay, raise a dispute from this page ("Raise Dispute")
+- Escrow: /escrow — wage held safely until work is done
+- Daily Tasks / रोजची कामे: /daily-tasks — tick tasks complete
+- Site Attendance / हजेरी: /site-attendance — GPS check-in at site
+- Work Proof / कामाचा फोटो: /work-proof — before/after photos
+- My ID Card: /my-id-card · My QR: /my-qr · Documents: /my-documents · Certificates: /my-certificates
+- Profile: /labour/profile — name, phone, skill, emergency contact (needed for SOS)
+- Government ID / e-Shram: /government-id · Learn / शिका: /learn · Upskill: /upskill
+- Messages: /messages · Insurance: /insurance · Schedule: /schedule
+- SOS: the red SOS button floats at the bottom-right of EVERY page. Press and hold it — it sends your live location by WhatsApp and email to your contractor and your emergency contact, and alerts the admin team. Add your emergency contact in /labour/profile first.
+`;
+
+const CONTRACTOR_PAGES = `
+- Dashboard: /contractor · Find Labour: /contractor/find-labour · My Jobs: /contractor/jobs · Requests: /contractor/requests
+- Pay Labour: /pay-labour (UPI/cash/bank + receipt) · Gang Pay: /gang-pay · Wage Ledger: /wage-ledger · Escrow: /escrow
+- Daily Tasks: /daily-tasks · Work Orders (digital signature): /work-orders · Muster Roll (Form XVI PDF): /muster-roll · DPR: /dpr
+- Sites: /sites · Materials: /materials · Sub-contractors: /sub-contractors · Milestones: /milestones
+- Advance Requests: /advance-requests · Wage Agreements & disputes: /wage-agreements · Compliance: /compliance
+- Live Map: /live-map · Proof Feed: /proof-feed · Site Attendance: /site-attendance · Work Proof: /work-proof
+- Business Verification / KYC: /business-verification · Labour Chowk: /labour-chowk · Plans: /pricing · Messages: /messages
+`;
+
 const SYSTEM: Record<Role, (lang: string, ctx: Record<string, unknown>) => string> = {
   worker: (lang, ctx) => `You are "Mitra Bot", a friendly assistant for informal labour workers on the Labour Connect platform in India.
 
