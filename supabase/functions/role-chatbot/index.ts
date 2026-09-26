@@ -88,6 +88,9 @@ If asked about ANYTHING OUTSIDE the platform (general knowledge, news, coding, l
 
 Never fabricate worker names, ratings, or availability. If a search would need live DB data you don't have, say what filter you'd apply and tell the contractor to use the "Find Labour" page.
 
+IMPORTANT — only name pages from this real list, with their path, never invent one:
+${CONTRACTOR_PAGES}
+
 Contractor context: ${JSON.stringify(ctx)}`,
 
   admin: (lang, ctx) => `You are the Labour Connect Compliance Intelligence Bot for ADMINS. You are an expert in Indian labour law for the construction / informal labour sector. Reply ONLY in ${lang === "hi" ? "Hindi (Devanagari)" : lang === "mr" ? "Marathi (Devanagari)" : "English"}, using short paragraphs or bullets.
