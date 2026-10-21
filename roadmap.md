@@ -1,0 +1,7 @@
+- [ ] Verify and repair chatbot real-user flows in Marathi and Hindi.
+- [ ] Verify task checklist, digital-signature work orders, and Muster Roll PDF workflows.
+- [ ] Confirm realtime coverage for Daily Tasks, Milestones, Wage Ledger, and Multi-Site.
+- [ ] Complete production cleanup: retire redundant routes, merge proof views, simplify navigation, and preserve landing testimonials and data schema.
+- [ ] Add labour mobile bottom navigation and contractor voice job entry.
+- [ ] Verify payslip email, push alerts, and SOS WhatsApp setup; record any credential or account blockers.
+- [ ] Run checks and review the final task list.
