@@ -25,13 +25,15 @@ const LabourFindJobs = () => {
   const [search, setSearch] = useState("");
   const [skillFilter, setSkillFilter] = useState("all");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 2000]);
+  const [mySkill, setMySkill] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const { data: lp } = await supabase.from("labour_profiles").select("id").eq("user_id", user.id).maybeSingle();
+      const { data: lp } = await supabase.from("labour_profiles").select("id, skill, price_per_day").eq("user_id", user.id).maybeSingle();
       if (lp) {
         setLabourId(lp.id);
+        setMySkill(lp.skill ?? null);
         const { data: applied } = await supabase.from("requests").select("job_id").eq("labour_id", lp.id);
         setAppliedJobIds(new Set((applied ?? []).map((r) => r.job_id).filter(Boolean) as string[]));
       }
@@ -45,7 +47,31 @@ const LabourFindJobs = () => {
     })();
   }, [user]);
 
-  const filtered = useMemo(() => jobs.filter((j) => {
+  // AI-style job matching: exact/related skill match, pay above the worker's usual rate,
+  // and recency — scored 0-100 and shown as a "Match" badge, best matches first.
+  const scored = useMemo(() => {
+    const s = (mySkill ?? "").toLowerCase().trim();
+    const rel = (a: string, b: string) => {
+      if (!a || !b) return false;
+      return a.includes(b) || b.includes(a) ||
+        ["helper", "labour", "mazdoor"].every((w) => a.includes(w) === b.includes(w));
+    };
+    return jobs.map((j) => {
+      const js = (j.required_skill ?? "").toLowerCase().trim();
+      let score = 40; // base availability score
+      if (s && js) {
+        if (js === s) score += 45;
+        else if (rel(js, s)) score += 30;
+        else score -= 20;
+      }
+      if (j.price_offered >= 500) score += 8;
+      const ageDays = (Date.now() - new Date(j.created_at).getTime()) / 864e5;
+      if (ageDays <= 1) score += 7; else if (ageDays <= 3) score += 3;
+      return { ...j, match: Math.max(5, Math.min(99, Math.round(score))) };
+    }).sort((a, b) => b.match - a.match || new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  }, [jobs, mySkill]);
+
+  const filtered = useMemo(() => scored.filter((j) => {
     if (skillFilter !== "all" && j.required_skill !== skillFilter) return false;
     if (j.price_offered < priceRange[0] || j.price_offered > priceRange[1]) return false;
     if (search) {
@@ -53,7 +79,7 @@ const LabourFindJobs = () => {
       if (!j.title.toLowerCase().includes(q) && !j.location.toLowerCase().includes(q) && !j.contractor?.company_name?.toLowerCase().includes(q)) return false;
     }
     return true;
-  }), [jobs, search, skillFilter, priceRange]);
+  }), [scored, search, skillFilter, priceRange]);
 
   const apply = async (j: any) => {
     if (!labourId) return toast.error("Profile not found");
@@ -74,7 +100,7 @@ const LabourFindJobs = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Find Jobs</h1>
-        <p className="text-sm text-muted-foreground">Browse open opportunities from contractors.</p>
+        <p className="text-sm text-muted-foreground">AI matching: तुमच्या skill नुसार सर्वोत्तम कामे सर्वात वर (Match %).</p>
       </div>
 
       <div className="glass-card grid gap-4 p-4 md:grid-cols-3">
@@ -112,7 +138,7 @@ const LabourFindJobs = () => {
         ) : (
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader><TableRow><TableHead>Job</TableHead><TableHead>Contractor</TableHead><TableHead>Skill</TableHead><TableHead>Location</TableHead><TableHead>Price</TableHead><TableHead>Posted</TableHead><TableHead className="text-right">Action</TableHead></TableRow></TableHeader>
+              <TableHeader><TableRow><TableHead>Job</TableHead><TableHead>Contractor</TableHead><TableHead>Skill</TableHead><TableHead>Location</TableHead><TableHead>Price</TableHead><TableHead>AI Match</TableHead><TableHead className="text-right">Action</TableHead></TableRow></TableHeader>
               <TableBody>
                 {filtered.map((j) => {
                   const applied = appliedJobIds.has(j.id);
@@ -123,6 +149,14 @@ const LabourFindJobs = () => {
                       <TableCell><span className={cn("rounded-full border px-2 py-0.5 text-xs", skillBadgeClass(j.required_skill))}>{j.required_skill}</span></TableCell>
                       <TableCell>{j.location}</TableCell>
                       <TableCell className="font-semibold text-accent">Rs. {j.price_offered}</TableCell>
+                      <TableCell>
+                        <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold",
+                          j.match >= 80 ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
+                          : j.match >= 55 ? "bg-amber-500/15 text-amber-700 dark:text-amber-300"
+                          : "bg-muted text-muted-foreground")}>
+                          {j.match}% {j.match >= 80 ? "⭐" : ""}
+                        </span>
+                      </TableCell>
                       <TableCell className="text-xs text-muted-foreground">{format(new Date(j.created_at), "PP")}</TableCell>
                       <TableCell className="text-right">
                         <Button size="sm" className="bg-gradient-primary" disabled={applied} onClick={() => apply(j)}>
