@@ -5,3 +5,6 @@
 - [ ] Add labour mobile bottom navigation and contractor voice job entry.
 - [ ] Verify payslip email, push alerts, and SOS WhatsApp setup; record any credential or account blockers.
 - [ ] Run checks and review the final task list.
+- [ ] Fix Live feature: Command Map not visible/working — repair live map for labour and admin.
+- [ ] Fix labour AI feature (AI matching/upskill) not working.
+- [ ] Fix remaining non-working features end to end; no unrelated changes.
